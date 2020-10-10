@@ -1,8 +1,8 @@
-# vue-scheduler-lite
+# vue3-table-lite
 
 ![SampleGif](https://linmasahiro.github.io/vue3-table-lite/sample.gif)
 
-A very simple scheduler for vue.js
+A table component support vue3.0!
 
 ## DEMO
 
