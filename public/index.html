@@ -57,7 +57,42 @@
       <p>Example Sample Demo</p>
       <div id="app"></div>
       <h2 id="info">Get Start</h2>
-      <div>Working</div>
+      <div>
+        <ol>
+            <li>
+                Use NPM
+                <ol>
+                    <li>
+                        <pre><code>npm install vue3-table-lite --save</code></pre>
+                    </li>
+                    <li>
+                        <p>add to your project</p>
+                        <pre><code>import VueTableLite from 'vue3-table-lite'</code></pre>
+                    </li>
+                    <li>
+                        <p>enjoy it!</p>
+                        <pre>
+                            <code>
+                                &lt;vue-table-lite 
+                                  :shas-checkbox=&quot;true&quot;
+                                  :is-loading=&quot;table.isLoading&quot; 
+                                  :is-re-search=&quot;table.isReSearch&quot; 
+                                  :columns=&quot;table.columns&quot; 
+                                  :rows=&quot;table.rows&quot; 
+                                  :total=&quot;table.totalRecordCount&quot; 
+                                  :sortable=&quot;table.sortable&quot; 
+                                  :messages=&quot;table.messages&quot; 
+                                  @do-search=&quot;doSearch&quot; 
+                                  @is-finished=&quot;tableLoadingFinish&quot; 
+                                  @return-checked-row=&quot;updateCheckedRows&quot; 
+                                /&gt;
+                            </code>
+                        </pre>
+                    </li>
+                    </ol>
+                </li>
+            </ol>
+      </div>
       <h2 id="setting">SettingData</h2>
         <p>
             <table class="table table-striped">
