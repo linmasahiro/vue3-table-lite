@@ -76,8 +76,17 @@ A simple table component support Vue3.0!!
           },
         },
       ],
-      rows: [],
-      totalRecordCount: 0,
+      rows: [
+          {
+            id: 1,
+            name: "TEST1"
+          },
+          {
+            id: 2,
+            name: "TEST2"
+          }
+      ],
+      totalRecordCount: 2,
       sortable: {
         order: "id",
         sort: "asc",
