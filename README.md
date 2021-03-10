@@ -132,3 +132,6 @@ A simple table component support Vue3.0!!
       // do your checkbox click event
       console.log(rowsKey);
     };
+
+### release
+    ver 1.0.3 : fixed wrong limit value.

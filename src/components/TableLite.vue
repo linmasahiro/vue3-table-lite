@@ -405,7 +405,7 @@ export default defineComponent({
         }
       }
       let offset = (setting.page - 1) * setting.pageSize;
-      let limit = setting.page * setting.pageSize;
+      let limit = setting.pageSize;
       emit("do-search", offset, limit, order, sort);
 
       // 清空畫面上選擇的資料
@@ -430,7 +430,7 @@ export default defineComponent({
       let order = props.sortable.order;
       let sort = props.sortable.sort;
       let offset = (page - 1) * setting.pageSize;
-      let limit = page * setting.pageSize;
+      let limit = setting.pageSize;
       if (!props.isReSearch || page > 1 || page == prevPage) {
         // 非重新查詢發生的頁碼變動才執行呼叫查詢
         emit("do-search", offset, limit, order, sort);

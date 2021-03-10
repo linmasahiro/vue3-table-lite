@@ -118,7 +118,7 @@ export default defineComponent({
       table.isLoading = true;
       setTimeout(() => {
         table.isReSearch = offset == undefined ? true : false;
-        if (limit >= 20) {
+        if (offset >= 10 || limit >= 20) {
           limit = 20;
         }
         if (sort == "asc") {
