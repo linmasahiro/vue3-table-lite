@@ -134,4 +134,5 @@ A simple table component support Vue3.0!!
     };
 
 ### release
+    ver 1.0.4 : supported TypeScript.
     ver 1.0.3 : fixed wrong limit value.

@@ -37,11 +37,8 @@
                       :class="{
                         sortable: col.sortable,
                         both: col.sortable,
-                        asc:
-                          sortable.order == col.field && sortable.sort == 'asc',
-                        desc:
-                          sortable.order == col.field &&
-                          sortable.sort == 'desc',
+                        asc: sortable.order == col.field && sortable.sort == 'asc',
+                        desc: sortable.order == col.field && sortable.sort == 'desc',
                       }"
                       @click="col.sortable ? doSort(col.field) : false"
                     >
@@ -56,7 +53,11 @@
                     <div>
                       <input
                         type="checkbox"
-                        :ref="(el) => {rowCheckbox[i] = el}"
+                        :ref="
+                          (el) => {
+                            rowCheckbox[i] = el;
+                          }
+                        "
                         :value="row[setting.keyColumn]"
                         @click="checked"
                       />
@@ -75,7 +76,7 @@
           <div class="col-sm-12 col-md-4">
             <div role="status" aria-live="polite">
               {{
-                messages.pagingInfo.format(setting.offset, setting.limit, total)
+                stringFormat(messages.pagingInfo, setting.offset, setting.limit, total)
               }}
             </div>
           </div>
@@ -125,12 +126,9 @@
                   :key="n"
                   :class="{ disabled: setting.page == n }"
                 >
-                  <a
-                    class="page-link"
-                    href="javascript:void(0)"
-                    @click="movePage(n)"
-                    >{{ n }}</a
-                  >
+                  <a class="page-link" href="javascript:void(0)" @click="movePage(n)">{{
+                    n
+                  }}</a>
                 </li>
                 <li
                   class="page-item"
@@ -174,14 +172,7 @@
   </div>
 </template>
 
-<script>
-String.prototype.format = function () {
-  var args = arguments;
-  return this.replace(/{([0-9]*)}/g, function (match, number) {
-    return typeof args[number] != "undefined" ? args[number] : match;
-  });
-};
-
+<script lang="ts">
 import {
   defineComponent,
   ref,
@@ -191,6 +182,22 @@ import {
   onBeforeUpdate,
   nextTick,
 } from "vue";
+
+interface tabelSetting {
+  isCheckAll: boolean;
+  keyColumn: string;
+  page: number;
+  pageSize: number;
+  maxPage: number;
+  offset: number;
+  limit: number;
+  pagging: Array<number>;
+}
+
+interface column {
+  isKey: string;
+  field: string;
+}
 
 export default defineComponent({
   name: "my-table",
@@ -269,13 +276,13 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     // 組件用內部設定值
-    const setting = reactive({
+    const setting: tabelSetting = reactive({
       // 是否全選
       isCheckAll: false,
       // KEY欄位名稱
       keyColumn: computed(() => {
         let key = "";
-        props.columns.forEach((col) => {
+        Object.assign(props.columns).forEach((col: column) => {
           if (col.isKey) {
             key = col.field;
           }
@@ -345,9 +352,9 @@ export default defineComponent({
        */
       watch(
         () => setting.isCheckAll,
-        (state) => {
-          let isChecked = [];
-          rowCheckbox.value.forEach((val) => {
+        (state: boolean) => {
+          let isChecked: Array<string> = [];
+          rowCheckbox.value.forEach((val: HTMLInputElement) => {
             if (val) {
               val.checked = state;
               if (val.checked == true) {
@@ -365,8 +372,8 @@ export default defineComponent({
      * Checkbox點擊事件
      */
     const checked = () => {
-      let isChecked = [];
-      rowCheckbox.value.forEach((val) => {
+      let isChecked: Array<string> = [];
+      rowCheckbox.value.forEach((val: HTMLInputElement) => {
         if (val && val.checked == true) {
           isChecked.push(val.value);
         }
@@ -379,7 +386,7 @@ export default defineComponent({
      * 清空畫面上所有選擇資料
      */
     const clearChecked = () => {
-      rowCheckbox.value.forEach((val) => {
+      rowCheckbox.value.forEach((val: HTMLInputElement) => {
         if (val && val.checked == true) {
           val.checked = false;
         }
@@ -396,7 +403,7 @@ export default defineComponent({
     /**
      * 呼叫執行排序
      */
-    const doSort = (order) => {
+    const doSort = (order: string) => {
       let sort = "asc";
       if (order == props.sortable.order) {
         // 排序中的項目時
@@ -425,7 +432,7 @@ export default defineComponent({
      * @param number page     新頁碼
      * @param number prevPage 現在頁碼
      */
-    const changePage = (page, prevPage) => {
+    const changePage = (page: number, prevPage: number) => {
       setting.isCheckAll = false;
       let order = props.sortable.order;
       let sort = props.sortable.sort;
@@ -469,7 +476,7 @@ export default defineComponent({
     /**
      * 移動至指定頁數
      */
-    const movePage = (page) => {
+    const movePage = (page: number) => {
       setting.page = page;
     };
 
@@ -499,6 +506,13 @@ export default defineComponent({
       }
     );
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const stringFormat = (template: string, ...args: any[]) => {
+      return template.replace(/{(\d+)}/g, function (match, number) {
+        return typeof args[number] != "undefined" ? args[number] : match;
+      });
+    };
+
     if (props.hasCheckbox) {
       // 需要 Checkbox 時
       return {
@@ -509,6 +523,7 @@ export default defineComponent({
         prevPage,
         movePage,
         nextPage,
+        stringFormat,
       };
     } else {
       return {
@@ -517,6 +532,7 @@ export default defineComponent({
         prevPage,
         movePage,
         nextPage,
+        stringFormat,
       };
     }
   },
@@ -584,12 +600,12 @@ export default defineComponent({
 }
 
 select {
-    width: auto;
-    border: 1px solid #cccccc;
-    background-color: #ffffff;
-    height: auto;
-    padding: 0px;
-    margin-bottom: 0px;
+  width: auto;
+  border: 1px solid #cccccc;
+  background-color: #ffffff;
+  height: auto;
+  padding: 0px;
+  margin-bottom: 0px;
 }
 
 table {

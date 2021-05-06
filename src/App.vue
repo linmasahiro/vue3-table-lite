@@ -75,7 +75,7 @@ export default defineComponent({
             return (
               '<a href="#" data-id="' +
               row.user_id +
-              '" class="name-btn">' +
+              '" class="is-rows-el name-btn">' +
               row.name +
               "</button>"
             );
@@ -95,7 +95,7 @@ export default defineComponent({
             return (
               '<button type="button" data-id="' +
               row.user_id +
-              '" class="quick-btn">Button</button>'
+              '" class="is-rows-el quick-btn">Button</button>'
             );
           },
         },
