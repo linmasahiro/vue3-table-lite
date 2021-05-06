@@ -55,7 +55,7 @@ A simple table component support Vue3.0!!
           sortable: true,
           display: function (row) {
             return (
-              '<a href="#" data-id="' + row.user_id + '" class="name-btn">' + row.name + "</button>"
+              '<a href="#" data-id="' + row.user_id + '" class="is-rows-el name-btn">' + row.name + "</button>"
             );
           },
         },
@@ -71,7 +71,7 @@ A simple table component support Vue3.0!!
           width: "10%",
           display: function (row) {
             return (
-              '<button type="button" data-id="' + row.user_id + '" class="quick-btn">Button</button>'
+              '<button type="button" data-id="' + row.user_id + '" class="is-rows-el quick-btn">Button</button>'
             );
           },
         },
