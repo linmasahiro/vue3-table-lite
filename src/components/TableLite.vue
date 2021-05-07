@@ -201,6 +201,11 @@ interface column {
 
 export default defineComponent({
   name: "my-table",
+  emits: [
+    'return-checked-rows',
+    'do-search',
+    'is-finished'
+  ],
   props: {
     // 是否讀取中
     isLoading: {
