@@ -576,17 +576,20 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  display: table;
+  display: flex;
+  flex-flow: column;
   transition: opacity 0.3s ease;
 }
 
 .loading-content {
-  display: table-cell;
-  vertical-align: middle;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .loading-icon {
-  display: block;
+  display: flex;
   margin-left: auto;
   margin-right: auto;
 }
