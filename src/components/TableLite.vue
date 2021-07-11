@@ -122,7 +122,7 @@
                 </li>
                 <li
                   class="page-item"
-                  v-for="n in setting.pagging"
+                  v-for="n in setting.paging"
                   :key="n"
                   :class="{ disabled: setting.page == n }"
                 >
@@ -191,7 +191,7 @@ interface tableSetting {
   maxPage: number;
   offset: number;
   limit: number;
-  pagging: Array<number>;
+  paging: Array<number>;
 }
 
 interface column {
@@ -320,7 +320,7 @@ export default defineComponent({
         return props.total >= limit ? limit : props.total;
       }),
       // 換頁陣列
-      pagging: computed(() => {
+      paging: computed(() => {
         let startPage = setting.page - 2 <= 0 ? 1 : setting.page - 2;
         if (setting.maxPage - setting.page <= 2) {
           startPage = setting.maxPage - 4;
