@@ -206,56 +206,56 @@ export default defineComponent({
     'is-finished'
   ],
   props: {
-    // 是否讀取中
+    // 是否讀取中 (is data loading)
     isLoading: {
       type: Boolean,
       require: true,
     },
-    // 是否執行了重新查詢
+    // 是否執行了重新查詢 (Whether to perform a re-query)
     isReSearch: {
       type: Boolean,
       require: true,
     },
-    // 有無Checkbox
+    // 有無Checkbox (Presence of Checkbox)
     hasCheckbox: {
       type: Boolean,
       default: false,
     },
-    // 標題
+    // 標題 (title)
     title: {
       type: String,
       default: "",
     },
-    // 欄位
+    // 欄位 (Field)
     columns: {
       type: Array,
       default: () => {
         return [];
       },
     },
-    // 資料
+    // 資料 (data)
     rows: {
       type: Array,
       default: () => {
         return [];
       },
     },
-    // 一頁顯示筆數
+    // 一頁顯示筆數 (Display the number of items on one page)
     pageSize: {
       type: Number,
       default: 10,
     },
-    // 總筆數
+    // 總筆數 (Total number of transactions)
     total: {
       type: Number,
       default: 100,
     },
-    // 現在頁數
+    // 現在頁數 (Current page number)
     page: {
       type: Number,
       default: 1,
     },
-    // 排序條件
+    // 排序條件 (Sort condition)
     sortable: {
       type: Object,
       default: () => {
@@ -265,7 +265,7 @@ export default defineComponent({
         };
       },
     },
-    // 顯示文字
+    // 顯示文字 (Display text)
     messages: {
       type: Object,
       default: () => {
@@ -279,11 +279,11 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    // 組件用內部設定值
+    // 組件用內部設定值 (Internal set value for components)
     const setting: tableSetting = reactive({
-      // 是否全選
+      // 是否全選 (Whether to select all)
       isCheckAll: false,
-      // KEY欄位名稱
+      // KEY欄位名稱 (KEY field name)
       keyColumn: computed(() => {
         let key = "";
         Object.assign(props.columns).forEach((col: column) => {
@@ -293,11 +293,11 @@ export default defineComponent({
         });
         return key;
       }),
-      // 當前頁數
+      // 當前頁數 (current page number)
       page: props.page,
-      // 每頁顯示筆數
+      // 每頁顯示筆數 (Display count per page)
       pageSize: props.pageSize,
-      // 最大頁數
+      // 最大頁數 (Maximum number of pages)
       maxPage: computed(() => {
         if (props.total <= 0) {
           return 0;
@@ -309,16 +309,16 @@ export default defineComponent({
         }
         return maxPage;
       }),
-      // 該頁數起始值
+      // 該頁數起始值 (The starting value of the page number)
       offset: computed(() => {
         return (setting.page - 1) * setting.pageSize + 1;
       }),
-      // 該頁數最大值
+      // 該頁數最大值 (Maximum number of pages0
       limit: computed(() => {
         let limit = setting.page * setting.pageSize;
         return props.total >= limit ? limit : props.total;
       }),
-      // 換頁陣列
+      // 換頁陣列 (Paging array)
       paging: computed(() => {
         let startPage = setting.page - 2 <= 0 ? 1 : setting.page - 2;
         if (setting.maxPage - setting.page <= 2) {
@@ -338,21 +338,22 @@ export default defineComponent({
     ////////////////////////////
     //
     //  Checkbox 相關操作
+    //  (Checkbox related operations)
     //
 
-    // 定義Checkbox參照
+    // 定義Checkbox參照 (Define Checkbox reference)
     const rowCheckbox = ref([]);
     if (props.hasCheckbox) {
       /**
-       * 重新渲染前執行
+       * 重新渲染前執行 (Execute before re-rendering)
        */
       onBeforeUpdate(() => {
-        // 每次更新前都把值全部清空
+        // 每次更新前都把值全部清空 (Clear all values before each update)
         rowCheckbox.value = [];
       });
 
       /**
-       * 監聽全勾選Checkbox
+       * 監聽全勾選Checkbox (Check all checkboxes for monitoring)
        */
       watch(
         () => setting.isCheckAll,
@@ -366,14 +367,14 @@ export default defineComponent({
               }
             }
           });
-          // 回傳畫面上選上的資料
+          // 回傳畫面上選上的資料 (Return the selected data on the screen)
           emit("return-checked-rows", isChecked);
         }
       );
     }
 
     /**
-     * Checkbox點擊事件
+     * Checkbox點擊事件 (Checkbox click event)
      */
     const checked = () => {
       let isChecked: Array<string> = [];
@@ -382,12 +383,12 @@ export default defineComponent({
           isChecked.push(val.value);
         }
       });
-      // 回傳畫面上選上的資料
+      // 回傳畫面上選上的資料 (Return the selected data on the screen)
       emit("return-checked-rows", isChecked);
     };
 
     /**
-     * 清空畫面上所有選擇資料
+     * 清空畫面上所有選擇資料 (Clear all selected data on the screen)
      */
     const clearChecked = () => {
       rowCheckbox.value.forEach((val: HTMLInputElement) => {
@@ -395,22 +396,23 @@ export default defineComponent({
           val.checked = false;
         }
       });
-      // 回傳畫面上選上的資料
+      // 回傳畫面上選上的資料 (Return the selected data on the screen)
       emit("return-checked-rows", []);
     };
 
     ////////////////////////////
     //
     //  排序·換頁等 相關操作
+    //  (Sorting, page change, etc. related operations)
     //
 
     /**
-     * 呼叫執行排序
+     * 呼叫執行排序 (Call execution sequencing)
      */
     const doSort = (order: string) => {
       let sort = "asc";
       if (order == props.sortable.order) {
-        // 排序中的項目時
+        // 排序中的項目時 (When sorting items)
         if (props.sortable.sort == "asc") {
           sort = "desc";
         }
@@ -419,9 +421,9 @@ export default defineComponent({
       let limit = setting.pageSize;
       emit("do-search", offset, limit, order, sort);
 
-      // 清空畫面上選擇的資料
+      // 清空畫面上選擇的資料 (Clear the selected data on the screen)
       if (setting.isCheckAll) {
-        // 取消全選時自然會清空
+        // 取消全選時自然會清空 (It will be cleared when you cancel all selections)
         setting.isCheckAll = false;
       } else {
         if (props.hasCheckbox) {
@@ -431,10 +433,10 @@ export default defineComponent({
     };
 
     /**
-     * 切換頁碼
+     * 切換頁碼 (Switch page number)
      *
-     * @param number page     新頁碼
-     * @param number prevPage 現在頁碼
+     * @param number page     新頁碼    (New page number)
+     * @param number prevPage 現在頁碼  (Current page number)
      */
     const changePage = (page: number, prevPage: number) => {
       setting.isCheckAll = false;
@@ -443,15 +445,15 @@ export default defineComponent({
       let offset = (page - 1) * setting.pageSize;
       let limit = setting.pageSize;
       if (!props.isReSearch || page > 1 || page == prevPage) {
-        // 非重新查詢發生的頁碼變動才執行呼叫查詢
+        // 非重新查詢發生的頁碼變動才執行呼叫查詢 (Call query will only be executed if the page number is changed without re-query)
         emit("do-search", offset, limit, order, sort);
       }
     };
-    // 監聽頁碼切換
+    // 監聽頁碼切換 (Monitor page switching)
     watch(() => setting.page, changePage);
 
     /**
-     * 切換顯示筆數
+     * 切換顯示筆數 (Switch display number)
      */
     const changePageSize = () => {
       if (setting.page === 1) {
@@ -463,39 +465,39 @@ export default defineComponent({
         setting.isCheckAll = false;
       }
     };
-    // 監聽顯示筆數切換
+    // 監聽顯示筆數切換 (Monitor display number switch)
     watch(() => setting.pageSize, changePageSize);
 
     /**
-     * 上一頁
+     * 上一頁 (Previous page)
      */
     const prevPage = () => {
       if (setting.page == 1) {
-        // 如果是第一頁，不予執行
+        // 如果是第一頁，不予執行 (If it is the first page, it will not be executed)
         return false;
       }
       setting.page--;
     };
 
     /**
-     * 移動至指定頁數
+     * 移動至指定頁數 (Move to the specified number of pages)
      */
     const movePage = (page: number) => {
       setting.page = page;
     };
 
     /**
-     * 下一頁
+     * 下一頁 (Next page)
      */
     const nextPage = () => {
       if (setting.page >= setting.maxPage) {
-        // 如果等於大於最大頁數，不與執行
+        // 如果等於大於最大頁數，不與執行 (If it is equal to or greater than the maximum number of pages, no execution)
         return false;
       }
       setting.page++;
     };
 
-    // 監聽資料變更
+    // 監聽資料變更 (Monitoring data changes)
     watch(
       () => props.rows,
       () => {
@@ -503,7 +505,7 @@ export default defineComponent({
           setting.page = 1;
         }
         nextTick(function () {
-          // 資料完成渲染後回傳私有元件
+          // 資料完成渲染後回傳私有元件 (Return the private components after the data is rendered)
           let localElement = document.getElementsByClassName("is-rows-el");
           emit("is-finished", localElement);
         });
@@ -518,7 +520,7 @@ export default defineComponent({
     };
 
     if (props.hasCheckbox) {
-      // 需要 Checkbox 時
+      // 需要 Checkbox 時 (When Checkbox is needed)
       return {
         setting,
         rowCheckbox,
