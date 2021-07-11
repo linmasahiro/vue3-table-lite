@@ -362,7 +362,7 @@ export default defineComponent({
           rowCheckbox.value.forEach((val: HTMLInputElement) => {
             if (val) {
               val.checked = state;
-              if (val.checked == true) {
+              if (val.checked) {
                 isChecked.push(val.value);
               }
             }
@@ -379,7 +379,7 @@ export default defineComponent({
     const checked = () => {
       let isChecked: Array<string> = [];
       rowCheckbox.value.forEach((val: HTMLInputElement) => {
-        if (val && val.checked == true) {
+        if (val && val.checked) {
           isChecked.push(val.value);
         }
       });
@@ -392,7 +392,7 @@ export default defineComponent({
      */
     const clearChecked = () => {
       rowCheckbox.value.forEach((val: HTMLInputElement) => {
-        if (val && val.checked == true) {
+        if (val && val.checked) {
           val.checked = false;
         }
       });
