@@ -589,11 +589,11 @@ export default defineComponent({
   justify-content: center;
 }
 
-.loading-icon {
-  display: flex;
-  margin-left: auto;
-  margin-right: auto;
-}
+/*.loading-icon {*/
+/*  display: flex;*/
+/*  margin-left: auto;*/
+/*  margin-right: auto;*/
+/*}*/
 
 .card {
   position: relative;
@@ -662,9 +662,9 @@ tr {
   border-top: 1px solid #dee2e6;
 }
 
-.table-border {
-  border: 1px solid #dee2e6;
-}
+/*.table-border {*/
+/*  border: 1px solid #dee2e6;*/
+/*}*/
 
 .table td,
 .table th {
