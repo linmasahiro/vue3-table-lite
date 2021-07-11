@@ -13,7 +13,6 @@
             <table
               class="table table-hover table-bordered table-responsive-sm"
               id="dataTables-example"
-              width="100%"
             >
               <div class="row"></div>
               <div v-if="isLoading" class="loading-mask">
