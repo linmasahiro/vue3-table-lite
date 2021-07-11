@@ -613,8 +613,8 @@ select {
   border: 1px solid #cccccc;
   background-color: #ffffff;
   height: auto;
-  padding: 0px;
-  margin-bottom: 0px;
+  padding: 0;
+  margin-bottom: 0;
 }
 
 table {
