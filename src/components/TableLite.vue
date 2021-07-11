@@ -183,7 +183,7 @@ import {
   nextTick,
 } from "vue";
 
-interface tabelSetting {
+interface tableSetting {
   isCheckAll: boolean;
   keyColumn: string;
   page: number;
@@ -281,7 +281,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     // 組件用內部設定值
-    const setting: tabelSetting = reactive({
+    const setting: tableSetting = reactive({
       // 是否全選
       isCheckAll: false,
       // KEY欄位名稱
