@@ -10,16 +10,16 @@
         <div class="row"></div>
         <div class="row">
           <div class="col-sm-12">
+            <div class="row"></div>
+            <div v-if="isLoading" class="loading-mask">
+              <div class="loading-content">
+                <span style="color: white">Loading...</span>
+              </div>
+            </div>
             <table
               class="table table-hover table-bordered table-responsive-sm"
               id="dataTables-example"
             >
-              <div class="row"></div>
-              <div v-if="isLoading" class="loading-mask">
-                <div class="loading-content">
-                  <span style="color: white">Loading...</span>
-                </div>
-              </div>
               <thead class="thead-dark">
                 <tr>
                   <th v-if="hasCheckbox" class="checkbox-th">
