@@ -435,8 +435,8 @@ export default defineComponent({
     /**
      * 切換頁碼 (Switch page number)
      *
-     * @param number page     新頁碼    (New page number)
-     * @param number prevPage 現在頁碼  (Current page number)
+     * @param page      number  新頁碼    (New page number)
+     * @param prevPage  number  現在頁碼  (Current page number)
      */
     const changePage = (page: number, prevPage: number) => {
       setting.isCheckAll = false;
