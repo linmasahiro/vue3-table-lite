@@ -36,8 +36,8 @@
                       :class="{
                         sortable: col.sortable,
                         both: col.sortable,
-                        asc: sortable.order == col.field && sortable.sort == 'asc',
-                        desc: sortable.order == col.field && sortable.sort == 'desc',
+                        asc: sortable.order === col.field && sortable.sort === 'asc',
+                        desc: sortable.order === col.field && sortable.sort === 'desc',
                       }"
                       @click="col.sortable ? doSort(col.field) : false"
                     >
@@ -123,7 +123,7 @@
                   class="page-item"
                   v-for="n in setting.paging"
                   :key="n"
-                  :class="{ disabled: setting.page == n }"
+                  :class="{ disabled: setting.page === n }"
                 >
                   <a class="page-link" href="javascript:void(0)" @click="movePage(n)">{{
                     n
