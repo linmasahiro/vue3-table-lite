@@ -36,8 +36,8 @@
                       :class="{
                         sortable: col.sortable,
                         both: col.sortable,
-                        asc: sortable.order === col.field && sortable.sort === 'asc',
-                        desc: sortable.order === col.field && sortable.sort === 'desc',
+                        asc: setting.order === col.field && setting.sort === 'asc',
+                        desc: setting.order === col.field && setting.sort === 'desc',
                       }"
                       @click="col.sortable ? doSort(col.field) : false"
                     >
@@ -47,26 +47,50 @@
                 </tr>
               </thead>
               <tbody v-if="rows.length > 0">
-                <tr v-for="(row, i) in rows" :key="i">
-                  <td v-if="hasCheckbox">
-                    <div>
-                      <input
-                        type="checkbox"
-                        :ref="
-                          (el) => {
-                            rowCheckbox[i] = el;
-                          }
-                        "
-                        :value="row[setting.keyColumn]"
-                        @click="checked"
-                      />
-                    </div>
-                  </td>
-                  <td v-for="(col, j) in columns" :key="j">
-                    <div v-if="col.display" v-html="col.display(row)"></div>
-                    <span v-else>{{ row[col.field] }}</span>
-                  </td>
-                </tr>
+                <template v-if="isStaticMode">
+                  <tr v-for="(row, i) in localRows" :key="i">
+                    <td v-if="hasCheckbox">
+                      <div>
+                        <input
+                          type="checkbox"
+                          :ref="
+                            (el) => {
+                              rowCheckbox[i] = el;
+                            }
+                          "
+                          :value="row[setting.keyColumn]"
+                          @click="checked"
+                        />
+                      </div>
+                    </td>
+                    <td v-for="(col, j) in columns" :key="j">
+                      <div v-if="col.display" v-html="col.display(row)"></div>
+                      <span v-else>{{ row[col.field] }}</span>
+                    </td>
+                  </tr>
+                </template>
+                <template v-else>
+                  <tr v-for="(row, i) in rows" :key="i">
+                    <td v-if="hasCheckbox">
+                      <div>
+                        <input
+                          type="checkbox"
+                          :ref="
+                            (el) => {
+                              rowCheckbox[i] = el;
+                            }
+                          "
+                          :value="row[setting.keyColumn]"
+                          @click="checked"
+                        />
+                      </div>
+                    </td>
+                    <td v-for="(col, j) in columns" :key="j">
+                      <div v-if="col.display" v-html="col.display(row)"></div>
+                      <span v-else>{{ row[col.field] }}</span>
+                    </td>
+                  </tr>
+                </template>
               </tbody>
             </table>
           </div>
@@ -191,6 +215,8 @@ interface tableSetting {
   offset: number;
   limit: number;
   paging: Array<number>;
+  order: string;
+  sort: string;
 }
 
 interface column {
@@ -200,11 +226,7 @@ interface column {
 
 export default defineComponent({
   name: "my-table",
-  emits: [
-    'return-checked-rows',
-    'do-search',
-    'is-finished'
-  ],
+  emits: ["return-checked-rows", "do-search", "is-finished"],
   props: {
     // 是否讀取中 (is data loading)
     isLoading: {
@@ -277,6 +299,11 @@ export default defineComponent({
         };
       },
     },
+    // 靜態模式 (Static mode(no refresh server data))
+    isStaticMode: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, { emit }) {
     // 組件用內部設定值 (Internal set value for components)
@@ -333,6 +360,39 @@ export default defineComponent({
         }
         return pages;
       }),
+      // 組件內用排序 (Sortable for local)
+      order: props.sortable.order,
+      sort: props.sortable.sort,
+    });
+
+    // 組件內用資料 (Data rows for local)
+    const localRows = computed(() => {
+      // sort rows
+      let property = setting.order;
+      let sort_order = 1;
+      if (setting.sort === "desc") {
+        sort_order = -1;
+      }
+      let rows = props.rows as Array<unknown>;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      rows.sort((a: any, b: any): number => {
+        if (a[property] < b[property]) {
+          return -1 * sort_order;
+        } else if (a[property] > b[property]) {
+          return sort_order;
+        } else {
+          return 0;
+        }
+      });
+
+      // return sorted and offset rows
+      let result = [];
+      for (let index = setting.offset - 1; index < setting.limit; index++) {
+        if (rows[index]) {
+          result.push(rows[index]);
+        }
+      }
+      return result;
     });
 
     ////////////////////////////
@@ -411,14 +471,16 @@ export default defineComponent({
      */
     const doSort = (order: string) => {
       let sort = "asc";
-      if (order == props.sortable.order) {
+      if (order == setting.order) {
         // 排序中的項目時 (When sorting items)
-        if (props.sortable.sort == "asc") {
+        if (setting.sort == "asc") {
           sort = "desc";
         }
       }
       let offset = (setting.page - 1) * setting.pageSize;
       let limit = setting.pageSize;
+      setting.order = order;
+      setting.sort = sort;
       emit("do-search", offset, limit, order, sort);
 
       // 清空畫面上選擇的資料 (Clear the selected data on the screen)
@@ -440,8 +502,8 @@ export default defineComponent({
      */
     const changePage = (page: number, prevPage: number) => {
       setting.isCheckAll = false;
-      let order = props.sortable.order;
-      let sort = props.sortable.sort;
+      let order = setting.order;
+      let sort = setting.sort;
       let offset = (page - 1) * setting.pageSize;
       let limit = setting.pageSize;
       if (!props.isReSearch || page > 1 || page == prevPage) {
@@ -522,6 +584,7 @@ export default defineComponent({
     if (props.hasCheckbox) {
       // 需要 Checkbox 時 (When Checkbox is needed)
       return {
+        localRows,
         setting,
         rowCheckbox,
         checked,
@@ -533,6 +596,7 @@ export default defineComponent({
       };
     } else {
       return {
+        localRows,
         setting,
         doSort,
         prevPage,

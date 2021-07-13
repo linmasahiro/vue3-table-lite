@@ -1,4 +1,7 @@
 <template>
+  <div style="text-align: left;">
+    <h3>Normal mode sample</h3>
+  </div>
   <table-lite
     :has-checkbox="true"
     :is-loading="table.isLoading"
@@ -12,10 +15,24 @@
     @is-finished="tableLoadingFinish"
     @return-checked-rows="updateCheckedRows"
   ></table-lite>
+  <hr/>
+  <div style="text-align: left;">
+    <h3>Static mode sample</h3>
+    <label>SearchBy:</label><input v-model="searchTerm" />
+  </div>
+  <table-lite
+    :is-static-mode="true"
+    :has-checkbox="true"
+    :columns="table2.columns"
+    :rows="table2.rows"
+    :total="table2.totalRecordCount"
+    :sortable="table2.sortable"
+    @return-checked-rows="updateCheckedRows"
+  ></table-lite>
 </template>
 
 <script>
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive, ref, computed } from "vue";
 import TableLite from "./components/TableLite.vue";
 
 const sampleData1 = (offst, limit) => {
@@ -161,8 +178,91 @@ export default defineComponent({
       console.log(rowsKey);
     };
 
+    ////////////////////////////
+    //
+    //  Table2 相關
+    //
+
+    const searchTerm = ref(""); // 查詢文字(Search text)
+    const data = reactive([]);  // 假資料(Fake data)
+    for (let i = 0; i < 126; i++) {
+      data.push({
+        id: i,
+        name: "TEST" + i,
+        email: "test" + i + "@example.com",
+      });
+    }
+
+    // 用戶一覽表2設定值
+    const table2 = reactive({
+      columns: [
+        {
+          label: "ID",
+          field: "id",
+          width: "3%",
+          sortable: true,
+          isKey: true,
+        },
+        {
+          label: "Name",
+          field: "name",
+          width: "10%",
+          sortable: true,
+          display: function (row) {
+            return (
+              '<a href="#" data-id="' +
+              row.user_id +
+              '" class="is-rows-el name-btn">' +
+              row.name +
+              "</a>"
+            );
+          },
+        },
+        {
+          label: "Email",
+          field: "email",
+          width: "15%",
+          sortable: true,
+        },
+        {
+          label: "",
+          field: "quick",
+          width: "10%",
+          display: function (row) {
+            return (
+              '<button type="button" data-id="' +
+              row.user_id +
+              '" class="is-rows-el quick-btn">Button</button>'
+            );
+          },
+        },
+      ],
+      rows: computed(() => {
+        return data.filter(
+          (x) =>
+            x.email.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
+            x.name.toLowerCase().includes(searchTerm.value.toLowerCase())
+        );
+      }),
+      totalRecordCount: computed(() => {
+        return table2.rows.length;
+      }),
+      sortable: {
+        order: "id",
+        sort: "asc",
+      },
+      messages: {
+        pagingInfo: "Showing {0}-{1} of {2}",
+        pageSizeChangeLabel: "Row count:",
+        gotoPageLabel: "Go to page:",
+        noDataAvailable: "No data",
+      },
+    });
+
     return {
+      searchTerm,
       table,
+      table2,
       doSearch,
       tableLoadingFinish,
       updateCheckedRows,

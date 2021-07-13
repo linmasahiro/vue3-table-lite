@@ -67,7 +67,8 @@
                         <pre>
                             <code>
                                 &lt;vue-table-lite 
-                                  :shas-checkbox=&quot;true&quot;
+                                  :is-static-mode=&quot;false&quot;
+                                  :has-checkbox=&quot;true&quot;
                                   :is-loading=&quot;table.isLoading&quot; 
                                   :is-re-search=&quot;table.isReSearch&quot; 
                                   :columns=&quot;table.columns&quot; 
@@ -95,6 +96,11 @@
                     <th>description</th>
                 </tr>
                 <tr>
+                    <td colspan="2">is-static-mode</td>
+                    <td>Boolean</td>
+                    <td>If you not need use ajax or axios to get any data. set TRUE.</td>
+                </tr>
+                <tr>
                     <td colspan="2">has-checkbox</td>
                     <td>Boolean</td>
                     <td>Show checkbox on row</td>
@@ -102,12 +108,12 @@
                 <tr>
                     <td colspan="2">is-loading</td>
                     <td>Boolean</td>
-                    <td>Show loading modal</td>
+                    <td>Show loading modal (Not required on is-static-mode)</td>
                 </tr>
                 <tr>
                     <td colspan="2">is-re-search</td>
                     <td>Boolean</td>
-                    <td>If reload data, be set true</td>
+                    <td>If reload data, be set true (Not required on is-static-mode)</td>
                 </tr>
                 <tr>
                     <td rowspan="7">columns</td>
