@@ -77,7 +77,7 @@ export default defineComponent({
               row.user_id +
               '" class="is-rows-el name-btn">' +
               row.name +
-              "</button>"
+              "</a>"
             );
           },
         },
