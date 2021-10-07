@@ -65,6 +65,7 @@
                     <li>
                         <p>enjoy it!</p>
                         <pre>
+                            Normal Mode (No use v-slot)
                             <code>
                                 &lt;vue-table-lite 
                                   :is-static-mode=&quot;false&quot;
@@ -81,6 +82,40 @@
                                   @return-checked-row=&quot;updateCheckedRows&quot; 
                                 /&gt;
                             </code>
+                            Normal Mode (Use v-slot)
+                            <code>
+                                &lt;vue-table-lite 
+                                  :is-slot-mode=&quot;true&quot;
+                                  :has-checkbox=&quot;true&quot;
+                                  :is-loading=&quot;table.isLoading&quot; 
+                                  :is-re-search=&quot;table.isReSearch&quot; 
+                                  :columns=&quot;table.columns&quot; 
+                                  :rows=&quot;table.rows&quot; 
+                                  :total=&quot;table.totalRecordCount&quot; 
+                                  :sortable=&quot;table.sortable&quot; 
+                                  :messages=&quot;table.messages&quot; 
+                                  @do-search=&quot;doSearch&quot; 
+                                  @is-finished=&quot;tableLoadingFinish&quot; 
+                                  @return-checked-row=&quot;updateCheckedRows&quot; 
+                                &gt;
+                                    &lt;template v-for=&quot;(col, i) of table3.columns&quot; v-slot:[col.field]=&quot;data&quot; :key=&quot;i&quot;&gt;
+                                        &lt;div&gt;{{ data.value[col.field] }}&lt;/div&gt;
+                                    &lt;/template&gt;
+                                &lt;/vue-table-lite&gt;
+                            </code>
+                            Static Mode (Not need get data from Server-side)
+                            <code>
+                                &lt;vue-table-lite 
+                                  :is-static-mode=&quot;true&quot;
+                                  :has-checkbox=&quot;true&quot;
+                                  :columns=&quot;table.columns&quot;
+                                  :rows=&quot;table.rows&quot;
+                                  :total=&quot;table.totalRecordCount&quot;
+                                  :sortable=&quot;table.sortable&quot;
+                                  :messages=&quot;table.messages&quot;
+                                  @return-checked-rows=&quot;updateCheckedRows&quot;
+                                /&gt;
+                            </code>
                         </pre>
                     </li>
                     </ol>
@@ -94,6 +129,11 @@
                     <th colspan="2">name</th>
                     <th width="80">Type</th>
                     <th>description</th>
+                </tr>
+                <tr>
+                    <td colspan="2">is-slot-mode</td>
+                    <td>Boolean</td>
+                    <td>If you want use v-slot, set TRUE.</td>
                 </tr>
                 <tr>
                     <td colspan="2">is-static-mode</td>

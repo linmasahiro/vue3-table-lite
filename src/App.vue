@@ -1,5 +1,5 @@
 <template>
-  <div style="text-align: left;">
+  <div style="text-align: left">
     <h3>Normal mode sample</h3>
   </div>
   <table-lite
@@ -15,8 +15,8 @@
     @is-finished="tableLoadingFinish"
     @return-checked-rows="updateCheckedRows"
   ></table-lite>
-  <hr/>
-  <div style="text-align: left;">
+  <hr />
+  <div style="text-align: left">
     <h3>Static mode sample</h3>
     <label>SearchBy:</label><input v-model="searchTerm" />
   </div>
@@ -29,11 +29,41 @@
     :sortable="table2.sortable"
     @return-checked-rows="updateCheckedRows"
   ></table-lite>
+  <hr />
+  <div style="text-align: left">
+    <h3>Slot mode sample</h3>
+  </div>
+  <table-lite
+    :is-slot-mode="true"
+    :has-checkbox="true"
+    :is-loading="table3.isLoading"
+    :is-re-search="table3.isReSearch"
+    :columns="table3.columns"
+    :rows="table3.rows"
+    :total="table3.totalRecordCount"
+    :sortable="table3.sortable"
+    :messages="table3.messages"
+    @do-search="doSearch3"
+    @is-finished="table3.isLoading = false"
+    @return-checked-rows="updateCheckedRows"
+  >
+    <template v-for="(col, i) of table3.columns" v-slot:[col.field]="data" :key="i">
+      <Test>
+        {{ data.value[col.field] }}
+      </Test>
+    </template>
+    <!-- <template v-slot:name="data">
+      <Test>
+        {{ data.value.name }}
+      </Test>
+    </template> -->
+  </table-lite>
 </template>
 
 <script>
 import { defineComponent, reactive, ref, computed } from "vue";
 import TableLite from "./components/TableLite.vue";
+import Test from "./components/Test.vue";
 
 const sampleData1 = (offst, limit) => {
   offst = offst + 1;
@@ -64,6 +94,7 @@ export default defineComponent({
   name: "App",
   components: {
     TableLite,
+    Test,
   },
   setup() {
     ////////////////////////////
@@ -184,7 +215,7 @@ export default defineComponent({
     //
 
     const searchTerm = ref(""); // 查詢文字(Search text)
-    const data = reactive([]);  // 假資料(Fake data)
+    const data = reactive([]); // 假資料(Fake data)
     for (let i = 0; i < 126; i++) {
       data.push({
         id: i,
@@ -259,11 +290,75 @@ export default defineComponent({
       },
     });
 
+    ////////////////////////////
+    //
+    //  Table3 相關
+    //
+
+    // 用戶一覽表設定值
+    const table3 = reactive({
+      isLoading: false,
+      isReSearch: false,
+      columns: [
+        {
+          label: "ID",
+          field: "id",
+          width: "3%",
+          sortable: true,
+          isKey: true,
+        },
+        {
+          label: "Name",
+          field: "name",
+          width: "10%",
+          sortable: true,
+        },
+        {
+          label: "Email",
+          field: "email",
+          width: "15%",
+          sortable: true,
+        }
+      ],
+      rows: sampleData1(0, 10),
+      totalRecordCount: 20,
+      sortable: {
+        order: "id",
+        sort: "asc",
+      },
+      messages: {
+        pagingInfo: "Showing {0}-{1} of {2}",
+        pageSizeChangeLabel: "Row count:",
+        gotoPageLabel: "Go to page:",
+        noDataAvailable: "No data",
+      },
+    });
+
+    const doSearch3 = (offset, limit, order, sort) => {
+      table3.isLoading = true;
+      setTimeout(() => {
+        table3.isReSearch = offset == undefined ? true : false;
+        if (offset >= 10 || limit >= 20) {
+          limit = 20;
+        }
+        if (sort == "asc") {
+          table3.rows = sampleData1(offset, limit);
+        } else {
+          table3.rows = sampleData2(offset, limit);
+        }
+        table3.totalRecordCount = 20;
+        table3.sortable.order = order;
+        table3.sortable.sort = sort;
+      }, 600);
+    };
+
     return {
       searchTerm,
       table,
       table2,
+      table3,
       doSearch,
+      doSearch3,
       tableLoadingFinish,
       updateCheckedRows,
     };

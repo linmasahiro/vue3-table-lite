@@ -65,7 +65,12 @@
                     </td>
                     <td v-for="(col, j) in columns" :key="j">
                       <div v-if="col.display" v-html="col.display(row)"></div>
-                      <span v-else>{{ row[col.field] }}</span>
+                      <template v-else>
+                        <div v-if="setting.isSlotMode">
+                          <slot :name="col.field" :value="row"></slot>
+                        </div>
+                        <span v-else>{{ row[col.field] }}</span>
+                      </template>
                     </td>
                   </tr>
                 </template>
@@ -87,7 +92,12 @@
                     </td>
                     <td v-for="(col, j) in columns" :key="j">
                       <div v-if="col.display" v-html="col.display(row)"></div>
-                      <span v-else>{{ row[col.field] }}</span>
+                      <div v-else>
+                        <div v-if="setting.isSlotMode">
+                          <slot :name="col.field" :value="row"></slot>
+                        </div>
+                        <span v-else>{{ row[col.field] }}</span>
+                      </div>
                     </td>
                   </tr>
                 </template>
@@ -207,6 +217,7 @@ import {
 } from "vue";
 
 interface tableSetting {
+  isSlotMode: boolean;
   isCheckAll: boolean;
   keyColumn: string;
   page: number;
@@ -304,10 +315,17 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    // 靜態模式 (Static mode(no refresh server data))
+    isSlotMode: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, { emit }) {
     // 組件用內部設定值 (Internal set value for components)
     const setting: tableSetting = reactive({
+      // 是否啟用Slot模式 (Enable slot mode)
+      isSlotMode: props.isSlotMode,
       // 是否全選 (Whether to select all)
       isCheckAll: false,
       // KEY欄位名稱 (KEY field name)
