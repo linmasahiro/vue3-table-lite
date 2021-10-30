@@ -2,11 +2,13 @@
 
 ![SampleGif](https://linmasahiro.github.io/vue3-table-lite/sample.gif)
 
-A simple table component support Vue3.0!!
+A simple and lightweight data table component for Vue.js 3. Features sorting, paging, row check, dynamic data rendering, supported TypeScript, and more.
 
-## DEMO
+## Document and demo
 
-[Online Demo](https://linmasahiro.github.io/vue3-table-lite/dist/)
+[Document](https://linmasahiro.github.io/vue3-table-lite/dist/)
+
+[Online Demo](https://linmasahiro.github.io/vue3-table-lite/dist/simple.html)
 
 ## Support
 
@@ -15,33 +17,30 @@ A simple table component support Vue3.0!!
 + Pagging Support
 + Sorting Support
 + Custom message Support
-+ v-slot Suppot
++ V-slot Support
++ TypeScript Support
 
 ## SampleCode
 
 ### import
     import TableLite from "vue3-table-lite";
 
-## Normal mode (No use v-slot)
+## QuickStart
 ### component
     <table-lite
-        :has-checkbox="true"
-        :is-loading="table.isLoading"
-        :is-re-search="table.isReSearch"
-        :columns="table.columns"
-        :rows="table.rows"
-        :total="table.totalRecordCount"
-        :sortable="table.sortable"
-        :messages="table.messages"
-        @do-search="doSearch"
-        @is-finished="tableLoadingFinish"
-        @return-checked-rows="updateCheckedRows"
-    ></table-lite>
+    :is-loading="table.isLoading"
+    :columns="table.columns"
+    :rows="table.rows"
+    :total="table.totalRecordCount"
+    :sortable="table.sortable"
+    :messages="table.messages"
+    @do-search="doSearch"
+    @is-finished="table.isLoading = false"
+  ></table-lite>
 
 ### data
     const table = reactive({
       isLoading: false,
-      isReSearch: false,
       columns: [
         {
           label: "ID",
@@ -55,11 +54,6 @@ A simple table component support Vue3.0!!
           field: "name",
           width: "10%",
           sortable: true,
-          display: function (row) {
-            return (
-              '<a href="#" data-id="' + row.user_id + '" class="is-rows-el name-btn">' + row.name + "</button>"
-            );
-          },
         },
         {
           label: "Email",
@@ -67,247 +61,52 @@ A simple table component support Vue3.0!!
           width: "15%",
           sortable: true,
         },
-        {
-          label: "",
-          field: "quick",
-          width: "10%",
-          display: function (row) {
-            return (
-              '<button type="button" data-id="' + row.user_id + '" class="is-rows-el quick-btn">Button</button>'
-            );
-          },
-        },
       ],
-      rows: [
-          {
-            id: 1,
-            name: "TEST1"
-          },
-          {
-            id: 2,
-            name: "TEST2"
-          }
-      ],
-      totalRecordCount: 2,
+      rows: [],
+      totalRecordCount: 0,
       sortable: {
         order: "id",
         sort: "asc",
-      },
-      messages: {
-        pagingInfo: "Showing {0}-{1} of {2}",
-        pageSizeChangeLabel: "Row count:",
-        gotoPageLabel: "Go to page:",
-        noDataAvailable: "No data",
       },
     });
 
 ### Event
     const doSearch = (offset, limit, order, sort) => {
       table.isLoading = true;
-      table.isReSearch = offset == undefined ? true : false;
-      // do your search event to get newRows and new Total
-      table.rows = newRows;
-      table.totalRecordCount = newTotal;
-      table.sortable.order = order;
-      table.sortable.sort = sort;
-    };
 
-    const tableLoadingFinish = (elements) => {
-      table.isLoading = false;
-      Array.prototype.forEach.call(elements, function (element) {
-        if (element.classList.contains("name-btn")) {
-          element.addEventListener("click", function () {
-            // do your click event
-            console.log(this.dataset.id + " name-btn click!!");
-          });
-        }
-        if (element.classList.contains("quick-btn")) {
-          // do your click event
-          element.addEventListener("click", function () {
-            console.log(this.dataset.id + " quick-btn click!!");
-          });
-        }
+      // Start use axios to get data from Server
+      let url = 'https://www.example.com/api/some_endpoint?offset=' + offset + '&limit=' + limit + '&order=' + order + '&sort=' + sort;
+      axios.get(url)
+      .then((response) => {
+        // Point: your response is like it on this example.
+        //   {
+        //   rows: [{
+        //     id: 1,
+        //     name: 'jack',
+        //     email: 'example@example.com'
+        //   },{
+        //     id: 2,
+        //     name: 'rose',
+        //     email: 'example@example.com'
+        //   }],
+        //   count: 2,
+        //   ...something
+        // }
+        
+        // refresh table rows
+        table.rows = response.rows;
+        table.totalRecordCount = response.count;
+        table.sortable.order = order;
+        table.sortable.sort = sort;
       });
+      // End use axios to get data from Server
     };
 
-    const updateCheckedRows = (rowsKey) => {
-      // do your checkbox click event
-      console.log(rowsKey);
-    };
-## Normal mode (Use v-slot)
-### component
-    <table-lite
-        :is-slot-mode="true"
-        :has-checkbox="true"
-        :is-loading="table.isLoading"
-        :is-re-search="table.isReSearch"
-        :columns="table.columns"
-        :rows="table.rows"
-        :total="table.totalRecordCount"
-        :sortable="table.sortable"
-        :messages="table.messages"
-        @do-search="doSearch"
-        @is-finished="table.isLoading = false"
-        @return-checked-rows="updateCheckedRows"
-    >
-      <template v-for="(col, i) of table3.columns" v-slot:[col.field]="data" :key="i">
-        <div>
-          {{ data.value[col.field] }}
-        </div>
-      </template>
-      <!-- if you want customize column -->
-      <!-- <template v-slot:name="data">
-        <yourcomponent>
-          {{ data.value.name }}
-        </yourcomponent>
-      </template> -->
-    </table-lite>
-
-### data
-    const table = reactive({
-      isLoading: false,
-      isReSearch: false,
-      columns: [
-        {
-          label: "ID",
-          field: "id",
-          width: "3%",
-          sortable: true,
-          isKey: true,
-        },
-        {
-          label: "Name",
-          field: "name",
-          width: "10%",
-          sortable: true
-        },
-        {
-          label: "Email",
-          field: "email",
-          width: "15%",
-          sortable: true,
-        }
-      ],
-      rows: [
-          {
-            id: 1,
-            name: "TEST1"
-          },
-          {
-            id: 2,
-            name: "TEST2"
-          }
-      ],
-      totalRecordCount: 2,
-      sortable: {
-        order: "id",
-        sort: "asc",
-      },
-      messages: {
-        pagingInfo: "Showing {0}-{1} of {2}",
-        pageSizeChangeLabel: "Row count:",
-        gotoPageLabel: "Go to page:",
-        noDataAvailable: "No data",
-      },
-    });
-
-### Event
-    const doSearch = (offset, limit, order, sort) => {
-      table.isLoading = true;
-      table.isReSearch = offset == undefined ? true : false;
-      // do your search event to get newRows and new Total
-      table.rows = newRows;
-      table.totalRecordCount = newTotal;
-      table.sortable.order = order;
-      table.sortable.sort = sort;
-    };
-
-    const updateCheckedRows = (rowsKey) => {
-      // do your checkbox click event
-      console.log(rowsKey);
-    };
-
-## Static mode (Not need get data from Server-side)
-### component
-    <table-lite
-        :is-static-mode="true"
-        :has-checkbox="true"
-        :columns="table.columns"
-        :rows="table.rows"
-        :total="table.totalRecordCount"
-        :sortable="table.sortable"
-        :messages="table.messages"
-        @return-checked-rows="updateCheckedRows"
-    ></table-lite>
-
-### data
-    const table = reactive({
-      columns: [
-        {
-          label: "ID",
-          field: "id",
-          width: "3%",
-          sortable: true,
-          isKey: true,
-        },
-        {
-          label: "Name",
-          field: "name",
-          width: "10%",
-          sortable: true,
-          display: function (row) {
-            return (
-              '<a href="#" data-id="' + row.user_id + '" class="is-rows-el name-btn">' + row.name + "</button>"
-            );
-          },
-        },
-        {
-          label: "Email",
-          field: "email",
-          width: "15%",
-          sortable: true,
-        },
-        {
-          label: "",
-          field: "quick",
-          width: "10%",
-          display: function (row) {
-            return (
-              '<button type="button" data-id="' + row.user_id + '" class="is-rows-el quick-btn">Button</button>'
-            );
-          },
-        },
-      ],
-      rows: [
-          {
-            id: 1,
-            name: "TEST1"
-          },
-          {
-            id: 2,
-            name: "TEST2"
-          }
-      ],
-      totalRecordCount: 2,
-      sortable: {
-        order: "id",
-        sort: "asc",
-      },
-      messages: {
-        pagingInfo: "Showing {0}-{1} of {2}",
-        pageSizeChangeLabel: "Row count:",
-        gotoPageLabel: "Go to page:",
-        noDataAvailable: "No data",
-      },
-    });
-
-### Event
-    const updateCheckedRows = (rowsKey) => {
-      // do your checkbox click event
-      console.log(rowsKey);
-    };
+## More...
+[Go to Check!!](https://linmasahiro.github.io/vue3-table-lite/dist/usage.html)
 
 ### release
+    ver 1.0.8 : fixed can't rendering customized display data on static mode bus.
     ver 1.0.7 : supported v-slot.
     ver 1.0.6 : supported static mode.
     ver 1.0.5 : fixed Safari loading-mask is not overlapping the table.

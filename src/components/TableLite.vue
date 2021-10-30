@@ -19,6 +19,7 @@
             <table
               class="table table-hover table-bordered table-responsive-sm"
               id="dataTables-example"
+              ref="localTable"
             >
               <thead class="thead-dark">
                 <tr>
@@ -214,6 +215,7 @@ import {
   watch,
   onBeforeUpdate,
   nextTick,
+  onMounted,
 } from "vue";
 
 interface tableSetting {
@@ -315,13 +317,14 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    // 靜態模式 (Static mode(no refresh server data))
+    // 插槽模式 (V-slot mode)
     isSlotMode: {
       type: Boolean,
       default: false,
     },
   },
   setup(props, { emit }) {
+    let localTable = ref<HTMLElement | null>(null);
     // 組件用內部設定值 (Internal set value for components)
     const setting: tableSetting = reactive({
       // 是否啟用Slot模式 (Enable slot mode)
@@ -410,6 +413,12 @@ export default defineComponent({
           result.push(rows[index]);
         }
       }
+
+      nextTick(function () {
+        // 資料完成渲染後回傳私有元件
+        callIsFinished();
+      });
+
       return result;
     });
 
@@ -586,8 +595,9 @@ export default defineComponent({
         }
         nextTick(function () {
           // 資料完成渲染後回傳私有元件 (Return the private components after the data is rendered)
-          let localElement = document.getElementsByClassName("is-rows-el");
-          emit("is-finished", localElement);
+          if (!props.isStaticMode) {
+            callIsFinished();
+          }
         });
       }
     );
@@ -599,9 +609,29 @@ export default defineComponent({
       });
     };
 
+    // Call 「is-finished」 Method
+    const callIsFinished = () => {
+      if (localTable.value) {
+        let localElement = localTable.value.getElementsByClassName("is-rows-el");
+        emit("is-finished", localElement);
+      }
+    };
+
+    /**
+     * 組件掛載後事件 (Mounted Event)
+     */
+    onMounted(() => {
+      nextTick(() => {
+        if (props.rows.length > 0) {
+          callIsFinished();
+        }
+      });
+    });
+
     if (props.hasCheckbox) {
       // 需要 Checkbox 時 (When Checkbox is needed)
       return {
+        localTable,
         localRows,
         setting,
         rowCheckbox,
@@ -614,6 +644,7 @@ export default defineComponent({
       };
     } else {
       return {
+        localTable,
         localRows,
         setting,
         doSort,

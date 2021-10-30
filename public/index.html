@@ -1,277 +1,95 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="description"
+        content="A simple and lightweight data table component for Vue.js 3. Features sorting, paging, row check, dynamic data rendering, supported TypeScript, and more." />
+    <meta name="keywords" content="vue vue3 table" />
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="vue3-table-lite">
     <title>vue3-table-lite</title>
-    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet" media="screen">
-  </head>
-  <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container">
-                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="brand" href="#">vue3-table-lite</a>
-                <div class="nav-collapse collapse">
-                    <ul class="nav">
-                        <li class="active"><a href="#home">Home</a></li>
-                        <li><a href="#demo">Demo</a></li>
-                        <li><a href="#info">Get Start</a></li>
-                        <li><a href="#setting">SettingData</a></li>
-                        <li><a href="#event">Event</a></li>
-                    </ul>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css">
+    <link rel="stylesheet" href="./app.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#hamburger-btn').click(function () {
+                if ($('#sidebar').css('display') == 'none') {
+                    $('#sidebar').show();
+                } else {
+                    $('#sidebar').hide();
+                }
+            });
+        })
+    </script>
+</head>
+
+<body>
+    <div class="fixed-header w-100 text-center">
+        <div id="hamburger-btn" class="btn hamburger-btn float-left"></div>
+        <h1>vue3-table-lite</h1>
+    </div>
+    <div class="row mt-5">
+        <div id="sidebar" class="col-12 col-md-3 sidebar">
+            <div class="p-5">
+                <h5 class="mb-5" style="color: #7e99b6;">v1.0.7</h5>
+                <div class="mb-5">
+                    <div class="menu-title">QuickStart</div>
+                    <a href="#install" class="menu-link">Install</a>
+                    <a href="#include" class="menu-link">Include</a>
                 </div>
-                <!--/.nav-collapse -->
+                <div class="mb-5">
+                    <div class="menu-title">Usage</div>
+                    <a href="./usage.html#default" class="menu-link">Default Mode</a>
+                    <a href="./usage.html#v-slot" class="menu-link">V-slot Mode</a>
+                    <a href="./usage.html#static" class="menu-link">Static Mode</a>
+                </div>
+                <div class="mb-5">
+                    <div class="menu-title">API Reference</div>
+                    <a href="./api.html#props" class="menu-link">Props</a>
+                    <a href="./api.html#events" class="menu-link">Events</a>
+                    <a href="./api.html#slots" class="menu-link">Slots</a>
+                </div>
+                <div class="mb-5">
+                    <div class="menu-title">Simple example</div>
+                    <a href="./simple.html#default" class="menu-link">Default Mode</a>
+                    <a href="./simple.html#v-slot" class="menu-link">V-slot Mode</a>
+                    <a href="./simple.html#static" class="menu-link">Static Mode</a>
+                </div>
+                <div class="mb-5">
+                    <div class="menu-title">Advanced example</div>
+                    <a href="./advanced.html#customize-display-data" class="menu-link">Customize display data</a>
+                    <a href="./advanced.html#filter" class="menu-link">Filter</a>
+                    <a href="./advanced.html#customize-style" class="menu-link">Customize style</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-9 p-5">
+            <h1 class="border-bottom">QuickStart</h1>
+            <p>A simple and lightweight data table component for Vue.js 3. Features sorting, paging, row check, dynamic data rendering, supported <span class="text-blue">TypeScript</span>, and more.</p>
+            <div id="install" class="mb-5 p-2">
+                <h3 class="border-bottom">Install</h3>
+                <p>
+                    <pre><code>npm install vue3-table-lite --save</code></pre>
+                </p>
+            </div>
+            <div id="include" class="mb-5 p-2">
+                <h3 class="border-bottom">Include</h3>
+                <p>
+                    <pre><code>import VueTableLite from 'vue3-table-lite'</code></pre>
+                </p>
             </div>
         </div>
     </div>
-    <div class="container">
-      <div class="hero-unit">
-            <h1 id="home">vue3-table-lite</h1>
-            <p>A very simple table for vue3.0!</p>
-            <hr />
-            <h3>Support</h3>
-            <p>Row check event Support</p>
-            <p>Custom data display Support</p>
-            <p>Pagging Support</p>
-            <p>Sorting Support</p>
-            <p>Custom message Support</p>
-            <p><a href="https://github.com/linmasahiro/vue3-table-lite">Github</a></p>
-            <p>
-              <iframe src="https://ghbtns.com/github-btn.html?user=linmasahiro&repo=vue3-table-lite&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
-            </p>
-      </div>
+    <div class="fixed-footer w-100 text-center">
+        <p class="muted credit">Copyright © 2021 <a href="https://github.com/linmasahiro" target="_blank">Lin</a> All
+            Rights Reserved.</p>
+    </div>
+</body>
 
-      <h2 id="demo">Demo</h2>
-      <p>Example Sample Demo</p>
-      <div id="app"></div>
-      <h2 id="info">Get Start</h2>
-      <div>
-        <ol>
-            <li>
-                Use NPM
-                <ol>
-                    <li>
-                        <pre><code>npm install vue3-table-lite --save</code></pre>
-                    </li>
-                    <li>
-                        <p>add to your project</p>
-                        <pre><code>import VueTableLite from 'vue3-table-lite'</code></pre>
-                    </li>
-                    <li>
-                        <p>enjoy it!</p>
-                        <pre>
-                            Normal Mode (No use v-slot)
-                            <code>
-                                &lt;vue-table-lite 
-                                  :is-static-mode=&quot;false&quot;
-                                  :has-checkbox=&quot;true&quot;
-                                  :is-loading=&quot;table.isLoading&quot; 
-                                  :is-re-search=&quot;table.isReSearch&quot; 
-                                  :columns=&quot;table.columns&quot; 
-                                  :rows=&quot;table.rows&quot; 
-                                  :total=&quot;table.totalRecordCount&quot; 
-                                  :sortable=&quot;table.sortable&quot; 
-                                  :messages=&quot;table.messages&quot; 
-                                  @do-search=&quot;doSearch&quot; 
-                                  @is-finished=&quot;tableLoadingFinish&quot; 
-                                  @return-checked-row=&quot;updateCheckedRows&quot; 
-                                /&gt;
-                            </code>
-                            Normal Mode (Use v-slot)
-                            <code>
-                                &lt;vue-table-lite 
-                                  :is-slot-mode=&quot;true&quot;
-                                  :has-checkbox=&quot;true&quot;
-                                  :is-loading=&quot;table.isLoading&quot; 
-                                  :is-re-search=&quot;table.isReSearch&quot; 
-                                  :columns=&quot;table.columns&quot; 
-                                  :rows=&quot;table.rows&quot; 
-                                  :total=&quot;table.totalRecordCount&quot; 
-                                  :sortable=&quot;table.sortable&quot; 
-                                  :messages=&quot;table.messages&quot; 
-                                  @do-search=&quot;doSearch&quot; 
-                                  @is-finished=&quot;tableLoadingFinish&quot; 
-                                  @return-checked-row=&quot;updateCheckedRows&quot; 
-                                &gt;
-                                    &lt;template v-for=&quot;(col, i) of table3.columns&quot; v-slot:[col.field]=&quot;data&quot; :key=&quot;i&quot;&gt;
-                                        &lt;div&gt;{{ data.value[col.field] }}&lt;/div&gt;
-                                    &lt;/template&gt;
-                                &lt;/vue-table-lite&gt;
-                            </code>
-                            Static Mode (Not need get data from Server-side)
-                            <code>
-                                &lt;vue-table-lite 
-                                  :is-static-mode=&quot;true&quot;
-                                  :has-checkbox=&quot;true&quot;
-                                  :columns=&quot;table.columns&quot;
-                                  :rows=&quot;table.rows&quot;
-                                  :total=&quot;table.totalRecordCount&quot;
-                                  :sortable=&quot;table.sortable&quot;
-                                  :messages=&quot;table.messages&quot;
-                                  @return-checked-rows=&quot;updateCheckedRows&quot;
-                                /&gt;
-                            </code>
-                        </pre>
-                    </li>
-                    </ol>
-                </li>
-            </ol>
-      </div>
-      <h2 id="setting">SettingData</h2>
-        <p>
-            <table class="table table-striped">
-                <tr>
-                    <th colspan="2">name</th>
-                    <th width="80">Type</th>
-                    <th>description</th>
-                </tr>
-                <tr>
-                    <td colspan="2">is-slot-mode</td>
-                    <td>Boolean</td>
-                    <td>If you want use v-slot, set TRUE.</td>
-                </tr>
-                <tr>
-                    <td colspan="2">is-static-mode</td>
-                    <td>Boolean</td>
-                    <td>If you not need use ajax or axios to get any data. set TRUE.</td>
-                </tr>
-                <tr>
-                    <td colspan="2">has-checkbox</td>
-                    <td>Boolean</td>
-                    <td>Show checkbox on row</td>
-                </tr>
-                <tr>
-                    <td colspan="2">is-loading</td>
-                    <td>Boolean</td>
-                    <td>Show loading modal (Not required on is-static-mode)</td>
-                </tr>
-                <tr>
-                    <td colspan="2">is-re-search</td>
-                    <td>Boolean</td>
-                    <td>If reload data, be set true (Not required on is-static-mode)</td>
-                </tr>
-                <tr>
-                    <td rowspan="7">columns</td>
-                    <td colspan="2">Array</td>
-                    <td>The table columns</td>
-                </tr>
-                <tr>
-                    <td>isKey</td>
-                    <td>Boolean</td>
-                    <td>If field is primary key. set to true</td>
-                </tr>
-                <tr>
-                    <td>label</td>
-                    <td>String</td>
-                    <td>Display field lable</td>
-                </tr>
-                <tr>
-                    <td>field</td>
-                    <td>String</td>
-                    <td>Your data key</td>
-                </tr>
-                <tr>
-                    <td>width</td>
-                    <td>String</td>
-                    <td>Column's width</td>
-                </tr>
-                <tr>
-                    <td>sortable</td>
-                    <td>Boolean</td>
-                    <td>If field can sorting. set to true</td>
-                </tr>
-                <tr>
-                    <td>display</td>
-                    <td>String</td>
-                    <td>You can customize display data in there. (html tag or Etc.)</td>
-                </tr>
-                <tr>
-                    <td colspan="2">rows</td>
-                    <td>Array</td>
-                    <td>Rows Data</td>
-                </tr>
-                <tr>
-                    <td colspan="2">total</td>
-                    <td>Integer</td>
-                    <td>Total count</td>
-                </tr>
-                <tr>
-                    <td rowspan="3">sortable</td>
-                    <td colspan="2">Object</td>
-                    <td>Order field and sort for Sortable</td>
-                </tr>
-                <tr>
-                    <td>order</td>
-                    <td>String</td>
-                    <td>Field key</td>
-                </tr>
-                <tr>
-                    <td>sort</td>
-                    <td>String</td>
-                    <td>"asc" or "desc"</td>
-                </tr>
-                <tr>
-                    <td rowspan="5">messages</td>
-                    <td colspan="2">Object</td>
-                    <td>Message</td>
-                </tr>
-                <tr>
-                    <td>pagingInfo</td>
-                    <td>String</td>
-                    <td>Default: "Showing {0}-{1} of {2}"</td>
-                </tr>
-                <tr>
-                    <td>pageSizeChangeLabel</td>
-                    <td>String</td>
-                    <td>Default: "Row count:"</td>
-                </tr>
-                <tr>
-                    <td>gotoPageLabel</td>
-                    <td>String</td>
-                    <td>Default: "Go to page:"</td>
-                </tr>
-                <tr>
-                    <td>noDataAvailable</td>
-                    <td>String</td>
-                    <td>Default: "No data"</td>
-                </tr>
-            </table>
-        </p>
-        <h2 id="event">Event</h2>
-        <p>
-            <table class="table table-striped">
-                <tr>
-                    <th colspan="2">name</th>
-                    <th width="80">Type</th>
-                    <th>description</th>
-                </tr>
-                <tr>
-                    <td colspan="2">do-search</td>
-                    <td>Function</td>
-                    <td>Your search event</td>
-                </tr>
-                <tr>
-                    <td colspan="2">is-finished</td>
-                    <td>Function</td>
-                    <td>Will be call this function after table rendaring finished</td>
-                </tr>
-                <tr>
-                    <td colspan="2">return-checked-rows</td>
-                    <td>Function</td>
-                    <td>Will be call this function after table checkbox on checked</td>
-                </tr>
-            </table>
-        </p>
-    </div>
-    <div id="footer">
-        <div class="container">
-            <p class="muted credit">Copyright © 2020 <a href="https://github.com/linmasahiro" target="_blank">Lin</a> All Rights Reserved.</p>
-        </div>
-    </div>
-  </body>
 </html>

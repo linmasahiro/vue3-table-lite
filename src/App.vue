@@ -27,6 +27,7 @@
     :rows="table2.rows"
     :total="table2.totalRecordCount"
     :sortable="table2.sortable"
+    @is-finished="tableLoadingFinish"
     @return-checked-rows="updateCheckedRows"
   ></table-lite>
   <hr />
@@ -102,6 +103,20 @@ export default defineComponent({
     //  Table 相關
     //
 
+    // {
+    //   rows: [{
+    //     id: 1,
+    //     name: 'jack',
+    //     email: 'example@example.com'
+    //   },{
+    //     id: 2,
+    //     name: 'rose',
+    //     email: 'example@example.com'
+    //   }],
+    //   count: 2,
+    //   ...something
+    // }
+
     // 用戶一覽表設定值
     const table = reactive({
       isLoading: false,
@@ -122,7 +137,7 @@ export default defineComponent({
           display: function (row) {
             return (
               '<a href="#" data-id="' +
-              row.user_id +
+              row.id +
               '" class="is-rows-el name-btn">' +
               row.name +
               "</a>"
@@ -142,7 +157,7 @@ export default defineComponent({
           display: function (row) {
             return (
               '<button type="button" data-id="' +
-              row.user_id +
+              row.id +
               '" class="is-rows-el quick-btn">Button</button>'
             );
           },
@@ -242,7 +257,7 @@ export default defineComponent({
           display: function (row) {
             return (
               '<a href="#" data-id="' +
-              row.user_id +
+              row.id +
               '" class="is-rows-el name-btn">' +
               row.name +
               "</a>"
@@ -262,7 +277,7 @@ export default defineComponent({
           display: function (row) {
             return (
               '<button type="button" data-id="' +
-              row.user_id +
+              row.id +
               '" class="is-rows-el quick-btn">Button</button>'
             );
           },

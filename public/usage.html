@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="description"
+        content="A simple and lightweight data table component for Vue.js 3. Features sorting, paging, row check, dynamic data rendering, supported TypeScript, and more." />
+    <meta name="keywords" content="vue vue3 table" />
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="vue3-table-lite">
+    <title>vue3-table-lite</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css">
+    <link rel="stylesheet" href="./app.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#hamburger-btn').click(function () {
+                if ($('#sidebar').css('display') == 'none') {
+                    $('#sidebar').show();
+                } else {
+                    $('#sidebar').hide();
+                }
+            });
+        })
+    </script>
+</head>
+
+<body>
+    <div class="fixed-header w-100 text-center">
+        <div id="hamburger-btn" class="btn hamburger-btn float-left"></div>
+        <h1>vue3-table-lite</h1>
+    </div>
+    <div class="row mt-5">
+        <div id="sidebar" class="col-12 col-md-3 sidebar">
+            <div class="p-5">
+                <div class="mb-5">
+                    <h5 class="mb-5" style="color: #7e99b6;">v1.0.7</h5>
+                    <p><a href="https://github.com/linmasahiro/vue3-table-lite" class="menu-link">Github</a></p>
+                    <p>
+                        <iframe
+                            src="https://ghbtns.com/github-btn.html?user=linmasahiro&repo=vue3-table-lite&type=watch&count=true"
+                            allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+                    </p>
+                </div>
+                <div class="mb-5">
+                    <div class="menu-title">QuickStart</div>
+                    <a href="./index.html#install" class="menu-link">Install</a>
+                    <a href="./index.html#include" class="menu-link">Include</a>
+                </div>
+                <div class="mb-5">
+                    <div class="menu-title">Usage</div>
+                    <a href="#default" class="menu-link">Default Mode</a>
+                    <a href="#v-slot" class="menu-link">V-slot Mode</a>
+                    <a href="#static" class="menu-link">Static Mode</a>
+                </div>
+                <div class="mb-5">
+                    <div class="menu-title">API Reference</div>
+                    <a href="./api.html#props" class="menu-link">Props</a>
+                    <a href="./api.html#events" class="menu-link">Events</a>
+                    <a href="./api.html#slots" class="menu-link">Slots</a>
+                </div>
+                <div class="mb-5">
+                    <div class="menu-title">Simple example</div>
+                    <a href="./simple.html#default" class="menu-link">Default Mode</a>
+                    <a href="./simple.html#v-slot" class="menu-link">V-slot Mode</a>
+                    <a href="./simple.html#static" class="menu-link">Static Mode</a>
+                </div>
+                <div class="mb-5">
+                    <div class="menu-title">Advanced example</div>
+                    <a href="./advanced.html#customize-display-data" class="menu-link">Customize display data</a>
+                    <a href="./advanced.html#filter" class="menu-link">Filter</a>
+                    <a href="./advanced.html#customize-style" class="menu-link">Customize style</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-9 p-5 markdown-body">
+            <h1 class="border-bottom">Mode</h1>
+            <h5 class="mb-5">vue3-table-lite is supported 3 rendering mode.</h5>
+            <div id="default" class="mb-5 p-2">
+                <h3 class="border-bottom">Default Mode</h3>
+                <p>If you are always use API to get rows data. choose this mode.</p>
+                <div class="mb-3">
+                    <h5>Template:</h5>
+                    <p>
+                        <pre>
+&lt;table-lite
+  :is-loading="table.isLoading"
+  :columns="table.columns"
+  :rows="table.rows"
+  :total="table.totalRecordCount"
+  :sortable="table.sortable"
+  @do-search="doSearch"
+  @is-finished="tableLoadingFinish"
+/&gt;&lt;/table-lite&gt;
+                    </pre>
+                    </p>
+                </div>
+                <div class="mb-3">
+                    <h5>Code(composition API):</h5>
+                    <p>
+                        <pre>
+  export default defineComponent({
+    name: "App",
+    components: { TableLite },
+    setup() {
+      // Init Your table settings
+      const table = reactive({
+        isLoading: false,
+        columns: [
+          {
+            label: "ID",
+            field: "id",
+            width: "3%",
+            sortable: true,
+            isKey: true,
+          },
+          {
+            label: "Name",
+            field: "name",
+            width: "10%",
+            sortable: true,
+          },
+          {
+            label: "Email",
+            field: "email",
+            width: "15%",
+            sortable: true,
+          },
+        ],
+        rows: [],
+        totalRecordCount: 0,
+        sortable: {
+          order: "id",
+          sort: "asc",
+        },
+      });
+  
+      /**
+       * Table search event
+       */
+       const doSearch = (offset, limit, order, sort) => {
+        table.isLoading = true;
+  
+        // Start use axios to get data from Server
+        let url = 'https://www.example.com/api/some_endpoint?offset=' + offset + '&limit=' + limit + '&order=' + order + '&sort=' + sort;
+        axios.get(url)
+        .then((response) => {
+          // Point: your response is like it on this example.
+          //   {
+          //   rows: [{
+          //     id: 1,
+          //     name: 'jack',
+          //     email: 'example@example.com'
+          //   },{
+          //     id: 2,
+          //     name: 'rose',
+          //     email: 'example@example.com'
+          //   }],
+          //   count: 2,
+          //   ...something
+          // }
+          
+          // refresh table rows
+          table.rows = response.rows;
+          table.totalRecordCount = response.count;
+          table.sortable.order = order;
+          table.sortable.sort = sort;
+        });
+        // End use axios to get data from Server
+      };
+  
+      /**
+       * Table search finished event
+       */
+      const tableLoadingFinish = (elements) => {
+        table.isLoading = false;
+      };
+
+      // Get data first
+      doSearch(0, 10, 'id', 'asc');
+  
+      return {
+        table,
+        doSearch,
+        tableLoadingFinish,
+      };
+  },
+                    </pre>
+                    </p>
+                </div>
+            </div>
+            <div id="v-slot" class="mb-5 p-2">
+                <h3 class="border-bottom">V-slot Mode</h3>
+                <p>If you are use API to get rows data and <b class="text-danger">need use vue components on
+                        rendering</b>. choose this mode.</p>
+                <div class="mb-3">
+                    <h5>Template:</h5>
+                    <p>
+                        <pre>
+    &lt;table-lite
+      :is-slot-mode="true"
+      :is-loading="table.isLoading"
+      :columns="table.columns"
+      :rows="table.rows"
+      :total="table.totalRecordCount"
+      :sortable="table.sortable"
+      @do-search="doSearch"
+      @is-finished="table.isLoading = false"
+    &gt;
+      &lt;template v-slot:name="data"&gt;
+        {{ data.value.name }}
+      &lt;/template&gt;
+    &lt;/table-lite&gt;
+                        </pre>
+                    </p>
+                </div>
+                <div class="mb-3">
+                    <h5>Code(composition API):</h5>
+                    <p>
+                        <pre>
+  export default defineComponent({
+    name: "App",
+    components: { TableLite },
+    setup() {
+      // Init Your table settings
+      const table = reactive({
+        isLoading: false,
+        columns: [
+          {
+            label: "ID",
+            field: "id",
+            width: "3%",
+            sortable: true,
+            isKey: true,
+          },
+          {
+            label: "Name",
+            field: "name",
+            width: "10%",
+            sortable: true,
+          },
+          {
+            label: "Email",
+            field: "email",
+            width: "15%",
+            sortable: true,
+          },
+        ],
+        rows: [],
+        totalRecordCount: 0,
+        sortable: {
+          order: "id",
+          sort: "asc",
+        },
+      });
+  
+      /**
+       * Table search event
+       */
+       const doSearch = (offset, limit, order, sort) => {
+        table.isLoading = true;
+  
+        // Start use axios to get data from Server
+        let url = 'https://www.example.com/api/some_endpoint?offset=' + offset + '&limit=' + limit + '&order=' + order + '&sort=' + sort;
+        axios.get(url)
+        .then((response) => {
+          // Point: your response is like it on this example.
+          //   {
+          //   rows: [{
+          //     id: 1,
+          //     name: 'jack',
+          //     email: 'example@example.com'
+          //   },{
+          //     id: 2,
+          //     name: 'rose',
+          //     email: 'example@example.com'
+          //   }],
+          //   count: 2,
+          //   ...something
+          // }
+          
+          // refresh table rows
+          table.rows = response.rows;
+          table.totalRecordCount = response.count;
+          table.sortable.order = order;
+          table.sortable.sort = sort;
+        });
+        // End use axios to get data from Server
+      };
+  
+      /**
+       * Table search finished event
+       */
+      const tableLoadingFinish = (elements) => {
+        table.isLoading = false;
+      };
+
+      // Get data first
+      doSearch(0, 10, 'id', 'asc');
+  
+      return {
+        table,
+        doSearch,
+        tableLoadingFinish,
+      };
+  },
+                    </pre>
+                    </p>
+                </div>
+            </div>
+            <div id="static" class="mb-5 p-2">
+                <h3 class="border-bottom">Static Mode</h3>
+                <p>If you are <b class="text-danger">not use API</b> to get rows data. choose this mode.</p>
+                <div class="mb-3">
+                    <h5>Template:</h5>
+                    <p>
+                        <pre>
+    &lt;table-lite
+      :is-static-mode="true"
+      :is-loading="table.isLoading"
+      :columns="table.columns"
+      :rows="table.rows"
+      :total="table.totalRecordCount"
+      :sortable="table.sortable"
+      @is-finished="table.isLoading = false"
+    &gt;&lt;/table-lite&gt;
+                        </pre>
+                    </p>
+                </div>
+                <div class="mb-3">
+                    <h5>Code(composition API):</h5>
+                    <p>
+                        <pre>
+  export default defineComponent({
+    name: "App",
+    components: { TableLite },
+    setup() {
+      // Init Your table settings
+      const table = reactive({
+        isLoading: false,
+        columns: [
+          {
+            label: "ID",
+            field: "id",
+            width: "3%",
+            sortable: true,
+            isKey: true,
+          },
+          {
+            label: "Name",
+            field: "name",
+            width: "10%",
+            sortable: true,
+          },
+          {
+            label: "Email",
+            field: "email",
+            width: "15%",
+            sortable: true,
+          },
+        ],
+        rows: [{
+            id: 1,
+            name: 'jack',
+            email: 'example@example.com'
+          },{
+            id: 2,
+            name: 'rose',
+            email: 'example@example.com'
+        }],
+        totalRecordCount: 2,
+        sortable: {
+          order: "id",
+          sort: "asc",
+        },
+      });
+  
+      return {
+        table,
+      };
+  },
+                    </pre>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="fixed-footer w-100 text-center">
+        <p class="muted credit">Copyright © 2021 <a href="https://github.com/linmasahiro" target="_blank">Lin</a> All
+            Rights Reserved.</p>
+    </div>
+</body>
+
+</html>
