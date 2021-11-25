@@ -115,7 +115,7 @@ A simple and lightweight data table component for Vue.js 3. Features sorting, pa
 [Go to Check!!](https://linmasahiro.github.io/vue3-table-lite/dist/usage.html)
 
 ### release
-    ver 1.0.9 : make a column v-slot is not to be required on v-slot mode
+    ver 1.0.9 : column v-slot is not to be required on v-slot mode
     ver 1.0.8 : fixed can't rendering customized display data on static mode bus.
     ver 1.0.7 : support v-slot.
     ver 1.0.6 : support static mode.
