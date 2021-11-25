@@ -9,19 +9,9 @@
     @do-search="doSearch"
     @is-finished="table.isLoading = false"
   >
-    <template v-slot:id="data">
-      <Test>
-        {{ data.value.id }}
-      </Test>
-    </template>
     <template v-slot:name="data">
       <Test>
         {{ data.value.name }}
-      </Test>
-    </template>
-    <template v-slot:email="data">
-      <Test>
-        {{ data.value.email }}
       </Test>
     </template>
   </table-lite>

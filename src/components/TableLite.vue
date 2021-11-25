@@ -67,7 +67,7 @@
                     <td v-for="(col, j) in columns" :key="j">
                       <div v-if="col.display" v-html="col.display(row)"></div>
                       <template v-else>
-                        <div v-if="setting.isSlotMode">
+                        <div v-if="setting.isSlotMode && slots[col.field]">
                           <slot :name="col.field" :value="row"></slot>
                         </div>
                         <span v-else>{{ row[col.field] }}</span>
@@ -94,7 +94,7 @@
                     <td v-for="(col, j) in columns" :key="j">
                       <div v-if="col.display" v-html="col.display(row)"></div>
                       <div v-else>
-                        <div v-if="setting.isSlotMode">
+                        <div v-if="setting.isSlotMode && slots[col.field]">
                           <slot :name="col.field" :value="row"></slot>
                         </div>
                         <span v-else>{{ row[col.field] }}</span>
@@ -323,7 +323,7 @@ export default defineComponent({
       default: false,
     },
   },
-  setup(props, { emit }) {
+  setup(props, { emit, slots }) {
     let localTable = ref<HTMLElement | null>(null);
     // 組件用內部設定值 (Internal set value for components)
     const setting: tableSetting = reactive({
@@ -631,6 +631,7 @@ export default defineComponent({
     if (props.hasCheckbox) {
       // 需要 Checkbox 時 (When Checkbox is needed)
       return {
+        slots,
         localTable,
         localRows,
         setting,
@@ -644,6 +645,7 @@ export default defineComponent({
       };
     } else {
       return {
+        slots,
         localTable,
         localRows,
         setting,
