@@ -1,10 +1,10 @@
 # vue3-table-lite
 
 [![Lincense](https://img.shields.io/github/license/linmasahiro/vue3-table-lite)](https://github.com/linmasahiro/vue3-table-lite/blob/master/LICENSE) 
-[![NPM](https://img.shields.io/npm/v/vue3-table-lite)](https://www.npmjs.com/package/vue3-table-lite/v/1.0.8)
+[![NPM](https://img.shields.io/npm/v/vue3-table-lite)](https://www.npmjs.com/package/vue3-table-lite/v/1.1.0)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/linmasahiro/vue3-table-lite)](https://github.com/linmasahiro/vue3-table-lite)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Flinmasahiro.github.io%2Fvue3-table-lite%2Fdist%2F)](https://linmasahiro.github.io/vue3-table-lite/dist/)
-[![npm](https://img.shields.io/npm/dm/vue3-table-lite)](https://www.npmjs.com/package/vue3-table-lite/v/1.0.8)
+[![npm](https://img.shields.io/npm/dm/vue3-table-lite)](https://www.npmjs.com/package/vue3-table-lite/v/1.1.0)
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/linmasahiro/vue3-table-lite?style=social)
 ![GitHub forks](https://img.shields.io/github/forks/linmasahiro/vue3-table-lite?style=social)
@@ -115,6 +115,7 @@ A simple and lightweight data table component for Vue.js 3. Features sorting, pa
 [Go to Check!!](https://linmasahiro.github.io/vue3-table-lite/dist/usage.html)
 
 ### release
+    ver 1.1.0 : remove Vue Dependency at bundle
     ver 1.0.9 : column v-slot is not to be required on v-slot mode
     ver 1.0.8 : fixed can't rendering customized display data on static mode bus.
     ver 1.0.7 : support v-slot.

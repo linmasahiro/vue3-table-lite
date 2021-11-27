@@ -170,12 +170,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.card ::v-deep .table .thead-dark th {
+.card ::v-deep(.table .thead-dark th) {
   color: #fff;
   background-color: #42b983;
   border-color: #42b983;
 }
-.card ::v-deep .table td, .card ::v-deep .table tr{
+.card ::v-deep(.table td), .card ::v-deep(.table tr) {
   border: none;
 }
 </style>
