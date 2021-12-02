@@ -210,7 +210,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ref,
@@ -221,6 +221,26 @@ import {
   nextTick,
   onMounted,
 } from "vue";
+
+interface tableSetting {
+  isSlotMode: boolean;
+  isCheckAll: boolean;
+  isHidePaging: boolean;
+  keyColumn: string;
+  page: number;
+  pageSize: number;
+  maxPage: number;
+  offset: number;
+  limit: number;
+  paging: Array<number>;
+  order: string;
+  sort: string;
+}
+
+interface column {
+  isKey: string;
+  field: string;
+}
 
 export default defineComponent({
   name: "my-table",
@@ -316,7 +336,7 @@ export default defineComponent({
   setup(props, { emit, slots }) {
     let localTable = ref<HTMLElement | null>(null);
     // 組件用內部設定值 (Internal set value for components)
-    const setting = reactive({
+    const setting: tableSetting = reactive({
       // 是否啟用Slot模式 (Enable slot mode)
       isSlotMode: props.isSlotMode,
       // 是否全選 (Whether to select all)
@@ -326,7 +346,7 @@ export default defineComponent({
       // KEY欄位名稱 (KEY field name)
       keyColumn: computed(() => {
         let key = "";
-        Object.assign(props.columns).forEach((col) => {
+        Object.assign(props.columns).forEach((col: column) => {
           if (col.isKey) {
             key = col.field;
           }
@@ -386,8 +406,9 @@ export default defineComponent({
       if (setting.sort === "desc") {
         sort_order = -1;
       }
-      let rows = props.rows;
-      rows.sort((a, b) => {
+      let rows = props.rows as Array<unknown>;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      rows.sort((a: any, b: any): number => {
         if (a[property] < b[property]) {
           return -1 * sort_order;
         } else if (a[property] > b[property]) {
@@ -435,9 +456,9 @@ export default defineComponent({
        */
       watch(
         () => setting.isCheckAll,
-        (state) => {
-          let isChecked = [];
-          rowCheckbox.value.forEach((val) => {
+        (state: boolean) => {
+          let isChecked: Array<string> = [];
+          rowCheckbox.value.forEach((val: HTMLInputElement) => {
             if (val) {
               val.checked = state;
               if (val.checked) {
@@ -455,8 +476,8 @@ export default defineComponent({
      * Checkbox點擊事件 (Checkbox click event)
      */
     const checked = () => {
-      let isChecked = [];
-      rowCheckbox.value.forEach((val) => {
+      let isChecked: Array<string> = [];
+      rowCheckbox.value.forEach((val: HTMLInputElement) => {
         if (val && val.checked) {
           isChecked.push(val.value);
         }
@@ -469,7 +490,7 @@ export default defineComponent({
      * 清空畫面上所有選擇資料 (Clear all selected data on the screen)
      */
     const clearChecked = () => {
-      rowCheckbox.value.forEach((val) => {
+      rowCheckbox.value.forEach((val: HTMLInputElement) => {
         if (val && val.checked) {
           val.checked = false;
         }
@@ -487,7 +508,7 @@ export default defineComponent({
     /**
      * 呼叫執行排序 (Call execution sequencing)
      */
-    const doSort = (order) => {
+    const doSort = (order: string) => {
       let sort = "asc";
       if (order == setting.order) {
         // 排序中的項目時 (When sorting items)
@@ -518,7 +539,7 @@ export default defineComponent({
      * @param page      number  新頁碼    (New page number)
      * @param prevPage  number  現在頁碼  (Current page number)
      */
-    const changePage = (page, prevPage) => {
+    const changePage = (page: number, prevPage: number) => {
       setting.isCheckAll = false;
       let order = setting.order;
       let sort = setting.sort;
@@ -577,7 +598,7 @@ export default defineComponent({
     /**
      * 移動至指定頁數 (Move to the specified number of pages)
      */
-    const movePage = (page) => {
+    const movePage = (page: number) => {
       setting.page = page;
     };
 
@@ -608,7 +629,8 @@ export default defineComponent({
       }
     );
 
-    const stringFormat = (template, ...args) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const stringFormat = (template: string, ...args: any[]) => {
       return template.replace(/{(\d+)}/g, function (match, number) {
         return typeof args[number] != "undefined" ? args[number] : match;
       });
