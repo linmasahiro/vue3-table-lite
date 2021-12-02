@@ -1,6 +1,6 @@
 {
   "name": "vue3-table-lite",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A simple and lightweight data table component for Vue.js 3. Features sorting, paging, row check, dynamic data rendering, supported TypeScript, and more.",
   "repository": {
     "type": "git",
@@ -57,5 +57,7 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "main": "./index.js",
+  "types": "./index.d.ts"
 }

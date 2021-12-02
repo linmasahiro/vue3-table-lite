@@ -107,94 +107,98 @@
           </div>
         </div>
         <div class="row" v-if="rows.length > 0">
-          <div class="col-sm-12 col-md-4">
-            <div role="status" aria-live="polite">
-              {{
-                stringFormat(messages.pagingInfo, setting.offset, setting.limit, total)
-              }}
+          <template v-if="!setting.isHidePaging">
+            <div class="col-sm-12 col-md-4">
+              <div role="status" aria-live="polite">
+                {{
+                  stringFormat(messages.pagingInfo, setting.offset, setting.limit, total)
+                }}
+              </div>
             </div>
-          </div>
-          <div class="col-sm-12 col-md-4">
-            <span>{{ messages.pageSizeChangeLabel }}</span>
-            <select v-model="setting.pageSize">
-              <option value="10">10</option>
-              <option value="25">25</option>
-              <option value="50">50</option>
-            </select>
-            <span>{{ messages.gotoPageLabel }}</span>
-            <select v-model="setting.page">
-              <option v-for="n in setting.maxPage" :key="n">{{ n }}</option>
-            </select>
-          </div>
-          <div class="col-sm-12 col-md-4">
-            <div
-              class="dataTables_paginate paging_simple_numbers"
-              id="dataTables-example_paginate"
-            >
-              <ul class="pagination">
-                <li class="page-item" :class="{ disabled: setting.page <= 1 }">
-                  <a
-                    class="page-link"
-                    href="javascript:void(0)"
-                    aria-label="Previous"
-                    @click="setting.page = 1"
-                  >
-                    <span aria-hidden="true">&laquo;</span>
-                    <span class="sr-only">First</span>
-                  </a>
-                </li>
-                <li class="page-item" :class="{ disabled: setting.page <= 1 }">
-                  <a
-                    class="page-link"
-                    href="javascript:void(0)"
-                    aria-label="Previous"
-                    @click="prevPage"
-                  >
-                    <span aria-hidden="true">&lt;</span>
-                    <span class="sr-only">Prev</span>
-                  </a>
-                </li>
-                <li
-                  class="page-item"
-                  v-for="n in setting.paging"
-                  :key="n"
-                  :class="{ disabled: setting.page === n }"
-                >
-                  <a class="page-link" href="javascript:void(0)" @click="movePage(n)">{{
-                    n
-                  }}</a>
-                </li>
-                <li
-                  class="page-item"
-                  :class="{ disabled: setting.page >= setting.maxPage }"
-                >
-                  <a
-                    class="page-link"
-                    href="javascript:void(0)"
-                    aria-label="Next"
-                    @click="nextPage"
-                  >
-                    <span aria-hidden="true">&gt;</span>
-                    <span class="sr-only">Next</span>
-                  </a>
-                </li>
-                <li
-                  class="page-item"
-                  :class="{ disabled: setting.page >= setting.maxPage }"
-                >
-                  <a
-                    class="page-link"
-                    href="javascript:void(0)"
-                    aria-label="Next"
-                    @click="setting.page = setting.maxPage"
-                  >
-                    <span aria-hidden="true">&raquo;</span>
-                    <span class="sr-only">Last</span>
-                  </a>
-                </li>
-              </ul>
+            <div class="col-sm-12 col-md-4">
+              <span>{{ messages.pageSizeChangeLabel }}</span>
+              <select v-model="setting.pageSize">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+              </select>
+              <span>{{ messages.gotoPageLabel }}</span>
+              <select v-model="setting.page">
+                <option v-for="n in setting.maxPage" :key="n" :value="parseInt(n)">
+                  {{ n }}
+                </option>
+              </select>
             </div>
-          </div>
+            <div class="col-sm-12 col-md-4">
+              <div
+                class="dataTables_paginate paging_simple_numbers"
+                id="dataTables-example_paginate"
+              >
+                <ul class="pagination">
+                  <li class="page-item" :class="{ disabled: setting.page <= 1 }">
+                    <a
+                      class="page-link"
+                      href="javascript:void(0)"
+                      aria-label="Previous"
+                      @click="setting.page = 1"
+                    >
+                      <span aria-hidden="true">&laquo;</span>
+                      <span class="sr-only">First</span>
+                    </a>
+                  </li>
+                  <li class="page-item" :class="{ disabled: setting.page <= 1 }">
+                    <a
+                      class="page-link"
+                      href="javascript:void(0)"
+                      aria-label="Previous"
+                      @click="prevPage"
+                    >
+                      <span aria-hidden="true">&lt;</span>
+                      <span class="sr-only">Prev</span>
+                    </a>
+                  </li>
+                  <li
+                    class="page-item"
+                    v-for="n in setting.paging"
+                    :key="n"
+                    :class="{ disabled: setting.page === n }"
+                  >
+                    <a class="page-link" href="javascript:void(0)" @click="movePage(n)">{{
+                      n
+                    }}</a>
+                  </li>
+                  <li
+                    class="page-item"
+                    :class="{ disabled: setting.page >= setting.maxPage }"
+                  >
+                    <a
+                      class="page-link"
+                      href="javascript:void(0)"
+                      aria-label="Next"
+                      @click="nextPage"
+                    >
+                      <span aria-hidden="true">&gt;</span>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </li>
+                  <li
+                    class="page-item"
+                    :class="{ disabled: setting.page >= setting.maxPage }"
+                  >
+                    <a
+                      class="page-link"
+                      href="javascript:void(0)"
+                      aria-label="Next"
+                      @click="setting.page = setting.maxPage"
+                    >
+                      <span aria-hidden="true">&raquo;</span>
+                      <span class="sr-only">Last</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </template>
         </div>
         <div class="row" v-else>
           <div class="col-sm-12 text-center">
@@ -221,6 +225,7 @@ import {
 interface tableSetting {
   isSlotMode: boolean;
   isCheckAll: boolean;
+  isHidePaging: boolean;
   keyColumn: string;
   page: number;
   pageSize: number;
@@ -239,7 +244,7 @@ interface column {
 
 export default defineComponent({
   name: "my-table",
-  emits: ["return-checked-rows", "do-search", "is-finished"],
+  emits: ["return-checked-rows", "do-search", "is-finished", "get-now-page"],
   props: {
     // 是否讀取中 (is data loading)
     isLoading: {
@@ -322,6 +327,11 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    // 是否隱藏換頁資訊 (Hide paging)
+    isHidePaging: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, { emit, slots }) {
     let localTable = ref<HTMLElement | null>(null);
@@ -331,6 +341,8 @@ export default defineComponent({
       isSlotMode: props.isSlotMode,
       // 是否全選 (Whether to select all)
       isCheckAll: false,
+      // 是否隱藏換頁資訊 (Hide paging)
+      isHidePaging: props.isHidePaging,
       // KEY欄位名稱 (KEY field name)
       keyColumn: computed(() => {
         let key = "";
@@ -540,6 +552,21 @@ export default defineComponent({
     };
     // 監聽頁碼切換 (Monitor page switching)
     watch(() => setting.page, changePage);
+    // 監聽手動頁碼切換 (Monitor manual page switching)
+    watch(
+      () => props.page,
+      (val) => {
+        if (val <= 1) {
+          setting.page = 1;
+          emit("get-now-page", setting.page);
+        } else if (val >= setting.maxPage) {
+          setting.page = setting.maxPage;
+          emit("get-now-page", setting.page);
+        } else {
+          setting.page = val;
+        }
+      }
+    );
 
     /**
      * 切換顯示筆數 (Switch display number)
@@ -615,6 +642,7 @@ export default defineComponent({
         let localElement = localTable.value.getElementsByClassName("is-rows-el");
         emit("is-finished", localElement);
       }
+      emit("get-now-page", setting.page);
     };
 
     /**

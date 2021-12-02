@@ -38,7 +38,7 @@
         <div id="sidebar" class="col-12 col-md-3 sidebar">
             <div class="p-5">
                 <div class="mb-5">
-                    <h5 class="mb-5" style="color: #7e99b6;">v1.1.0</h5>
+                    <h5 class="mb-5" style="color: #7e99b6;">v1.1.1</h5>
                     <p><a href="https://github.com/linmasahiro/vue3-table-lite" class="menu-link">Github</a></p>
                     <p>
                         <iframe
@@ -189,6 +189,24 @@
                                         <li>Default: <span class="text-blue">null</span></li>
                                 </li>
                             </ul>
+                    </li>
+                    <li class="mb-2">
+                        <b>is-hide-paging</b>
+                        <ul>
+                            <li>Description: No Show paging infomation on bottom</li>
+                            <li>Required: <span class="text-blue">No</span></li>
+                            <li>Type: <span class="text-blue">Boolean</span></li>
+                            <li>Default: <span class="text-blue">false</span></li>
+                        </ul>
+                    </li>
+                    <li class="mb-2">
+                        <b>page</b>
+                        <ul>
+                            <li>Description: If you want to control page no yourself, use it can will be to change page no.</li>
+                            <li>Required: <span class="text-blue">No</span></li>
+                            <li>Type: <span class="text-blue">Number</span></li>
+                            <li>Default: <span class="text-blue">1</span></li>
+                        </ul>
                     </li>
                 </ul>
                 </ul>
@@ -355,6 +373,25 @@
                                         <ul>
                                             <b>rowsKey</b>
                                             <li>Description: Pass by checked row's key field name. </li>
+                                            <li>Required: <span class="text-blue">No</span></li>
+                                            <li>Type: <span class="text-blue">Number</span></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="mb-2">
+                        <b>get-now-page</b>
+                        <ul>
+                            <li>Description: You can get now page no from this function.</li>
+                            <li>Type: <span class="text-blue">(pageNo) => void</span></li>
+                            <li>Arguments:
+                                <ul>
+                                    <li>
+                                        <ul>
+                                            <b>pageNo</b>
+                                            <li>Description: Pass by page no. </li>
                                             <li>Required: <span class="text-blue">No</span></li>
                                             <li>Type: <span class="text-blue">Number</span></li>
                                         </ul>
