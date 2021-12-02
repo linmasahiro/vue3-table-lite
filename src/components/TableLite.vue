@@ -314,7 +314,7 @@ export default defineComponent({
     },
   },
   setup(props, { emit, slots }) {
-    let localTable = ref<HTMLElement | null>(null);
+    let localTable = ref(null);
     // 組件用內部設定值 (Internal set value for components)
     const setting = reactive({
       // 是否啟用Slot模式 (Enable slot mode)

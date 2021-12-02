@@ -116,6 +116,7 @@ A simple and lightweight data table component for Vue.js 3. Features sorting, pa
 [Go to Check!!](https://linmasahiro.github.io/vue3-table-lite/dist/usage.html)
 
 ### release
+    ver 1.1.3 : fixed cannot get localTabel refs bugs.
     ver 1.1.2 : changed import file on TypeScript.
     ver 1.1.1 : added hide-paging and page number attribute and fixed `#23`.
     ver 1.1.0 : remove Vue Dependency at bundle
