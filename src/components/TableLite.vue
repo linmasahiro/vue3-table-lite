@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <div class="card-header" v-if="title">{{ title }}</div>
+    <div class="vtl-title card-header" v-if="title">{{ title }}</div>
     <div class="card-body">
       <p class="card-title"></p>
       <div
@@ -17,23 +17,29 @@
               </div>
             </div>
             <table
-              class="table table-hover table-bordered table-responsive-sm"
+              class="vtl-table table table-hover table-bordered table-responsive-sm"
               id="dataTables-example"
               ref="localTable"
             >
-              <thead class="thead-dark">
-                <tr>
-                  <th v-if="hasCheckbox" class="checkbox-th">
+              <thead class="vtl-thead thead-dark">
+                <tr class="vtl-thead-tr">
+                  <th v-if="hasCheckbox" class="vtl-thead-th checkbox-th">
                     <div>
-                      <input type="checkbox" v-model="setting.isCheckAll" />
+                      <input
+                        type="checkbox"
+                        class="vtl-thead-checkbox"
+                        v-model="setting.isCheckAll"
+                      />
                     </div>
                   </th>
                   <th
                     v-for="(col, index) in columns"
+                    class="vtl-thead-th"
                     :key="index"
                     :style="{ width: col.width ? col.width : 'auto' }"
                   >
                     <div
+                      class="vtl-thead-column"
                       :class="{
                         sortable: col.sortable,
                         both: col.sortable,
@@ -47,13 +53,14 @@
                   </th>
                 </tr>
               </thead>
-              <tbody v-if="rows.length > 0">
+              <tbody v-if="rows.length > 0" class="vtl-tbody">
                 <template v-if="isStaticMode">
-                  <tr v-for="(row, i) in localRows" :key="i">
-                    <td v-if="hasCheckbox">
+                  <tr v-for="(row, i) in localRows" :key="i" class="vtl-tbody-tr">
+                    <td v-if="hasCheckbox" class="vtl-tbody-td">
                       <div>
                         <input
                           type="checkbox"
+                          class="vtl-tbody-checkbox"
                           :ref="
                             (el) => {
                               rowCheckbox[i] = el;
@@ -64,7 +71,7 @@
                         />
                       </div>
                     </td>
-                    <td v-for="(col, j) in columns" :key="j">
+                    <td v-for="(col, j) in columns" :key="j" class="vtl-tbody-td">
                       <div v-if="col.display" v-html="col.display(row)"></div>
                       <template v-else>
                         <div v-if="setting.isSlotMode && slots[col.field]">
@@ -76,11 +83,12 @@
                   </tr>
                 </template>
                 <template v-else>
-                  <tr v-for="(row, i) in rows" :key="i">
-                    <td v-if="hasCheckbox">
+                  <tr v-for="(row, i) in rows" :key="i" class="vtl-tbody-tr">
+                    <td v-if="hasCheckbox" class="vtl-tbody-td">
                       <div>
                         <input
                           type="checkbox"
+                          class="vtl-tbody-checkbox"
                           :ref="
                             (el) => {
                               rowCheckbox[i] = el;
@@ -91,7 +99,7 @@
                         />
                       </div>
                     </td>
-                    <td v-for="(col, j) in columns" :key="j">
+                    <td v-for="(col, j) in columns" :key="j" class="vtl-tbody-td">
                       <div v-if="col.display" v-html="col.display(row)"></div>
                       <div v-else>
                         <div v-if="setting.isSlotMode && slots[col.field]">
@@ -106,38 +114,43 @@
             </table>
           </div>
         </div>
-        <div class="row" v-if="rows.length > 0">
+        <div class="vtl-paging row" v-if="rows.length > 0">
           <template v-if="!setting.isHidePaging">
-            <div class="col-sm-12 col-md-4">
+            <div class="vtl-paging-info col-sm-12 col-md-4">
               <div role="status" aria-live="polite">
                 {{
                   stringFormat(messages.pagingInfo, setting.offset, setting.limit, total)
                 }}
               </div>
             </div>
-            <div class="col-sm-12 col-md-4">
-              <span>{{ messages.pageSizeChangeLabel }}</span>
-              <select v-model="setting.pageSize">
+            <div class="vtl-paging-change-div col-sm-12 col-md-4">
+              <span class="vtl-paging-count-label">{{
+                messages.pageSizeChangeLabel
+              }}</span>
+              <select class="vtl-paging-count-dropdown" v-model="setting.pageSize">
                 <option value="10">10</option>
                 <option value="25">25</option>
                 <option value="50">50</option>
               </select>
-              <span>{{ messages.gotoPageLabel }}</span>
-              <select v-model="setting.page">
+              <span class="vtl-paging-page-label">{{ messages.gotoPageLabel }}</span>
+              <select class="vtl-paging-page-dropdown" v-model="setting.page">
                 <option v-for="n in setting.maxPage" :key="n" :value="parseInt(n)">
                   {{ n }}
                 </option>
               </select>
             </div>
-            <div class="col-sm-12 col-md-4">
+            <div class="vtl-paging-pagination-div col-sm-12 col-md-4">
               <div
                 class="dataTables_paginate paging_simple_numbers"
                 id="dataTables-example_paginate"
               >
-                <ul class="pagination">
-                  <li class="page-item" :class="{ disabled: setting.page <= 1 }">
+                <ul class="vtl-paging-pagination-ul pagination">
+                  <li
+                    class="vtl-paging-pagination-page-li vtl-paging-pagination-page-li-first page-item"
+                    :class="{ disabled: setting.page <= 1 }"
+                  >
                     <a
-                      class="page-link"
+                      class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-first page-link"
                       href="javascript:void(0)"
                       aria-label="Previous"
                       @click="setting.page = 1"
@@ -146,9 +159,12 @@
                       <span class="sr-only">First</span>
                     </a>
                   </li>
-                  <li class="page-item" :class="{ disabled: setting.page <= 1 }">
+                  <li
+                    class="vtl-paging-pagination-page-li vtl-paging-pagination-page-li-prev page-item"
+                    :class="{ disabled: setting.page <= 1 }"
+                  >
                     <a
-                      class="page-link"
+                      class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-prev page-link"
                       href="javascript:void(0)"
                       aria-label="Previous"
                       @click="prevPage"
@@ -158,21 +174,24 @@
                     </a>
                   </li>
                   <li
-                    class="page-item"
+                    class="vtl-paging-pagination-page-li vtl-paging-pagination-page-li-number page-item"
                     v-for="n in setting.paging"
                     :key="n"
                     :class="{ disabled: setting.page === n }"
                   >
-                    <a class="page-link" href="javascript:void(0)" @click="movePage(n)">{{
-                      n
-                    }}</a>
+                    <a
+                      class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-number page-link"
+                      href="javascript:void(0)"
+                      @click="movePage(n)"
+                      >{{ n }}</a
+                    >
                   </li>
                   <li
-                    class="page-item"
+                    class="vtl-paging-pagination-page-li vtl-paging-pagination-page-li-next page-item"
                     :class="{ disabled: setting.page >= setting.maxPage }"
                   >
                     <a
-                      class="page-link"
+                      class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-next page-link"
                       href="javascript:void(0)"
                       aria-label="Next"
                       @click="nextPage"
@@ -182,11 +201,11 @@
                     </a>
                   </li>
                   <li
-                    class="page-item"
+                    class="vtl-paging-pagination-page-li vtl-paging-pagination-page-li-last page-item"
                     :class="{ disabled: setting.page >= setting.maxPage }"
                   >
                     <a
-                      class="page-link"
+                      class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-last page-link"
                       href="javascript:void(0)"
                       aria-label="Next"
                       @click="setting.page = setting.maxPage"
@@ -201,7 +220,7 @@
           </template>
         </div>
         <div class="row" v-else>
-          <div class="col-sm-12 text-center">
+          <div class="vtl-empty-msg col-sm-12 text-center">
             {{ messages.noDataAvailable }}
           </div>
         </div>

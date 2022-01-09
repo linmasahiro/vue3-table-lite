@@ -157,7 +157,7 @@ export default defineComponent({
     };
 
     // First get data
-    doSearch(0, 10, 'id', 'asc');
+    doSearch(0, 10, "id", "asc");
 
     return {
       table,
@@ -170,12 +170,27 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.card ::v-deep(.table .thead-dark th) {
+::v-deep(.vtl-table .vtl-thead .vtl-thead-th) {
   color: #fff;
   background-color: #42b983;
   border-color: #42b983;
 }
-.card ::v-deep(.table td), .card ::v-deep(.table tr) {
+
+::v-deep(.vtl-table td),
+::v-deep(.vtl-table tr) {
+  border: none;
+}
+
+::v-deep(.vtl-paging-info) {
+  color: rgb(172, 0, 0);
+}
+
+::v-deep(.vtl-paging-count-label),
+::v-deep(.vtl-paging-page-label) {
+  color: rgb(172, 0, 0);
+}
+
+::v-deep(.vtl-paging-pagination-page-link) {
   border: none;
 }
 </style>
