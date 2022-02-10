@@ -615,7 +615,7 @@ export default defineComponent({
     watch(
       () => props.rows,
       () => {
-        if (props.isReSearch) {
+        if (props.isReSearch || props.isStaticMode) {
           setting.page = 1;
         }
         nextTick(function () {
