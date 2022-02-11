@@ -128,9 +128,7 @@
                 messages.pageSizeChangeLabel
               }}</span>
               <select class="vtl-paging-count-dropdown" v-model="setting.pageSize">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
+                <option v-for="pageOption in pageOptions" :value="pageOption.value" :key="pageOption.value">{{ pageOption.text }}</option>
               </select>
               <span class="vtl-paging-page-label">{{ messages.gotoPageLabel }}</span>
               <select class="vtl-paging-page-dropdown" v-model="setting.page">
@@ -331,6 +329,23 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    pageOptions: {
+      type: Array,
+      default: () => [
+        {
+          value: 10,
+          text: 10
+        },
+        {
+          value: 25,
+          text: 25
+        },
+        {
+          value: 50,
+          text: 50
+        }
+      ]
+    }
   },
   setup(props, { emit, slots }) {
     let localTable = ref(null);
@@ -395,6 +410,7 @@ export default defineComponent({
       // 組件內用排序 (Sortable for local)
       order: props.sortable.order,
       sort: props.sortable.sort,
+      pageOptions: props.pageOptions
     });
 
     // 組件內用資料 (Data rows for local)

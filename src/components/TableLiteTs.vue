@@ -128,9 +128,7 @@
                 messages.pageSizeChangeLabel
               }}</span>
               <select class="vtl-paging-count-dropdown" v-model="setting.pageSize">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
+                <option v-for="pageOption in pageOptions" :value="pageOption.value" :key="pageOption.value">{{ pageOption.text }}</option>
               </select>
               <span class="vtl-paging-page-label">{{ messages.gotoPageLabel }}</span>
               <select class="vtl-paging-page-dropdown" v-model="setting.page">
@@ -241,6 +239,11 @@ import {
   onMounted,
 } from "vue";
 
+interface pageOption {
+  value: number,
+  text: number | string
+}
+
 interface tableSetting {
   isSlotMode: boolean;
   isCheckAll: boolean;
@@ -254,6 +257,7 @@ interface tableSetting {
   paging: Array<number>;
   order: string;
   sort: string;
+  pageOptions: Array<pageOption>
 }
 
 interface column {
@@ -351,6 +355,24 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    // (Modify page dropdown)
+    pageOptions: {
+      type: Array,
+      default: () => [
+        {
+          value: 10,
+          text: 10
+        },
+        {
+          value: 25,
+          text: 25
+        },
+        {
+          value: 50,
+          text: 50
+        }
+      ]
+    }
   },
   setup(props, { emit, slots }) {
     let localTable = ref<HTMLElement | null>(null);
@@ -415,6 +437,16 @@ export default defineComponent({
       // 組件內用排序 (Sortable for local)
       order: props.sortable.order,
       sort: props.sortable.sort,
+      pageOptions: computed(() => {
+        const ops: pageOption[] = []
+        props.pageOptions?.forEach((o) => {
+          ops.push({
+            value: (o as pageOption).value,
+            text: (o as pageOption).text
+          })
+        })
+        return ops
+      })
     });
 
     // 組件內用資料 (Data rows for local)
