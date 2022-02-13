@@ -128,9 +128,13 @@
                 messages.pageSizeChangeLabel
               }}</span>
               <select class="vtl-paging-count-dropdown" v-model="setting.pageSize">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
+                <option
+                  v-for="pageOption in pageOptions"
+                  :value="pageOption.value"
+                  :key="pageOption.value"
+                >
+                  {{ pageOption.text }}
+                </option>
               </select>
               <span class="vtl-paging-page-label">{{ messages.gotoPageLabel }}</span>
               <select class="vtl-paging-page-dropdown" v-model="setting.page">
@@ -241,6 +245,11 @@ import {
   onMounted,
 } from "vue";
 
+interface pageOption {
+  value: number;
+  text: number | string;
+}
+
 interface tableSetting {
   isSlotMode: boolean;
   isCheckAll: boolean;
@@ -254,6 +263,7 @@ interface tableSetting {
   paging: Array<number>;
   order: string;
   sort: string;
+  pageOptions: Array<pageOption>;
 }
 
 interface column {
@@ -351,9 +361,43 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    // (Modify page dropdown)
+    pageOptions: {
+      type: Array,
+      default: () => [
+        {
+          value: 10,
+          text: 10,
+        },
+        {
+          value: 25,
+          text: 25,
+        },
+        {
+          value: 50,
+          text: 50,
+        },
+      ],
+    },
   },
   setup(props, { emit, slots }) {
     let localTable = ref<HTMLElement | null>(null);
+
+    // 檢查下拉選單中是否包含預設一頁顯示筆數 (Validate dropdown's values have page-size value or not)
+    let tmpPageOptions = props.pageOptions as Array<pageOption>;
+    let defaultPageSize = (props.pageOptions.length > 0) ? ref(tmpPageOptions[0].value) : ref(props.pageSize);
+    if (tmpPageOptions.length > 0) {
+      tmpPageOptions.forEach((v: pageOption) => {
+        if (
+          Object.prototype.hasOwnProperty.call(v, "value") &&
+          Object.prototype.hasOwnProperty.call(v, "text") &&
+          props.pageSize == v.value
+        ) {
+          defaultPageSize.value = v.value;
+        }
+      });
+    }
+
     // 組件用內部設定值 (Internal set value for components)
     const setting: tableSetting = reactive({
       // 是否啟用Slot模式 (Enable slot mode)
@@ -375,7 +419,7 @@ export default defineComponent({
       // 當前頁數 (current page number)
       page: props.page,
       // 每頁顯示筆數 (Display count per page)
-      pageSize: props.pageSize,
+      pageSize: defaultPageSize.value,
       // 最大頁數 (Maximum number of pages)
       maxPage: computed(() => {
         if (props.total <= 0) {
@@ -415,6 +459,16 @@ export default defineComponent({
       // 組件內用排序 (Sortable for local)
       order: props.sortable.order,
       sort: props.sortable.sort,
+      pageOptions: computed(() => {
+        const ops: pageOption[] = [];
+        props.pageOptions?.forEach((o) => {
+          ops.push({
+            value: (o as pageOption).value,
+            text: (o as pageOption).text,
+          });
+        });
+        return ops;
+      }),
     });
 
     // 組件內用資料 (Data rows for local)

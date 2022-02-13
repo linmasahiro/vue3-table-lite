@@ -38,7 +38,7 @@
         <div id="sidebar" class="col-12 col-md-3 sidebar">
             <div class="p-5">
                 <div class="mb-5">
-                    <h5 class="mb-5" style="color: #7e99b6;">v1.1.6</h5>
+                    <h5 class="mb-5" style="color: #7e99b6;">v1.1.7</h5>
                     <p><a href="https://github.com/linmasahiro/vue3-table-lite" class="menu-link">Github</a></p>
                     <p>
                         <iframe
@@ -77,6 +77,7 @@
                     <a href="./advanced.html#filter2" class="menu-link">Asynchronous filter</a>
                     <a href="./advanced.html#customize-style" class="menu-link">Customize style</a>
                     <a href="./advanced.html#customize-message" class="menu-link">Customize message</a>
+                    <a href="./advanced.html#customize-page-dropdown" class="menu-link">Customize Page's dropdown</a>
                 </div>
             </div>
         </div>
@@ -295,6 +296,48 @@
                         <li>Required: <span class="text-blue">No</span></li>
                         <li>Type: <span class="text-blue">Number</span></li>
                         <li>Default: <span class="text-blue">1</span></li>
+                    </ul>
+                </li>
+                <li class="mb-2">
+                    <b>pageOptions</b>
+                    <ul>
+                        <li>Description: Pages dropdown list</li>
+                        <li>Required: <span class="text-blue">No</span></li>
+                        <li>Type: <span class="text-blue">Array</span></li>
+                        <ul>
+                            <li class="mb-2">
+                                <ul>
+                                    <li>Required: <span class="text-blue">Yes</span></li>
+                                    <li>Type: <span class="text-blue">Object</span></li>
+                                    <li>
+                                        <ul>
+                                            <b>value</b>
+                                            <li>Required: <span class="text-blue">Yes</span></li>
+                                            <li>Type: <span class="text-blue">Number</span></li>
+                                        </ul>
+                                        <ul>
+                                            <b>text</b>
+                                            <li>Required: <span class="text-blue">Yes</span></li>
+                                            <li>Type: <span class="text-blue">Number | string</span></li>
+                                        </ul>
+                                    </li>
+                                    <li>Default:[
+                                        {
+                                          value: 10,
+                                          text: 10
+                                        },
+                                        {
+                                          value: 25,
+                                          text: 25
+                                        },
+                                        {
+                                          value: 50,
+                                          text: 50
+                                        }
+                                      ]</li>
+                                </ul>
+                            </li>
+                        </ul>
                     </ul>
                 </li>
                 </ul>

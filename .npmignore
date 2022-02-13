@@ -6,3 +6,8 @@ tsconfig.json
 babel.config.js
 .gitignore
 .npmignore
+/src/examples/*
+/src/App.vue
+/src/simple.ts
+/src/advanced.ts
+/public
