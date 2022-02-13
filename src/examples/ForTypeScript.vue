@@ -8,6 +8,7 @@
     :total="table.totalRecordCount"
     :sortable="table.sortable"
     :messages="table.messages"
+    :page-options="table.pageOptions"
     @do-search="doSearch"
     @is-finished="tableLoadingFinish"
     @return-checked-rows="updateCheckedRows"
@@ -16,7 +17,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
-import TableLite from "../components/TableLite.vue";
+import TableLite from "../components/TableLiteTs.vue";
 
 // create fake data1
 const sampleData1 = (offst: number, limit: number): Array<rowData> => {
@@ -114,6 +115,16 @@ export default defineComponent({
         gotoPageLabel: "Go to page:",
         noDataAvailable: "No data",
       },
+      pageOptions: [
+        {
+          value: 15,
+          text: 15
+        },
+        {
+          value: 30,
+          text: 30
+        }
+      ]
     });
 
     /**
