@@ -456,7 +456,7 @@
                         <ul>
                             <li>Description: Show Row data's scope</li>
                             <li>
-                                <h5>Usage</h5>
+                                <h5>Usage (Custom every one)</h5>
                                 <pre>
 &lt;template v-slot:id="data"&gt;
   &lt;YourComponent&gt;{{ data.value.id }}&lt;/YourComponent&gt;
@@ -468,6 +468,12 @@
   &lt;YourComponent&gt;{{ data.value.email }}&lt;/YourComponent&gt;
 &lt;/template&gt;
                                 </pre>
+                                <h5>Usage (All to same)</h5>
+                                <pre>
+&lt;template v-for="(col, i) of table.columns" v-slot:[col.field]="data" :key="i"&gt;
+  &lt;YourComponent&gt;{{ data.value[col.field] }}&lt;/YourComponent&gt;
+&lt;/template&gt;
+                                 </pre>
                             </li>
                         </ul>
                     </li>
