@@ -291,11 +291,19 @@
                 <li class="mb-2">
                     <b>page</b>
                     <ul>
-                        <li>Description: If you want to control page no yourself, use it can will be to change page no.
-                        </li>
+                        <li>Description: If you want to control page no yourself, use it can will be to change page no.</li>
                         <li>Required: <span class="text-blue">No</span></li>
                         <li>Type: <span class="text-blue">Number</span></li>
                         <li>Default: <span class="text-blue">1</span></li>
+                    </ul>
+                </li>
+                <li class="mb-2">
+                    <b>page-size</b>
+                    <ul>
+                        <li>Description: Default display the number of items on one page. <span style="color: red;">In most cases no set required.</span></li>
+                        <li>Required: <span class="text-blue">No</span></li>
+                        <li>Type: <span class="text-blue">Number</span></li>
+                        <li>Default: <span class="text-blue">10</span></li>
                     </ul>
                 </li>
                 <li class="mb-2">
@@ -348,7 +356,8 @@
                     <li class="mb-2">
                         <b>do-search</b>
                         <ul>
-                            <li>Description: Your search event.</li>
+                            <li>Description: Your search event. <span style="color: red;">It's will be auto trigger after data sort and paging.</span></li>
+                            <li>Hint: <span style="color: red;">In static-mode no set required.</span></li>
                             <li>Type: <span class="text-blue">(offset, limit, order, sort) => void</span></li>
                             <li>Arguments:
                                 <ul>
@@ -391,7 +400,7 @@
                     <li class="mb-2">
                         <b>is-finished</b>
                         <ul>
-                            <li>Description: Will be call this function after table rendaring finished.</li>
+                            <li>Description: Will be trigger this function after table rendering finished.</li>
                             <li>Type: <span class="text-blue">(elements) => void</span></li>
                             <li>Arguments:
                                 <ul>
