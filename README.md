@@ -116,6 +116,7 @@ A simple and lightweight data table component for Vue.js 3. Features sorting, pa
 [Go to Check!!](https://linmasahiro.github.io/vue3-table-lite/dist/usage.html)
 
 ### release
+    ver 1.1.8 : Add option to set header/column class and style(in-line) `[#32](https://github.com/linmasahiro/vue3-table-lite/issues/32)`
     ver 1.1.7 : Add option to set custom values in page size dropdown `#29`
     ver 1.1.6 : fixed bug. `#28`
     ver 1.1.5 : Added classes to element for easier Styling. `#25`

@@ -38,7 +38,7 @@
         <div id="sidebar" class="col-12 col-md-3 sidebar">
             <div class="p-5">
                 <div class="mb-5">
-                    <h5 class="mb-5" style="color: #7e99b6;">v1.1.7</h5>
+                    <h5 class="mb-5" style="color: #7e99b6;">v1.1.8</h5>
                     <p><a href="https://github.com/linmasahiro/vue3-table-lite" class="menu-link">Github</a></p>
                     <p>
                         <iframe
@@ -76,6 +76,7 @@
                     <a href="./advanced.html#filter" class="menu-link">Filter</a>
                     <a href="./advanced.html#filter2" class="menu-link">Asynchronous filter</a>
                     <a href="./advanced.html#customize-style" class="menu-link">Customize style</a>
+                    <a href="./advanced.html#customize-style2" class="menu-link">Customize style2</a>
                     <a href="./advanced.html#customize-message" class="menu-link">Customize message</a>
                     <a href="./advanced.html#customize-page-dropdown" class="menu-link">Customize Page's dropdown</a>
                 </div>
@@ -189,6 +190,49 @@
                                         <li>Required: <span class="text-blue">No</span></li>
                                         <li>Type: <span class="text-blue">Function</span></li>
                                         <li>Default: <span class="text-blue">null</span></li>
+                                    </ul>
+                                </li>
+                                <li class="mb-2">
+                                    <ul>
+                                        <b>headerClasses</b>
+                                        <li>Description: Data header's classes array</li>
+                                        <li>Required: <span class="text-blue">No</span></li>
+                                        <li>Type: <span class="text-blue">Array</span></li>
+                                        <li>Default: <span class="text-blue">null</span></li>
+                                        <li>Example: <span class="text-blue">["bg-gray", "color-red"]</span></li>
+                                    </ul>
+                                </li>
+                                <li class="mb-2">
+                                    <ul>
+                                        <b>columnClasses</b>
+                                        <li>Description: Data column's classes array</li>
+                                        <li>Required: <span class="text-blue">No</span></li>
+                                        <li>Type: <span class="text-blue">Array</span></li>
+                                        <li>Default: <span class="text-blue">null</span></li>
+                                        <li>Example: <span class="text-blue">["bg-gray", "color-red"]</span></li>
+                                    </ul>
+                                </li>
+                                <li class="mb-2">
+                                    <ul>
+                                        <b>headerStyles</b>
+                                        <li>Description: Data header's in-line style object</li>
+                                        <li>Required: <span class="text-blue">No</span></li>
+                                        <li>Type: <span class="text-blue">Object</span></li>
+                                        <li>Default: <span class="text-blue">null</span></li>
+                                        <li>Example: <span class="text-blue">{"background": "gray", "color":
+                                                "red"}</span></li>
+                                    </ul>
+                                </li>
+                                <li class="mb-2">
+                                    <ul>
+                                        <b>columnStyles</b>
+                                        <li>Description: Data column's in-line style object</li>
+                                        <li>Required: <span class="text-blue">No</span></li>
+                                        <li>Type: <span class="text-blue">Object</span></li>
+                                        <li>Default: <span class="text-blue">null</span></li>
+                                        <li>Example: <span class="text-blue">{"background": "gray", "color":
+                                                "red"}</span></li>
+                                    </ul>
                                 </li>
                             </ul>
                     </li>
@@ -291,7 +335,8 @@
                 <li class="mb-2">
                     <b>page</b>
                     <ul>
-                        <li>Description: If you want to control page no yourself, use it can will be to change page no.</li>
+                        <li>Description: If you want to control page no yourself, use it can will be to change page no.
+                        </li>
                         <li>Required: <span class="text-blue">No</span></li>
                         <li>Type: <span class="text-blue">Number</span></li>
                         <li>Default: <span class="text-blue">1</span></li>
@@ -300,7 +345,8 @@
                 <li class="mb-2">
                     <b>page-size</b>
                     <ul>
-                        <li>Description: Default display the number of items on one page. <span style="color: red;">In most cases no set required.</span></li>
+                        <li>Description: Default display the number of items on one page. <span style="color: red;">In
+                                most cases no set required.</span></li>
                         <li>Required: <span class="text-blue">No</span></li>
                         <li>Type: <span class="text-blue">Number</span></li>
                         <li>Default: <span class="text-blue">10</span></li>
@@ -331,18 +377,18 @@
                                     </li>
                                     <li>Default:[
                                         {
-                                          value: 10,
-                                          text: 10
+                                        value: 10,
+                                        text: 10
                                         },
                                         {
-                                          value: 25,
-                                          text: 25
+                                        value: 25,
+                                        text: 25
                                         },
                                         {
-                                          value: 50,
-                                          text: 50
+                                        value: 50,
+                                        text: 50
                                         }
-                                      ]</li>
+                                        ]</li>
                                 </ul>
                             </li>
                         </ul>
@@ -356,7 +402,8 @@
                     <li class="mb-2">
                         <b>do-search</b>
                         <ul>
-                            <li>Description: Your search event. <span style="color: red;">It's will be auto trigger after data sort and paging.</span></li>
+                            <li>Description: Your search event. <span style="color: red;">It's will be auto trigger
+                                    after data sort and paging.</span></li>
                             <li>Hint: <span style="color: red;">In static-mode no set required.</span></li>
                             <li>Type: <span class="text-blue">(offset, limit, order, sort) => void</span></li>
                             <li>Arguments:

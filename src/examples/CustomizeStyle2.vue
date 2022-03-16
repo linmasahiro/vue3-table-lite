@@ -56,8 +56,6 @@ export default defineComponent({
       columns: [
         {
           label: "ID",
-          headerClasses: ["bg-gold", "color-red"],
-          columnClasses: ["bg-gray"],
           field: "id",
           width: "3%",
           sortable: true,
@@ -65,7 +63,6 @@ export default defineComponent({
         },
         {
           label: "Name",
-          columnStyles: { background: "gold" },
           field: "name",
           width: "10%",
           sortable: true,
@@ -81,17 +78,12 @@ export default defineComponent({
         },
         {
           label: "Email",
-          headerStyles: { background: "gray" },
-          columnStyles: { background: "gold" },
           field: "email",
           width: "15%",
           sortable: true,
         },
         {
           label: "",
-          headerClasses: ["bg-gold"],
-          columnClasses: ["bg-gray"],
-          columnStyles: { background: "gray" },
           field: "quick",
           width: "10%",
           display: function (row) {
@@ -177,14 +169,28 @@ export default defineComponent({
 });
 </script>
 
-<style scope>
-.bg-gold {
-  background: gold !important;
+<style scoped>
+::v-deep(.vtl-table .vtl-thead .vtl-thead-th) {
+  color: #fff;
+  background-color: #42b983;
+  border-color: #42b983;
 }
-.bg-gray {
-  background: gray !important;
+
+::v-deep(.vtl-table td),
+::v-deep(.vtl-table tr) {
+  border: none;
 }
-.color-red {
-  color: red !important;
+
+::v-deep(.vtl-paging-info) {
+  color: rgb(172, 0, 0);
+}
+
+::v-deep(.vtl-paging-count-label),
+::v-deep(.vtl-paging-page-label) {
+  color: rgb(172, 0, 0);
+}
+
+::v-deep(.vtl-paging-pagination-page-link) {
+  border: none;
 }
 </style>

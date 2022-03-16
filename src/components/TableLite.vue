@@ -35,8 +35,14 @@
                   <th
                     v-for="(col, index) in columns"
                     class="vtl-thead-th"
+                    :class="col.headerClasses"
                     :key="index"
-                    :style="{ width: col.width ? col.width : 'auto' }"
+                    :style="
+                      Object.assign(
+                        { width: col.width ? col.width : 'auto' },
+                        col.headerStyles
+                      )
+                    "
                   >
                     <div
                       class="vtl-thead-column"
@@ -71,7 +77,13 @@
                         />
                       </div>
                     </td>
-                    <td v-for="(col, j) in columns" :key="j" class="vtl-tbody-td">
+                    <td
+                      v-for="(col, j) in columns"
+                      :key="j"
+                      class="vtl-tbody-td"
+                      :class="col.columnClasses"
+                      :style="col.columnStyles"
+                    >
                       <div v-if="col.display" v-html="col.display(row)"></div>
                       <template v-else>
                         <div v-if="setting.isSlotMode && slots[col.field]">
@@ -99,7 +111,13 @@
                         />
                       </div>
                     </td>
-                    <td v-for="(col, j) in columns" :key="j" class="vtl-tbody-td">
+                    <td
+                      v-for="(col, j) in columns"
+                      :key="j"
+                      class="vtl-tbody-td"
+                      :class="col.columnClasses"
+                      :style="col.columnStyles"
+                    >
                       <div v-if="col.display" v-html="col.display(row)"></div>
                       <div v-else>
                         <div v-if="setting.isSlotMode && slots[col.field]">
@@ -358,7 +376,10 @@ export default defineComponent({
     let localTable = ref(null);
 
     // 檢查下拉選單中是否包含預設一頁顯示筆數 (Validate dropdown's values have page-size value or not)
-    let defaultPageSize = (props.pageOptions.length > 0) ? ref(props.pageOptions[0].value) : ref(props.pageSize);
+    let defaultPageSize =
+      props.pageOptions.length > 0
+        ? ref(props.pageOptions[0].value)
+        : ref(props.pageSize);
     if (props.pageOptions.length > 0) {
       props.pageOptions.forEach((v) => {
         if (
