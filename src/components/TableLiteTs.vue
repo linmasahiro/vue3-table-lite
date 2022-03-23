@@ -1,250 +1,236 @@
 <template>
-  <div class="card">
-    <div class="vtl-title card-header" v-if="title">{{ title }}</div>
-    <div class="card-body">
-      <p class="card-title"></p>
-      <div
-        id="dataTables-example_wrapper"
-        class="dataTables_wrapper dt-bootstrap4 no-footer"
-      >
-        <div class="row"></div>
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="row"></div>
-            <div v-if="isLoading" class="loading-mask">
-              <div class="loading-content">
-                <span style="color: white">Loading...</span>
-              </div>
+  <div class="vtl vtl-card">
+    <div class="vtl-card-title" v-if="title">{{ title }}</div>
+    <div class="vtl-card-body">
+      <div class="vtl-row">
+        <div class="col-sm-12">
+          <div v-if="isLoading" class="vtl-loading-mask">
+            <div class="vtl-loading-content">
+              <span style="color: white">Loading...</span>
             </div>
-            <table
-              class="vtl-table table table-hover table-bordered table-responsive-sm"
-              id="dataTables-example"
-              ref="localTable"
-            >
-              <thead class="vtl-thead thead-dark">
-                <tr class="vtl-thead-tr">
-                  <th v-if="hasCheckbox" class="vtl-thead-th checkbox-th">
+          </div>
+          <table
+            class="vtl-table vtl-table-hover vtl-table-bordered vtl-table-responsive vtl-table-responsive-sm"
+            ref="localTable"
+          >
+            <thead class="vtl-thead">
+              <tr class="vtl-thead-tr">
+                <th v-if="hasCheckbox" class="vtl-thead-th vtl-checkbox-th">
+                  <div>
+                    <input
+                      type="checkbox"
+                      class="vtl-thead-checkbox"
+                      v-model="setting.isCheckAll"
+                    />
+                  </div>
+                </th>
+                <th
+                  v-for="(col, index) in columns"
+                  class="vtl-thead-th"
+                  :class="col.headerClasses"
+                  :key="index"
+                  :style="
+                    Object.assign(
+                      { width: col.width ? col.width : 'auto' },
+                      col.headerStyles
+                    )
+                  "
+                >
+                  <div
+                    class="vtl-thead-column"
+                    :class="{
+                      'vtl-sortable': col.sortable,
+                      'vtl-both': col.sortable,
+                      'vtl-asc': setting.order === col.field && setting.sort === 'asc',
+                      'vtl-desc': setting.order === col.field && setting.sort === 'desc',
+                    }"
+                    @click="col.sortable ? doSort(col.field) : false"
+                  >
+                    {{ col.label }}
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody v-if="rows.length > 0" class="vtl-tbody">
+              <template v-if="isStaticMode">
+                <tr v-for="(row, i) in localRows" :key="i" class="vtl-tbody-tr">
+                  <td v-if="hasCheckbox" class="vtl-tbody-td">
                     <div>
                       <input
                         type="checkbox"
-                        class="vtl-thead-checkbox"
-                        v-model="setting.isCheckAll"
+                        class="vtl-tbody-checkbox"
+                        :ref="
+                          (el) => {
+                            rowCheckbox[i] = el;
+                          }
+                        "
+                        :value="row[setting.keyColumn]"
+                        @click="checked"
                       />
                     </div>
-                  </th>
-                  <th
-                    v-for="(col, index) in columns"
-                    class="vtl-thead-th"
-                    :class="col.headerClasses"
-                    :key="index"
-                    :style="
-                      Object.assign(
-                        { width: col.width ? col.width : 'auto' },
-                        col.headerStyles
-                      )
-                    "
+                  </td>
+                  <td
+                    v-for="(col, j) in columns"
+                    :key="j"
+                    class="vtl-tbody-td"
+                    :class="col.columnClasses"
+                    :style="col.columnStyles"
                   >
-                    <div
-                      class="vtl-thead-column"
-                      :class="{
-                        sortable: col.sortable,
-                        both: col.sortable,
-                        asc: setting.order === col.field && setting.sort === 'asc',
-                        desc: setting.order === col.field && setting.sort === 'desc',
-                      }"
-                      @click="col.sortable ? doSort(col.field) : false"
-                    >
-                      {{ col.label }}
-                    </div>
-                  </th>
+                    <div v-if="col.display" v-html="col.display(row)"></div>
+                    <template v-else>
+                      <div v-if="setting.isSlotMode && slots[col.field]">
+                        <slot :name="col.field" :value="row"></slot>
+                      </div>
+                      <span v-else>{{ row[col.field] }}</span>
+                    </template>
+                  </td>
                 </tr>
-              </thead>
-              <tbody v-if="rows.length > 0" class="vtl-tbody">
-                <template v-if="isStaticMode">
-                  <tr v-for="(row, i) in localRows" :key="i" class="vtl-tbody-tr">
-                    <td v-if="hasCheckbox" class="vtl-tbody-td">
-                      <div>
-                        <input
-                          type="checkbox"
-                          class="vtl-tbody-checkbox"
-                          :ref="
-                            (el) => {
-                              rowCheckbox[i] = el;
-                            }
-                          "
-                          :value="row[setting.keyColumn]"
-                          @click="checked"
-                        />
+              </template>
+              <template v-else>
+                <tr v-for="(row, i) in rows" :key="i" class="vtl-tbody-tr">
+                  <td v-if="hasCheckbox" class="vtl-tbody-td">
+                    <div>
+                      <input
+                        type="checkbox"
+                        class="vtl-tbody-checkbox"
+                        :ref="
+                          (el) => {
+                            rowCheckbox[i] = el;
+                          }
+                        "
+                        :value="row[setting.keyColumn]"
+                        @click="checked"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    v-for="(col, j) in columns"
+                    :key="j"
+                    class="vtl-tbody-td"
+                    :class="col.columnClasses"
+                    :style="col.columnStyles"
+                  >
+                    <div v-if="col.display" v-html="col.display(row)"></div>
+                    <div v-else>
+                      <div v-if="setting.isSlotMode && slots[col.field]">
+                        <slot :name="col.field" :value="row"></slot>
                       </div>
-                    </td>
-                    <td
-                      v-for="(col, j) in columns"
-                      :key="j"
-                      class="vtl-tbody-td"
-                      :class="col.columnClasses"
-                      :style="col.columnStyles"
-                    >
-                      <div v-if="col.display" v-html="col.display(row)"></div>
-                      <template v-else>
-                        <div v-if="setting.isSlotMode && slots[col.field]">
-                          <slot :name="col.field" :value="row"></slot>
-                        </div>
-                        <span v-else>{{ row[col.field] }}</span>
-                      </template>
-                    </td>
-                  </tr>
-                </template>
-                <template v-else>
-                  <tr v-for="(row, i) in rows" :key="i" class="vtl-tbody-tr">
-                    <td v-if="hasCheckbox" class="vtl-tbody-td">
-                      <div>
-                        <input
-                          type="checkbox"
-                          class="vtl-tbody-checkbox"
-                          :ref="
-                            (el) => {
-                              rowCheckbox[i] = el;
-                            }
-                          "
-                          :value="row[setting.keyColumn]"
-                          @click="checked"
-                        />
-                      </div>
-                    </td>
-                    <td
-                      v-for="(col, j) in columns"
-                      :key="j"
-                      class="vtl-tbody-td"
-                      :class="col.columnClasses"
-                      :style="col.columnStyles"
-                    >
-                      <div v-if="col.display" v-html="col.display(row)"></div>
-                      <div v-else>
-                        <div v-if="setting.isSlotMode && slots[col.field]">
-                          <slot :name="col.field" :value="row"></slot>
-                        </div>
-                        <span v-else>{{ row[col.field] }}</span>
-                      </div>
-                    </td>
-                  </tr>
-                </template>
-              </tbody>
-            </table>
-          </div>
+                      <span v-else>{{ row[col.field] }}</span>
+                    </div>
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
         </div>
-        <div class="vtl-paging row" v-if="rows.length > 0">
-          <template v-if="!setting.isHidePaging">
-            <div class="vtl-paging-info col-sm-12 col-md-4">
-              <div role="status" aria-live="polite">
-                {{
-                  stringFormat(messages.pagingInfo, setting.offset, setting.limit, total)
-                }}
-              </div>
+      </div>
+      <div class="vtl-paging vtl-row" v-if="rows.length > 0">
+        <template v-if="!setting.isHidePaging">
+          <div class="vtl-paging-info col-sm-12 col-md-4">
+            <div role="status" aria-live="polite">
+              {{
+                stringFormat(messages.pagingInfo, setting.offset, setting.limit, total)
+              }}
             </div>
-            <div class="vtl-paging-change-div col-sm-12 col-md-4">
-              <span class="vtl-paging-count-label">{{
-                messages.pageSizeChangeLabel
-              }}</span>
-              <select class="vtl-paging-count-dropdown" v-model="setting.pageSize">
-                <option
-                  v-for="pageOption in pageOptions"
-                  :value="pageOption.value"
-                  :key="pageOption.value"
-                >
-                  {{ pageOption.text }}
-                </option>
-              </select>
-              <span class="vtl-paging-page-label">{{ messages.gotoPageLabel }}</span>
-              <select class="vtl-paging-page-dropdown" v-model="setting.page">
-                <option v-for="n in setting.maxPage" :key="n" :value="parseInt(n)">
-                  {{ n }}
-                </option>
-              </select>
-            </div>
-            <div class="vtl-paging-pagination-div col-sm-12 col-md-4">
-              <div
-                class="dataTables_paginate paging_simple_numbers"
-                id="dataTables-example_paginate"
+          </div>
+          <div class="vtl-paging-change-div col-sm-12 col-md-4">
+            <span class="vtl-paging-count-label">{{ messages.pageSizeChangeLabel }}</span>
+            <select class="vtl-paging-count-dropdown" v-model="setting.pageSize">
+              <option
+                v-for="pageOption in pageOptions"
+                :value="pageOption.value"
+                :key="pageOption.value"
               >
-                <ul class="vtl-paging-pagination-ul pagination">
-                  <li
-                    class="vtl-paging-pagination-page-li vtl-paging-pagination-page-li-first page-item"
-                    :class="{ disabled: setting.page <= 1 }"
-                  >
-                    <a
-                      class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-first page-link"
-                      href="javascript:void(0)"
-                      aria-label="Previous"
-                      @click="setting.page = 1"
-                    >
-                      <span aria-hidden="true">&laquo;</span>
-                      <span class="sr-only">First</span>
-                    </a>
-                  </li>
-                  <li
-                    class="vtl-paging-pagination-page-li vtl-paging-pagination-page-li-prev page-item"
-                    :class="{ disabled: setting.page <= 1 }"
-                  >
-                    <a
-                      class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-prev page-link"
-                      href="javascript:void(0)"
-                      aria-label="Previous"
-                      @click="prevPage"
-                    >
-                      <span aria-hidden="true">&lt;</span>
-                      <span class="sr-only">Prev</span>
-                    </a>
-                  </li>
-                  <li
-                    class="vtl-paging-pagination-page-li vtl-paging-pagination-page-li-number page-item"
-                    v-for="n in setting.paging"
-                    :key="n"
-                    :class="{ disabled: setting.page === n }"
-                  >
-                    <a
-                      class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-number page-link"
-                      href="javascript:void(0)"
-                      @click="movePage(n)"
-                      >{{ n }}</a
-                    >
-                  </li>
-                  <li
-                    class="vtl-paging-pagination-page-li vtl-paging-pagination-page-li-next page-item"
-                    :class="{ disabled: setting.page >= setting.maxPage }"
-                  >
-                    <a
-                      class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-next page-link"
-                      href="javascript:void(0)"
-                      aria-label="Next"
-                      @click="nextPage"
-                    >
-                      <span aria-hidden="true">&gt;</span>
-                      <span class="sr-only">Next</span>
-                    </a>
-                  </li>
-                  <li
-                    class="vtl-paging-pagination-page-li vtl-paging-pagination-page-li-last page-item"
-                    :class="{ disabled: setting.page >= setting.maxPage }"
-                  >
-                    <a
-                      class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-last page-link"
-                      href="javascript:void(0)"
-                      aria-label="Next"
-                      @click="setting.page = setting.maxPage"
-                    >
-                      <span aria-hidden="true">&raquo;</span>
-                      <span class="sr-only">Last</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </template>
-        </div>
-        <div class="row" v-else>
-          <div class="vtl-empty-msg col-sm-12 text-center">
-            {{ messages.noDataAvailable }}
+                {{ pageOption.text }}
+              </option>
+            </select>
+            <span class="vtl-paging-page-label">{{ messages.gotoPageLabel }}</span>
+            <select class="vtl-paging-page-dropdown" v-model="setting.page">
+              <option v-for="n in setting.maxPage" :key="n" :value="parseInt(n)">
+                {{ n }}
+              </option>
+            </select>
           </div>
+          <div class="vtl-paging-pagination-div col-sm-12 col-md-4">
+            <div class="dataTables_paginate">
+              <ul class="vtl-paging-pagination-ul vtl-pagination">
+                <li
+                  class="vtl-paging-pagination-page-li vtl-paging-pagination-page-li-first page-item"
+                  :class="{ disabled: setting.page <= 1 }"
+                >
+                  <a
+                    class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-first page-link"
+                    href="javascript:void(0)"
+                    aria-label="Previous"
+                    @click="setting.page = 1"
+                  >
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">First</span>
+                  </a>
+                </li>
+                <li
+                  class="vtl-paging-pagination-page-li vtl-paging-pagination-page-li-prev page-item"
+                  :class="{ disabled: setting.page <= 1 }"
+                >
+                  <a
+                    class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-prev page-link"
+                    href="javascript:void(0)"
+                    aria-label="Previous"
+                    @click="prevPage"
+                  >
+                    <span aria-hidden="true">&lt;</span>
+                    <span class="sr-only">Prev</span>
+                  </a>
+                </li>
+                <li
+                  class="vtl-paging-pagination-page-li vtl-paging-pagination-page-li-number page-item"
+                  v-for="n in setting.paging"
+                  :key="n"
+                  :class="{ disabled: setting.page === n }"
+                >
+                  <a
+                    class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-number page-link"
+                    href="javascript:void(0)"
+                    @click="movePage(n)"
+                    >{{ n }}</a
+                  >
+                </li>
+                <li
+                  class="vtl-paging-pagination-page-li vtl-paging-pagination-page-li-next page-item"
+                  :class="{ disabled: setting.page >= setting.maxPage }"
+                >
+                  <a
+                    class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-next page-link"
+                    href="javascript:void(0)"
+                    aria-label="Next"
+                    @click="nextPage"
+                  >
+                    <span aria-hidden="true">&gt;</span>
+                    <span class="sr-only">Next</span>
+                  </a>
+                </li>
+                <li
+                  class="vtl-paging-pagination-page-li vtl-paging-pagination-page-li-last page-item"
+                  :class="{ disabled: setting.page >= setting.maxPage }"
+                >
+                  <a
+                    class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-last page-link"
+                    href="javascript:void(0)"
+                    aria-label="Next"
+                    @click="setting.page = setting.maxPage"
+                  >
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Last</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </template>
+      </div>
+      <div class="vtl-row" v-else>
+        <div class="vtl-empty-msg col-sm-12 text-center">
+          {{ messages.noDataAvailable }}
         </div>
       </div>
     </div>
@@ -781,30 +767,30 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.checkbox-th {
+.vtl-checkbox-th {
   width: 1%;
 }
 
-.both {
+.vtl-both {
   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAQAAADYWf5HAAAAkElEQVQoz7X QMQ5AQBCF4dWQSJxC5wwax1Cq1e7BAdxD5SL+Tq/QCM1oNiJidwox0355mXnG/DrEtIQ6azioNZQxI0ykPhTQIwhCR+BmBYtlK7kLJYwWCcJA9M4qdrZrd8pPjZWPtOqdRQy320YSV17OatFC4euts6z39GYMKRPCTKY9UnPQ6P+GtMRfGtPnBCiqhAeJPmkqAAAAAElFTkSuQmCC");
 }
 
-.sortable {
+.vtl-sortable {
   cursor: pointer;
   background-position: right;
   background-repeat: no-repeat;
   padding-right: 30px !important;
 }
 
-.asc {
+.vtl-asc {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAZ0lEQVQ4y2NgGLKgquEuFxBPAGI2ahhWCsS/gDibUoO0gPgxEP8H4ttArEyuQYxAPBdqEAxPBImTY5gjEL9DM+wTENuQahAvEO9DMwiGdwAxOymGJQLxTyD+jgWDxCMZRsEoGAVoAADeemwtPcZI2wAAAABJRU5ErkJggg==);
 }
 
-.desc {
+.vtl-desc {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAZUlEQVQ4y2NgGAWjYBSggaqGu5FA/BOIv2PBIPFEUgxjB+IdQPwfC94HxLykus4GiD+hGfQOiB3J8SojEE9EM2wuSJzcsFMG4ttQgx4DsRalkZENxL+AuJQaMcsGxBOAmGvopk8AVz1sLZgg0bsAAAAASUVORK5CYII=);
 }
 
-.loading-mask {
+.vtl-loading-mask {
   position: absolute;
   z-index: 9998;
   top: 0;
@@ -817,20 +803,14 @@ export default defineComponent({
   transition: opacity 0.3s ease;
 }
 
-.loading-content {
+.vtl-loading-content {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/*.loading-icon {*/
-/*  display: flex;*/
-/*  margin-left: auto;*/
-/*  margin-right: auto;*/
-/*}*/
-
-.card {
+.vtl-card {
   position: relative;
   display: -ms-flexbox;
   display: flex;
@@ -840,7 +820,6 @@ export default defineComponent({
   word-wrap: break-word;
   background-color: #fff;
   background-clip: border-box;
-  padding: 20px;
 }
 
 select {
@@ -852,7 +831,7 @@ select {
   margin-bottom: 0;
 }
 
-table {
+.vtl-table {
   width: 100%;
   margin-bottom: 1rem;
   color: #212529;
@@ -869,53 +848,49 @@ tr {
   border-color: inherit;
 }
 
-.table .thead-dark th {
-  color: #fff;
-  background-color: #343a40;
-  border-color: #454d55;
-}
-
-.table-bordered thead td,
-.table-bordered thead th {
+.vtl-table-bordered thead td,
+.vtl-table-bordered thead th {
   border-bottom-width: 2px;
 }
 
-.table thead th {
+.vtl-table thead th {
   vertical-align: bottom;
+  color: #fff;
+  background-color: #343a40;
+  border-color: #454d55;
   border-bottom: 2px solid #dee2e6;
 }
 
-.table-bordered td,
-.table-bordered th {
+.vtl-table-bordered td,
+.vtl-table-bordered th {
   border: 1px solid #dee2e6;
 }
 
-.table td,
-.table th {
+.vtl-table td,
+.vtl-table th {
   padding: 0.75rem;
   vertical-align: top;
   border-top: 1px solid #dee2e6;
-}
-
-/*.table-border {*/
-/*  border: 1px solid #dee2e6;*/
-/*}*/
-
-.table td,
-.table th {
   vertical-align: middle;
 }
-.table-bordered td,
-.table-bordered th {
-  border: 1px solid #dee2e6;
+
+.vtl-table-hover tbody tr:hover {
+  color: #212529;
+  background-color: rgba(0, 0, 0, 0.075);
 }
-.table td,
-.table th {
-  padding: 0.75rem;
-  vertical-align: top;
-  border-top: 1px solid #dee2e6;
+
+.vtl-table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
-.row {
+
+.vtl-table-responsive > .vtl-table-bordered {
+  border: 0;
+}
+
+.vtl-row {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
@@ -924,19 +899,10 @@ tr {
   margin-left: -15px;
 }
 
-div.dataTables_wrapper div.dataTables_paginate {
-  margin: 0;
-  white-space: nowrap;
-  text-align: right;
-}
-
-div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+.vtl-pagination {
   margin: 2px 0;
   white-space: nowrap;
   justify-content: flex-end;
-}
-
-.pagination {
   display: -ms-flexbox;
   display: flex;
   padding-left: 0;
@@ -986,19 +952,31 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
   box-sizing: border-box;
 }
 
-@media (min-width: 576px) {
-  .col-sm-12 {
-    -ms-flex: 0 0 100%;
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
+.col-sm-12 {
+  -ms-flex: 0 0 100%;
+  flex: 0 0 100%;
+  max-width: 100%;
 }
 
-@media (min-width: 768px) {
-  .col-md-4 {
-    -ms-flex: 0 0 33.333333%;
-    flex: 0 0 33.333333%;
-    max-width: 33.333333%;
+.col-md-4 {
+  -ms-flex: 0 0 33.333333%;
+  flex: 0 0 33.333333%;
+  max-width: 33.333333%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+@media (min-width: 576px) {
+  .vtl-table-responsive-sm {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .vtl-table-responsive-sm > .table-bordered {
+    border: 0;
   }
 }
 </style>
