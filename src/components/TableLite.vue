@@ -859,8 +859,6 @@ tr {
   display: flex;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  margin-right: -15px;
-  margin-left: -15px;
 }
 
 .vtl-pagination {
@@ -881,6 +879,7 @@ tr {
   background-color: #fff;
   border-color: #dee2e6;
 }
+
 .page-item:first-child .page-link {
   margin-left: 0;
   border-top-left-radius: 0.25rem;
@@ -922,12 +921,6 @@ tr {
   max-width: 100%;
 }
 
-.col-md-4 {
-  -ms-flex: 0 0 33.333333%;
-  flex: 0 0 33.333333%;
-  max-width: 33.333333%;
-}
-
 .text-center {
   text-align: center;
 }
@@ -941,6 +934,11 @@ tr {
   }
   .vtl-table-responsive-sm > .table-bordered {
     border: 0;
+  }
+  .col-md-4 {
+    -ms-flex: 0 0 33.333333%;
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
   }
 }
 </style>
