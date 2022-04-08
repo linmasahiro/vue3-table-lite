@@ -268,6 +268,11 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    // Checkbox勾選後返回資料的型態 (Returns data type for checked of Checkbox)
+    checkedReturnType: {
+      type: String,
+      default: "key",
+    },
     // 標題 (title)
     title: {
       type: String,
@@ -501,11 +506,15 @@ export default defineComponent({
         () => setting.isCheckAll,
         (state) => {
           let isChecked = [];
-          rowCheckbox.value.forEach((val) => {
+          rowCheckbox.value.forEach((val, i) => {
             if (val) {
               val.checked = state;
               if (val.checked) {
-                isChecked.push(val.value);
+                if (props.checkedReturnType == "row") {
+                  isChecked.push(localRows.value[i]);
+                } else {
+                  isChecked.push(val.value);
+                }
               }
             }
           });
@@ -520,9 +529,13 @@ export default defineComponent({
      */
     const checked = () => {
       let isChecked = [];
-      rowCheckbox.value.forEach((val) => {
+      rowCheckbox.value.forEach((val, i) => {
         if (val && val.checked) {
-          isChecked.push(val.value);
+          if (props.checkedReturnType == "row") {
+            isChecked.push(localRows.value[i]);
+          } else {
+            isChecked.push(val.value);
+          }
         }
       });
       // 回傳畫面上選上的資料 (Return the selected data on the screen)

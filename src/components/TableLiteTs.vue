@@ -294,6 +294,11 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    // Checkbox勾選後返回資料的型態 (Returns data type for checked of Checkbox)
+    checkedReturnType: {
+      type: String,
+      default: "key",
+    },
     // 標題 (title)
     title: {
       type: String,
@@ -535,12 +540,16 @@ export default defineComponent({
       watch(
         () => setting.isCheckAll,
         (state: boolean) => {
-          let isChecked: Array<string> = [];
-          rowCheckbox.value.forEach((val: HTMLInputElement) => {
+          let isChecked: Array<string | unknown> = [];
+          rowCheckbox.value.forEach((val: HTMLInputElement, i: number) => {
             if (val) {
               val.checked = state;
               if (val.checked) {
-                isChecked.push(val.value);
+                if (props.checkedReturnType == "row") {
+                  isChecked.push(localRows.value[i]);
+                } else {
+                  isChecked.push(val.value);
+                }
               }
             }
           });
@@ -554,10 +563,14 @@ export default defineComponent({
      * Checkbox點擊事件 (Checkbox click event)
      */
     const checked = () => {
-      let isChecked: Array<string> = [];
-      rowCheckbox.value.forEach((val: HTMLInputElement) => {
+      let isChecked: Array<string | unknown> = [];
+      rowCheckbox.value.forEach((val: HTMLInputElement, i: number) => {
         if (val && val.checked) {
-          isChecked.push(val.value);
+          if (props.checkedReturnType == "row") {
+            isChecked.push(localRows.value[i]);
+          } else {
+            isChecked.push(val.value);
+          }
         }
       });
       // 回傳畫面上選上的資料 (Return the selected data on the screen)
