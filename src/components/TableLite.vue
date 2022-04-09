@@ -53,7 +53,12 @@
             </thead>
             <tbody v-if="rows.length > 0" class="vtl-tbody">
               <template v-if="isStaticMode">
-                <tr v-for="(row, i) in localRows" :key="i" class="vtl-tbody-tr">
+                <tr
+                  v-for="(row, i) in localRows"
+                  :key="i"
+                  class="vtl-tbody-tr"
+                  :class="typeof rowClasses === 'function' ? rowClasses(row) : rowClasses"
+                >
                   <td v-if="hasCheckbox" class="vtl-tbody-td">
                     <div>
                       <input
@@ -87,7 +92,12 @@
                 </tr>
               </template>
               <template v-else>
-                <tr v-for="(row, i) in rows" :key="i" class="vtl-tbody-tr">
+                <tr
+                  v-for="(row, i) in rows"
+                  :key="i"
+                  class="vtl-tbody-tr"
+                  :class="typeof rowClasses === 'function' ? rowClasses(row) : rowClasses"
+                >
                   <td v-if="hasCheckbox" class="vtl-tbody-td">
                     <div>
                       <input
@@ -288,6 +298,13 @@ export default defineComponent({
     // 資料 (data)
     rows: {
       type: Array,
+      default: () => {
+        return [];
+      },
+    },
+    // 資料列類別 (data row classes)
+    rowClasses: {
+      type: [Array, Function],
       default: () => {
         return [];
       },

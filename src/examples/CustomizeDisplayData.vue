@@ -5,6 +5,7 @@
     :is-re-search="table.isReSearch"
     :columns="table.columns"
     :rows="table.rows"
+    :rowClasses="table.rowClasses"
     :total="table.totalRecordCount"
     :sortable="table.sortable"
     :messages="table.messages"
@@ -53,6 +54,12 @@ export default defineComponent({
     const table = reactive({
       isLoading: false,
       isReSearch: false,
+      rowClasses: (row) => {
+        if (row.id == 1) {
+          return ["aaa", "is-id-one"];
+        }
+        return ["bbb", "other"];
+      },
       columns: [
         {
           label: "ID",
@@ -157,7 +164,7 @@ export default defineComponent({
     };
 
     // First get data
-    doSearch(0, 10, 'id', 'asc');
+    doSearch(0, 10, "id", "asc");
 
     return {
       table,
@@ -168,4 +175,3 @@ export default defineComponent({
   },
 });
 </script>
-

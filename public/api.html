@@ -38,7 +38,7 @@
         <div id="sidebar" class="col-12 col-md-3 sidebar">
             <div class="p-5">
                 <div class="mb-5">
-                    <h5 class="mb-5" style="color: #7e99b6;">v1.1.8-2</h5>
+                    <h5 class="mb-5" style="color: #7e99b6;">v1.1.9</h5>
                     <p><a href="https://github.com/linmasahiro/vue3-table-lite" class="menu-link">Github</a></p>
                     <p>
                         <iframe
@@ -264,6 +264,15 @@
                         <li>Description: Records</li>
                         <li>Required: <span class="text-danger">Yes</span></li>
                         <li>Type: <span class="text-blue">Array</span></li>
+                    </ul>
+                </li>
+                <li class="mb-2">
+                    <b>rowClasses</b>
+                    <ul>
+                        <li>Description: &lt;tr&gt; tag's classes</li>
+                        <li>Required: <span class="text-danger">No</span></li>
+                        <li>Type: <span class="text-blue">Array | Function</span></li>
+                        <li>Example: <span class="text-blue">["a", "b"] | (row) => { return (row.name === "tony) ? ['member'] : [] } </span></li>
                     </ul>
                 </li>
                 <li class="mb-2">
