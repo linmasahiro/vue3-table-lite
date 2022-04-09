@@ -117,7 +117,7 @@ A simple and lightweight data table component for Vue.js 3. Features sorting, pa
 [Go to Check!!](https://linmasahiro.github.io/vue3-table-lite/dist/usage.html)
 
 ### release
-    ver 1.1.9 : New Features [#35](https://github.com/linmasahiro/vue3-table-lite/issues/35) [#36](https://github.com/linmasahiro/vue3-table-lite/issues/36)
+    ver 1.1.9 : Added change 「Return checked row data's type」 option.
     ver 1.1.8-1 : Removed unnecessary style-class and changed something class-name `[#33](https://github.com/linmasahiro/vue3-table-lite/issues/33)`
     ver 1.1.8 : Add option to set header/column class and style(in-line) `[#32](https://github.com/linmasahiro/vue3-table-lite/issues/32)`
     ver 1.1.7 : Add option to set custom values in page size dropdown `#29`
