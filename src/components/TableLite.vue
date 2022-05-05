@@ -58,6 +58,7 @@
                   :key="i"
                   class="vtl-tbody-tr"
                   :class="typeof rowClasses === 'function' ? rowClasses(row) : rowClasses"
+                  @click="$emit('row-clicked', row)"
                 >
                   <td v-if="hasCheckbox" class="vtl-tbody-td">
                     <div>
@@ -97,6 +98,7 @@
                   :key="i"
                   class="vtl-tbody-tr"
                   :class="typeof rowClasses === 'function' ? rowClasses(row) : rowClasses"
+                  @click="$emit('row-clicked', row)"
                 >
                   <td v-if="hasCheckbox" class="vtl-tbody-td">
                     <div>
@@ -261,7 +263,7 @@ import {
 
 export default defineComponent({
   name: "my-table",
-  emits: ["return-checked-rows", "do-search", "is-finished", "get-now-page"],
+  emits: ["return-checked-rows", "do-search", "is-finished", "get-now-page", "row-clicked"],
   props: {
     // 是否讀取中 (is data loading)
     isLoading: {
@@ -544,7 +546,8 @@ export default defineComponent({
     /**
      * Checkbox點擊事件 (Checkbox click event)
      */
-    const checked = () => {
+    const checked = (event) => {
+      event.stopPropagation();
       let isChecked = [];
       rowCheckbox.value.forEach((val, i) => {
         if (val && val.checked) {

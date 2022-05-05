@@ -79,6 +79,7 @@
                     <a href="./advanced.html#customize-style2" class="menu-link">Customize style2</a>
                     <a href="./advanced.html#customize-message" class="menu-link">Customize message</a>
                     <a href="./advanced.html#customize-page-dropdown" class="menu-link">Customize Page's dropdown</a>
+                    <a href="./advanced.html#row-clicked" class="menu-link">Catch Row clicked</a>
                 </div>
             </div>
         </div>
@@ -523,6 +524,25 @@
                                             <li>Description: Pass by page no. </li>
                                             <li>Required: <span class="text-blue">No</span></li>
                                             <li>Type: <span class="text-blue">Number</span></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="mb-2">
+                        <b>row-clicked</b>
+                        <ul>
+                            <li>Description: You can get row data from this function after row clicked.</li>
+                            <li>Type: <span class="text-blue">(rowData) => void</span></li>
+                            <li>Arguments:
+                                <ul>
+                                    <li>
+                                        <ul>
+                                            <b>rowData</b>
+                                            <li>Description: Pass by row data. </li>
+                                            <li>Required: <span class="text-blue">No</span></li>
+                                            <li>Type: <span class="text-blue">Object</span></li>
                                         </ul>
                                     </li>
                                 </ul>
