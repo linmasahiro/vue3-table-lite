@@ -760,6 +760,11 @@ export default defineComponent({
       };
     }
   },
+  watch: {
+    pageSize() {
+      this.setting.pageSize = this.pageSize
+    }
+  }
 });
 </script>
 
