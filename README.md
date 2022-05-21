@@ -117,6 +117,7 @@ A simple and lightweight data table component for Vue.js 3. Features sorting, pa
 [Go to Check!!](https://linmasahiro.github.io/vue3-table-lite/dist/usage.html)
 
 ### release
+    ver 1.2.1 : Fixed "setting.pageSize" property is not accessible from outside and is not in sync with the "props.pageSize" property
     ver 1.2.0 : Added Row click event `#41`
     ver 1.1.9 : New Features `#35` `#36`
     ver 1.1.8-1 : Removed unnecessary style-class and changed something class-name `#33`

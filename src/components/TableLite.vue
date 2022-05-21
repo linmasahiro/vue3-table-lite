@@ -263,7 +263,13 @@ import {
 
 export default defineComponent({
   name: "my-table",
-  emits: ["return-checked-rows", "do-search", "is-finished", "get-now-page", "row-clicked"],
+  emits: [
+    "return-checked-rows",
+    "do-search",
+    "is-finished",
+    "get-now-page",
+    "row-clicked",
+  ],
   props: {
     // 是否讀取中 (is data loading)
     isLoading: {
@@ -657,8 +663,15 @@ export default defineComponent({
         setting.isCheckAll = false;
       }
     };
-    // 監聽顯示筆數切換 (Monitor display number switch)
+    // 監聽組件內顯示筆數切換 (Monitor display number switch from component)
     watch(() => setting.pageSize, changePageSize);
+    // 監聽來自Prop的顯示筆數切換 (Monitor display number switch from prop)
+    watch(
+      () => props.pageSize,
+      (newPageSize) => {
+        setting.pageSize = newPageSize;
+      }
+    );
 
     /**
      * 上一頁 (Previous page)
@@ -760,11 +773,6 @@ export default defineComponent({
       };
     }
   },
-  watch: {
-    pageSize() {
-      this.setting.pageSize = this.pageSize
-    }
-  }
 });
 </script>
 
