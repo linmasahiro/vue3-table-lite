@@ -474,23 +474,15 @@ export default defineComponent({
 
     // 組件內用資料 (Data rows for local)
     const localRows = computed(() => {
-      // sort rows
-      let property = setting.order;
-      let sort_order = 1;
-      if (setting.sort === "desc") {
-        sort_order = -1;
-      }
       let rows = props.rows;
-      rows.sort((a, b) => {
-        let tmpA = parseInt(a[property]) ? parseInt(a[property]) : a[property];
-        let tmpB = parseInt(b[property]) ? parseInt(b[property]) : b[property];
-        if (tmpA < tmpB) {
-          return -1 * sort_order;
-        } else if (tmpA > tmpB) {
-          return sort_order;
-        } else {
-          return 0;
-        }
+      // refs https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator/compare
+      var collator = new Intl.Collator(undefined, {
+        numeric: true,
+        sensitivity: "base",
+      });
+      let sortOrder = setting.sort === "desc" ? -1 : 1;
+      rows.sort(function (a, b) {
+        return collator.compare(a[setting.order], b[setting.order]) * sortOrder;
       });
 
       // return sorted and offset rows

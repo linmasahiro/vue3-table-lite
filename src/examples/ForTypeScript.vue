@@ -181,7 +181,7 @@ export default defineComponent({
       console.log(rowsKey);
     };
 
-    doSearch(0, 10, 'id', 'asc');
+    doSearch(0, 15, 'id', 'asc');
 
     return {
       table,
