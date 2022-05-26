@@ -482,9 +482,11 @@ export default defineComponent({
       }
       let rows = props.rows;
       rows.sort((a, b) => {
-        if (a[property] < b[property]) {
+        let tmpA = parseInt(a[property]) ? parseInt(a[property]) : a[property];
+        let tmpB = parseInt(b[property]) ? parseInt(b[property]) : b[property];
+        if (tmpA < tmpB) {
           return -1 * sort_order;
-        } else if (a[property] > b[property]) {
+        } else if (tmpA > tmpB) {
           return sort_order;
         } else {
           return 0;
