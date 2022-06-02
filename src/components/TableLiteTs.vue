@@ -12,6 +12,10 @@
           <table
             class="vtl-table vtl-table-hover vtl-table-bordered vtl-table-responsive vtl-table-responsive-sm"
             ref="localTable"
+            :class="{
+              'fixed-first-column': isFixedFirstColumn,
+              'fixed-first-second-column': isFixedFirstColumn && hasCheckbox,
+            }"
           >
             <thead class="vtl-thead">
               <tr class="vtl-thead-tr">
@@ -321,6 +325,11 @@ export default defineComponent({
     title: {
       type: String,
       default: "",
+    },
+    // 是否鎖定第一欄位位置 (Fixed first column's position)
+    isFixedFirstColumn: {
+      type: Boolean,
+      default: false,
     },
     // 欄位 (Field)
     columns: {
@@ -1022,5 +1031,25 @@ tr {
     flex: 0 0 33.333333%;
     max-width: 33.333333%;
   }
+}
+
+.fixed-first-column {
+  overflow-x: auto;
+}
+.fixed-first-column tr th:first-child,
+.fixed-first-column tr td:first-child {
+  position: sticky;
+  left: 0;
+}
+
+.fixed-first-second-column tr th:nth-child(2),
+.fixed-first-second-column tr td:nth-child(2) {
+  position: sticky;
+  left: 36px;
+}
+
+.fixed-first-column tr td:first-child,
+.fixed-first-second-column tr td:nth-child(2) {
+  background-color: white;
 }
 </style>

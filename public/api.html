@@ -12,8 +12,6 @@
     <title>vue3-table-lite</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css">
     <link rel="stylesheet" href="./app.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
@@ -80,6 +78,7 @@
                     <a href="./advanced.html#customize-message" class="menu-link">Customize message</a>
                     <a href="./advanced.html#customize-page-dropdown" class="menu-link">Customize Page's dropdown</a>
                     <a href="./advanced.html#row-clicked" class="menu-link">Catch Row clicked</a>
+                    <a href="./advanced.html#fixed-first-column" class="menu-link">Fixed first column (horizontal scrolling)</a>
                 </div>
             </div>
         </div>
@@ -148,6 +147,15 @@
                         <b>is-re-search</b>
                         <ul>
                             <li>Description: If reload data, be set true (Not required on is-static-mode)</li>
+                            <li>Required: <span class="text-blue">No</span></li>
+                            <li>Type: <span class="text-blue">Boolean</span></li>
+                            <li>Default: <span class="text-blue">false</span></li>
+                        </ul>
+                    </li>
+                    <li class="mb-2">
+                        <b>is-fixed-first-column</b>
+                        <ul>
+                            <li>Description: Fixed first column on horizontal scrolling</li>
                             <li>Required: <span class="text-blue">No</span></li>
                             <li>Type: <span class="text-blue">Boolean</span></li>
                             <li>Default: <span class="text-blue">false</span></li>

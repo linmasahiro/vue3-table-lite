@@ -7,6 +7,7 @@ import CustomizeStyle2 from './examples/CustomizeStyle2.vue'
 import CustomizeMessage from './examples/CustomizeMessage.vue'
 import CustomizePageDropdown from './examples/CustomizePageDropdown.vue'
 import RowClicked from './examples/RowClicked.vue'
+import FixedFirstColumn from './examples/FixedFirstColumn.vue'
 
 createApp(CustomizeDisplayData).mount('#customize-display-table')
 createApp(Filter).mount('#filter-table')
@@ -16,3 +17,4 @@ createApp(CustomizeStyle2).mount('#customize-style-table2')
 createApp(CustomizeMessage).mount('#customize-message-table')
 createApp(CustomizePageDropdown).mount('#customize-page-dropdown-table')
 createApp(RowClicked).mount('#row-clicked-table')
+createApp(FixedFirstColumn).mount('#fixed-first-column-table')

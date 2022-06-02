@@ -3,7 +3,13 @@
     <div class="vtl-card-title" v-if="title">{{ title }}</div>
     <div class="vtl-card-body">
       <div class="vtl-row">
-        <div class="col-sm-12">
+        <div
+          class="col-sm-12"
+          :class="{
+            'fixed-first-column': isFixedFirstColumn,
+            'fixed-first-second-column': isFixedFirstColumn && hasCheckbox,
+          }"
+        >
           <div v-if="isLoading" class="vtl-loading-mask">
             <div class="vtl-loading-content">
               <span style="color: white">Loading...</span>
@@ -31,7 +37,9 @@
                   :key="index"
                   :style="
                     Object.assign(
-                      { width: col.width ? col.width : 'auto' },
+                      {
+                        width: col.width ? col.width : 'auto',
+                      },
                       col.headerStyles
                     )
                   "
@@ -295,6 +303,11 @@ export default defineComponent({
     title: {
       type: String,
       default: "",
+    },
+    // 是否鎖定第一欄位位置 (Fixed first column's position)
+    isFixedFirstColumn: {
+      type: Boolean,
+      default: false,
     },
     // 欄位 (Field)
     columns: {
@@ -980,5 +993,25 @@ tr {
     flex: 0 0 33.333333%;
     max-width: 33.333333%;
   }
+}
+
+.fixed-first-column {
+  overflow-x: auto;
+}
+.fixed-first-column tr th:first-child,
+.fixed-first-column tr td:first-child {
+  position: sticky;
+  left: 0;
+}
+
+.fixed-first-second-column tr th:nth-child(2),
+.fixed-first-second-column tr td:nth-child(2) {
+  position: sticky;
+  left: 36px;
+}
+
+.fixed-first-column tr td:first-child,
+.fixed-first-second-column tr td:nth-child(2) {
+  background-color: white;
 }
 </style>

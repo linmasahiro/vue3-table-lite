@@ -117,6 +117,7 @@ A simple and lightweight data table component for Vue.js 3. Features sorting, pa
 [Go to Check!!](https://linmasahiro.github.io/vue3-table-lite/dist/usage.html)
 
 ### release
+    ver 1.2.3 : Added option for fixed first column on horizontal scrolling.
     ver 1.2.2 : Fixed result of sorting number as string was wrong on "static-mode" `#47`
     ver 1.2.1 : Fixed "setting.pageSize" property is not accessible from outside and is not in sync with the "props.pageSize" property
     ver 1.2.0 : Added Row click event `#41`
