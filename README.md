@@ -15,9 +15,9 @@ A simple and lightweight data table component for Vue.js 3. Features sorting, pa
 
 ## Document and demo
 
-[Document](https://linmasahiro.github.io/vue3-table-lite/dist/)
+[Document](https://vue3-lite-table.vercel.app/)
 
-[Online Demo](https://linmasahiro.github.io/vue3-table-lite/dist/simple.html)
+[Online Demo](https://vue3-lite-table.vercel.app/simple-examples)
 
 ## Support
 
@@ -114,7 +114,7 @@ A simple and lightweight data table component for Vue.js 3. Features sorting, pa
     };
 
 ## More...
-[Go to Check!!](https://linmasahiro.github.io/vue3-table-lite/dist/usage.html)
+[Go to Check!!](https://vue3-lite-table.vercel.app/usage#defMode)
 
 ### release
     ver 1.2.3 : Added option for fixed first column on horizontal scrolling.
