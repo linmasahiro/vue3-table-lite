@@ -1,26 +1,17 @@
 <template>
   <table-lite
-    :is-slot-mode="true"
     :is-static-mode="true"
-    :is-loading="table.isLoading"
     :columns="table.columns"
     :rows="table.rows"
     :total="table.totalRecordCount"
     :sortable="table.sortable"
     @VnodeMounted="initTable"
-  >
-    <template v-slot:name="data">
-      <Test>
-        {{ data.value.name }}
-      </Test>
-    </template>
-  </table-lite>
+  ></table-lite>
 </template>
 
 <script>
 import { defineComponent, reactive, ref, computed, createApp, h } from "vue";
 import TableLite from "../components/TableLite.vue";
-import Test from "../components/Test.vue";
 
 const searchTerm = ref(""); // Search text
 
@@ -37,7 +28,7 @@ for (let i = 1; i < 126; i++) {
 
 export default defineComponent({
   name: "App",
-  components: { TableLite, Test },
+  components: { TableLite },
   setup() {
     // Table config
     const table = reactive({
