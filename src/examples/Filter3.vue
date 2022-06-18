@@ -9,12 +9,6 @@
     :sortable="table.sortable"
     @VnodeMounted="initTable"
   >
-    <template v-slot:id="data">
-      <div v-if="data.value.id == 0">
-        <input v-model="searchTerm" />
-      </div>
-      <div v-else v-html="data.value.id"></div>
-    </template>
     <template v-slot:name="data">
       <Test>
         {{ data.value.name }}
