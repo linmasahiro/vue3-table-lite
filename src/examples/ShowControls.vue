@@ -1,5 +1,3 @@
-////////////////////////////// // // Show controls example // // @author M Atif // @email
-atif@starzdev.com // @website https://websengineer.me/ // //////////////////////////////
 <template>
   <section>
     <table-lite
@@ -29,7 +27,7 @@ atif@starzdev.com // @website https://websengineer.me/ // //////////////////////
             </div>
             <div
               :class="[data.value.showEdit ? 'block' : 'hidden']"
-              class="w-240 bg-white py-5 px-8 z-50 absolute -left-64 flex items-center uppercase font-semibold"
+              class="w-240 bg-white py-5 px-8 z-50 absolute md:-left-72 -left-64 flex items-center uppercase font-semibold"
             >
               <i class="fa-solid fa-pen text-green"></i>
               <p @click="clickedRow = !clickedRow" class="ml-1 cursor-pointer">
@@ -54,6 +52,15 @@ atif@starzdev.com // @website https://websengineer.me/ // //////////////////////
 </template>
 
 <script>
+/**
+ *
+ *  Show controls example
+ *
+ *  @author  M Atif
+ *  @email   atif@starzdev.com
+ *  @website https://websengineer.me/
+ *
+ */
 import { reactive, ref, defineComponent, computed } from "vue";
 import TableLite from "../components/TableLite.vue";
 import Model from "./Additional/Model.vue";
