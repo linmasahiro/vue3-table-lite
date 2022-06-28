@@ -14,6 +14,7 @@ import { defineComponent, reactive, ref, computed, createApp, h } from "vue";
 import TableLite from "../components/TableLite.vue";
 
 const searchTerm = ref(""); // Search text
+const searchTerm2 = ref(""); // Search text
 
 // Fake data
 const data = reactive([]);
@@ -57,7 +58,7 @@ export default defineComponent({
       rows: computed(() => {
         return data.filter(
           (x) =>
-            x.email.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
+            x.email.toLowerCase().includes(searchTerm2.value.toLowerCase()) &&
             x.name.toLowerCase().includes(searchTerm.value.toLowerCase())
         );
       }),
@@ -98,7 +99,20 @@ export default defineComponent({
               });
           },
         })
-      ).mount(childTh[0]);
+      ).mount(childTh[1]);
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                value: searchTerm2.value,
+                onInput: (e) => {
+                  searchTerm2.value = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[2]);
 
       // append cloned element to the header after first <tr>
       headerTr[0].after(cloneTr)
@@ -106,6 +120,7 @@ export default defineComponent({
 
     return {
       searchTerm,
+      searchTerm2,
       table,
       initTable,
     };
