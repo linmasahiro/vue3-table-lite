@@ -59,88 +59,159 @@
                 </th>
               </tr>
             </thead>
-            <tbody v-if="rows.length > 0" class="vtl-tbody">
-              <template v-if="isStaticMode">
-                <tr
-                  v-for="(row, i) in localRows"
-                  :key="i"
-                  class="vtl-tbody-tr"
-                  :class="typeof rowClasses === 'function' ? rowClasses(row) : rowClasses"
-                  @click="$emit('row-clicked', row)"
+            <template v-if="rows.length > 0">
+              <tbody
+                v-if="isStaticMode"
+                class="vtl-tbody"
+                :set="(templateRows = groupingKey == '' ? [localRows] : localRows)"
+              >
+                <template
+                  v-for="(rows, groupingIndex) in templateRows"
+                  :key="groupingIndex"
                 >
-                  <td v-if="hasCheckbox" class="vtl-tbody-td">
-                    <div>
-                      <input
-                        type="checkbox"
-                        class="vtl-tbody-checkbox"
-                        :ref="
-                          (el) => {
-                            rowCheckbox[i] = el;
-                          }
-                        "
-                        :value="row[setting.keyColumn]"
-                        @click="checked"
-                      />
-                    </div>
-                  </td>
-                  <td
-                    v-for="(col, j) in columns"
-                    :key="j"
-                    class="vtl-tbody-td"
-                    :class="col.columnClasses"
-                    :style="col.columnStyles"
-                  >
-                    <div v-if="col.display" v-html="col.display(row)"></div>
-                    <template v-else>
-                      <div v-if="setting.isSlotMode && slots[col.field]">
-                        <slot :name="col.field" :value="row"></slot>
+                  <tr v-if="groupingKey != ''" class="vtl-tbody-tr vtl-group-tr">
+                    <td
+                      :colspan="hasCheckbox ? columns.length + 1 : columns.length"
+                      class="vtl-tbody-td vtl-group-td"
+                    >
+                      <div class="flex">
+                        <div v-if="hasGroupToggle" class="animation">
+                          <a
+                            class="cursor-pointer"
+                            @click="toggleGroup($event, groupingIndex)"
+                            >▼</a
+                          >
+                        </div>
+                        <div
+                          class="ml-2"
+                          v-html="
+                            groupingDisplay
+                              ? groupingDisplay(groupingIndex)
+                              : groupingIndex
+                          "
+                        ></div>
                       </div>
-                      <span v-else>{{ row[col.field] }}</span>
-                    </template>
-                  </td>
-                </tr>
-              </template>
-              <template v-else>
-                <tr
-                  v-for="(row, i) in rows"
-                  :key="i"
-                  class="vtl-tbody-tr"
-                  :class="typeof rowClasses === 'function' ? rowClasses(row) : rowClasses"
-                  @click="$emit('row-clicked', row)"
+                    </td>
+                  </tr>
+                  <tr
+                    v-for="(row, i) in rows"
+                    :key="i"
+                    :name="'vtl-group-' + groupingIndex"
+                    class="vtl-tbody-tr"
+                    :class="
+                      typeof rowClasses === 'function' ? rowClasses(row) : rowClasses
+                    "
+                    @click="$emit('row-clicked', row)"
+                  >
+                    <td v-if="hasCheckbox" class="vtl-tbody-td">
+                      <div>
+                        <input
+                          type="checkbox"
+                          class="vtl-tbody-checkbox"
+                          :ref="
+                            (el) => {
+                              rowCheckbox.push(el);
+                            }
+                          "
+                          :value="row[setting.keyColumn]"
+                          @click="checked"
+                        />
+                      </div>
+                    </td>
+                    <td
+                      v-for="(col, j) in columns"
+                      :key="j"
+                      class="vtl-tbody-td"
+                      :class="col.columnClasses"
+                      :style="col.columnStyles"
+                    >
+                      <div v-if="col.display" v-html="col.display(row)"></div>
+                      <div v-else>
+                        <div v-if="setting.isSlotMode && slots[col.field]">
+                          <slot :name="col.field" :value="row"></slot>
+                        </div>
+                        <span v-else>{{ row[col.field] }}</span>
+                      </div>
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+              <tbody
+                v-else
+                :set="(templateRows = groupingKey == '' ? [rows] : groupingRows)"
+              >
+                <template
+                  v-for="(rows, groupingIndex) in templateRows"
+                  :key="groupingIndex"
                 >
-                  <td v-if="hasCheckbox" class="vtl-tbody-td">
-                    <div>
-                      <input
-                        type="checkbox"
-                        class="vtl-tbody-checkbox"
-                        :ref="
-                          (el) => {
-                            rowCheckbox[i] = el;
-                          }
-                        "
-                        :value="row[setting.keyColumn]"
-                        @click="checked"
-                      />
-                    </div>
-                  </td>
-                  <td
-                    v-for="(col, j) in columns"
-                    :key="j"
-                    class="vtl-tbody-td"
-                    :class="col.columnClasses"
-                    :style="col.columnStyles"
-                  >
-                    <div v-if="col.display" v-html="col.display(row)"></div>
-                    <div v-else>
-                      <div v-if="setting.isSlotMode && slots[col.field]">
-                        <slot :name="col.field" :value="row"></slot>
+                  <tr v-if="groupingKey != ''" class="vtl-tbody-tr vtl-group-tr">
+                    <td
+                      :colspan="hasCheckbox ? columns.length + 1 : columns.length"
+                      class="vtl-tbody-td vtl-group-td"
+                    >
+                      <div class="flex">
+                        <div v-if="hasGroupToggle" class="animation">
+                          <a
+                            class="cursor-pointer"
+                            @click="toggleGroup($event, groupingIndex)"
+                            >▼</a
+                          >
+                        </div>
+                        <div
+                          class="ml-2"
+                          v-html="
+                            groupingDisplay
+                              ? groupingDisplay(groupingIndex)
+                              : groupingIndex
+                          "
+                        ></div>
                       </div>
-                      <span v-else>{{ row[col.field] }}</span>
-                    </div>
-                  </td>
-                </tr>
-              </template>
-            </tbody>
+                    </td>
+                  </tr>
+                  <tr
+                    v-for="(row, i) in rows"
+                    :name="'vtl-group-' + groupingIndex"
+                    :key="i"
+                    class="vtl-tbody-tr"
+                    :class="
+                      typeof rowClasses === 'function' ? rowClasses(row) : rowClasses
+                    "
+                    @click="$emit('row-clicked', row)"
+                  >
+                    <td v-if="hasCheckbox" class="vtl-tbody-td">
+                      <div>
+                        <input
+                          type="checkbox"
+                          class="vtl-tbody-checkbox"
+                          :ref="
+                            (el) => {
+                              rowCheckbox.push(el);
+                            }
+                          "
+                          :value="row[setting.keyColumn]"
+                          @click="checked"
+                        />
+                      </div>
+                    </td>
+                    <td
+                      v-for="(col, j) in columns"
+                      :key="j"
+                      class="vtl-tbody-td"
+                      :class="col.columnClasses"
+                      :style="col.columnStyles"
+                    >
+                      <div v-if="col.display" v-html="col.display(row)"></div>
+                      <div v-else>
+                        <div v-if="setting.isSlotMode && slots[col.field]">
+                          <slot :name="col.field" :value="row"></slot>
+                        </div>
+                        <span v-else>{{ row[col.field] }}</span>
+                      </div>
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+            </template>
           </table>
         </div>
       </div>
@@ -400,6 +471,21 @@ export default defineComponent({
         },
       ],
     },
+    // 分類條件 (Key of grouping)
+    groupingKey: {
+      type: String,
+      default: "",
+    },
+    // 是否顯示隱藏分類開關 (Has hide group rows toggle)
+    hasGroupToggle: {
+      type: Boolean,
+      default: false,
+    },
+    // 客製化分類顯示 (Customize grouping title)
+    groupingDisplay: {
+      type: Function,
+      default: null,
+    },
   },
   setup(props, { emit, slots }) {
     let localTable = ref(null);
@@ -498,10 +584,24 @@ export default defineComponent({
         return collator.compare(a[setting.order], b[setting.order]) * sortOrder;
       });
 
-      // return sorted and offset rows
-      let result = [];
-      for (let index = setting.offset - 1; index < setting.limit; index++) {
-        if (rows[index]) {
+      let result = null;
+      if (props.groupingKey) {
+        // If have set grouping-key create group temp data
+        let tmp = {};
+        rows.forEach((v) => {
+          if (!tmp[v[props.groupingKey]]) {
+            tmp[v[props.groupingKey]] = [];
+          }
+          tmp[v[props.groupingKey]].push(v);
+        });
+
+        result = {};
+        for (let index = setting.offset - 1; index < setting.limit; index++) {
+          result[rows[index][props.groupingKey]] = tmp[rows[index][props.groupingKey]];
+        }
+      } else {
+        result = [];
+        for (let index = setting.offset - 1; index < setting.limit; index++) {
           result.push(rows[index]);
         }
       }
@@ -740,6 +840,36 @@ export default defineComponent({
       emit("get-now-page", setting.page);
     };
 
+    // Data rows for grouping (Default-mode only)
+    const groupingRows = computed(() => {
+      let result = {};
+      props.rows.forEach((v) => {
+        if (!result[v[props.groupingKey]]) {
+          result[v[props.groupingKey]] = [];
+        }
+        result[v[props.groupingKey]].push(v);
+      });
+
+      nextTick(function () {
+        callIsFinished();
+      });
+
+      return result;
+    });
+
+    /**
+     * Toggle Group rows
+     *
+     * @param {Event}  e
+     * @param {String} trId
+     */
+    const toggleGroup = (e, trId) => {
+      e.target.parentElement.classList.toggle("rotated-90");
+      document.getElementsByName("vtl-group-" + trId).forEach((element) => {
+        element.classList.toggle("hidden");
+      });
+    };
+
     /**
      * 組件掛載後事件 (Mounted Event)
      */
@@ -765,6 +895,8 @@ export default defineComponent({
         movePage,
         nextPage,
         stringFormat,
+        groupingRows,
+        toggleGroup,
       };
     } else {
       return {
@@ -777,6 +909,8 @@ export default defineComponent({
         movePage,
         nextPage,
         stringFormat,
+        groupingRows,
+        toggleGroup,
       };
     }
   },
@@ -1013,5 +1147,25 @@ tr {
 .fixed-first-column tr td:first-child,
 .fixed-first-second-column tr td:nth-child(2) {
   background-color: white;
+}
+
+.flex {
+  display: flex;
+}
+.animation {
+  transform: rotate(0deg);
+  transition: transform 0.3s;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.rotated-90 {
+  transform: rotate(-90deg);
+}
+.hidden {
+  display: none;
+}
+.ml-2 {
+  margin-left: 0.5rem;
 }
 </style>

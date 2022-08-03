@@ -79,8 +79,11 @@
                     <a href="./advanced.html#customize-message" class="menu-link">Customize message</a>
                     <a href="./advanced.html#customize-page-dropdown" class="menu-link">Customize Page's dropdown</a>
                     <a href="./advanced.html#row-clicked" class="menu-link">Catch Row clicked</a>
-                    <a href="./advanced.html#fixed-first-column" class="menu-link">Fixed first column (horizontal scrolling)</a>
+                    <a href="./advanced.html#fixed-first-column" class="menu-link">Fixed first column (horizontal
+                        scrolling)</a>
                     <a href="./advanced.html#show-controls" class="menu-link">Show controls</a>
+                    <a href="./advanced.html#grouping" class="menu-link">Grouping(with toggle)</a>
+                    <a href="./advanced.html#grouping2" class="menu-link">Grouping</a>
                 </div>
             </div>
         </div>
@@ -265,174 +268,201 @@
                                     </ul>
                                 </li>
                             </ul>
+                        </ul>
                     </li>
-                </ul>
-                </ul>
-                </li>
-                <li class="mb-2">
-                    <b>rows</b>
-                    <ul>
-                        <li>Description: Records</li>
-                        <li>Required: <span class="text-danger">Yes</span></li>
-                        <li>Type: <span class="text-blue">Array</span></li>
-                    </ul>
-                </li>
-                <li class="mb-2">
-                    <b>rowClasses</b>
-                    <ul>
-                        <li>Description: &lt;tr&gt; tag's classes</li>
-                        <li>Required: <span class="text-danger">No</span></li>
-                        <li>Type: <span class="text-blue">Array | Function</span></li>
-                        <li>Example: <span class="text-blue">["a", "b"] | (row) => { return (row.name === "tony) ? ['member'] : [] } </span></li>
-                    </ul>
-                </li>
-                <li class="mb-2">
-                    <b>total</b>
-                    <ul>
-                        <li>Description: Records count</li>
-                        <li>Required: <span class="text-danger">Yes</span></li>
-                        <li>Type: <span class="text-blue">Number</span></li>
-                    </ul>
-                </li>
-                <li class="mb-2">
-                    <b>sortable</b>
-                    <ul>
-                        <li>Description: Order field and sort for Sortable</li>
-                        <li>Required: <span class="text-danger">Yes</span></li>
-                        <li>Type: <span class="text-blue">Object</span></li>
+                    <li class="mb-2">
+                        <b>rows</b>
                         <ul>
-                            <li class="mb-2">
-                                <ul>
-                                    <b>order</b>
-                                    <li>Description: Field key</li>
-                                    <li>Required: <span class="text-danger">Yes</span></li>
-                                    <li>Type: <span class="text-blue">string</span></li>
-                                </ul>
+                            <li>Description: Records</li>
+                            <li>Required: <span class="text-danger">Yes</span></li>
+                            <li>Type: <span class="text-blue">Array</span></li>
+                        </ul>
+                    </li>
+                    <li class="mb-2">
+                        <b>rowClasses</b>
+                        <ul>
+                            <li>Description: &lt;tr&gt; tag's classes</li>
+                            <li>Required: <span class="text-danger">No</span></li>
+                            <li>Type: <span class="text-blue">Array | Function</span></li>
+                            <li>Example: <span class="text-blue">["a", "b"] | (row) => { return (row.name === "tony) ?
+                                    ['member'] : [] } </span></li>
+                        </ul>
+                    </li>
+                    <li class="mb-2">
+                        <b>total</b>
+                        <ul>
+                            <li>Description: Records count</li>
+                            <li>Required: <span class="text-danger">Yes</span></li>
+                            <li>Type: <span class="text-blue">Number</span></li>
+                        </ul>
+                    </li>
+                    <li class="mb-2">
+                        <b>sortable</b>
+                        <ul>
+                            <li>Description: Order field and sort for Sortable</li>
+                            <li>Required: <span class="text-danger">Yes</span></li>
+                            <li>Type: <span class="text-blue">Object</span></li>
+                            <ul>
+                                <li class="mb-2">
+                                    <ul>
+                                        <b>order</b>
+                                        <li>Description: Field key</li>
+                                        <li>Required: <span class="text-danger">Yes</span></li>
+                                        <li>Type: <span class="text-blue">string</span></li>
+                                    </ul>
+                                </li>
+                                <li class="mb-2">
+                                    <ul>
+                                        <b>sort</b>
+                                        <li>Description: "asc" or "desc"</li>
+                                        <li>Required: <span class="text-danger">Yes</span></li>
+                                        <li>Type: <span class="text-blue">string</span></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </ul>
+                    </li>
+                    <li class="mb-2">
+                        <b>messages</b>
+                        <ul>
+                            <li>Description: Messages</li>
+                            <li>Required: <span class="text-blue">No</span></li>
+                            <li>Type: <span class="text-blue">Object</span></li>
+                            <ul>
+                                <li class="mb-2">
+                                    <ul>
+                                        <b>pagingInfo</b>
+                                        <li>Required: <span class="text-blue">No</span></li>
+                                        <li>Type: <span class="text-blue">string</span></li>
+                                        <li>Default: <span class="text-blue">"Showing {0}-{1} of {2}"</span></li>
+                                    </ul>
+                                </li>
+                                <li class="mb-2">
+                                    <ul>
+                                        <b>pageSizeChangeLabel</b>
+                                        <li>Required: <span class="text-blue">No</span></li>
+                                        <li>Type: <span class="text-blue">string</span></li>
+                                        <li>Default: <span class="text-blue">"Row count:"</span></li>
+                                    </ul>
+                                </li>
+                                <li class="mb-2">
+                                    <ul>
+                                        <b>gotoPageLabel</b>
+                                        <li>Required: <span class="text-blue">No</span></li>
+                                        <li>Type: <span class="text-blue">string</span></li>
+                                        <li>Default: <span class="text-blue">"Go to page:"</span></li>
+                                    </ul>
+                                </li>
+                                <li class="mb-2">
+                                    <ul>
+                                        <b>noDataAvailable</b>
+                                        <li>Required: <span class="text-blue">No</span></li>
+                                        <li>Type: <span class="text-blue">string</span></li>
+                                        <li>Default: <span class="text-blue">"No data"</span></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </ul>
+                    </li>
+                    <li class="mb-2">
+                        <b>is-hide-paging</b>
+                        <ul>
+                            <li>Description: No Show paging infomation on bottom</li>
+                            <li>Required: <span class="text-blue">No</span></li>
+                            <li>Type: <span class="text-blue">Boolean</span></li>
+                            <li>Default: <span class="text-blue">false</span></li>
+                        </ul>
+                    </li>
+                    <li class="mb-2">
+                        <b>page</b>
+                        <ul>
+                            <li>Description: If you want to control page no yourself, use it can will be to change page
+                                no.
                             </li>
-                            <li class="mb-2">
-                                <ul>
-                                    <b>sort</b>
-                                    <li>Description: "asc" or "desc"</li>
-                                    <li>Required: <span class="text-danger">Yes</span></li>
-                                    <li>Type: <span class="text-blue">string</span></li>
-                                </ul>
+                            <li>Required: <span class="text-blue">No</span></li>
+                            <li>Type: <span class="text-blue">Number</span></li>
+                            <li>Default: <span class="text-blue">1</span></li>
+                        </ul>
+                    </li>
+                    <li class="mb-2">
+                        <b>page-size</b>
+                        <ul>
+                            <li>Description: Default display the number of items on one page. <span
+                                    style="color: red;">In
+                                    most cases no set required.</span></li>
+                            <li>Required: <span class="text-blue">No</span></li>
+                            <li>Type: <span class="text-blue">Number</span></li>
+                            <li>Default: <span class="text-blue">10</span></li>
+                        </ul>
+                    </li>
+                    <li class="mb-2">
+                        <b>pageOptions</b>
+                        <ul>
+                            <li>Description: Pages dropdown list</li>
+                            <li>Required: <span class="text-blue">No</span></li>
+                            <li>Type: <span class="text-blue">Array</span></li>
+                            <li>Required: <span class="text-blue">Yes</span></li>
+                            <li>Type: <span class="text-blue">Object</span></li>
+                            <ul>
+                                <li class="mb-2">
+                                    <ul>
+                                        <b>value</b>
+                                        <li>Required: <span class="text-blue">Yes</span></li>
+                                        <li>Type: <span class="text-blue">Number</span></li>
+                                    </ul>
+                                </li>
+                                <li class="mb-2">
+                                    <ul>
+                                        <b>text</b>
+                                        <li>Required: <span class="text-blue">Yes</span></li>
+                                        <li>Type: <span class="text-blue">Number | string</span></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <li>Default:[
+                                {
+                                value: 10,
+                                text: 10
+                                },
+                                {
+                                value: 25,
+                                text: 25
+                                },
+                                {
+                                value: 50,
+                                text: 50
+                                }
+                                ]
                             </li>
                         </ul>
-                    </ul>
-                </li>
-                <li class="mb-2">
-                    <b>messages</b>
-                    <ul>
-                        <li>Description: Messages</li>
-                        <li>Required: <span class="text-blue">No</span></li>
-                        <li>Type: <span class="text-blue">Object</span></li>
+                    </li>
+                    <li class="mb-2">
+                        <b>grouping-key</b>
                         <ul>
-                            <li class="mb-2">
-                                <ul>
-                                    <b>pagingInfo</b>
-                                    <li>Required: <span class="text-blue">No</span></li>
-                                    <li>Type: <span class="text-blue">string</span></li>
-                                    <li>Default: <span class="text-blue">"Showing {0}-{1} of {2}"</span></li>
-                                </ul>
-                            </li>
-                            <li class="mb-2">
-                                <ul>
-                                    <b>pageSizeChangeLabel</b>
-                                    <li>Required: <span class="text-blue">No</span></li>
-                                    <li>Type: <span class="text-blue">string</span></li>
-                                    <li>Default: <span class="text-blue">"Row count:"</span></li>
-                                </ul>
-                            </li>
-                            <li class="mb-2">
-                                <ul>
-                                    <b>gotoPageLabel</b>
-                                    <li>Required: <span class="text-blue">No</span></li>
-                                    <li>Type: <span class="text-blue">string</span></li>
-                                    <li>Default: <span class="text-blue">"Go to page:"</span></li>
-                                </ul>
-                            </li>
-                            <li class="mb-2">
-                                <ul>
-                                    <b>noDataAvailable</b>
-                                    <li>Required: <span class="text-blue">No</span></li>
-                                    <li>Type: <span class="text-blue">string</span></li>
-                                    <li>Default: <span class="text-blue">"No data"</span></li>
-                                </ul>
-                            </li>
+                            <li>Description: If you want use grouping table, set your grouping field's name.</li>
+                            <li>Required: <span class="text-blue">No</span></li>
+                            <li>Type: <span class="text-blue">string</span></li>
+                            <li>Default: <span class="text-blue">null</span></li>
                         </ul>
-                    </ul>
-                </li>
-                <li class="mb-2">
-                    <b>is-hide-paging</b>
-                    <ul>
-                        <li>Description: No Show paging infomation on bottom</li>
-                        <li>Required: <span class="text-blue">No</span></li>
-                        <li>Type: <span class="text-blue">Boolean</span></li>
-                        <li>Default: <span class="text-blue">false</span></li>
-                    </ul>
-                </li>
-                <li class="mb-2">
-                    <b>page</b>
-                    <ul>
-                        <li>Description: If you want to control page no yourself, use it can will be to change page no.
-                        </li>
-                        <li>Required: <span class="text-blue">No</span></li>
-                        <li>Type: <span class="text-blue">Number</span></li>
-                        <li>Default: <span class="text-blue">1</span></li>
-                    </ul>
-                </li>
-                <li class="mb-2">
-                    <b>page-size</b>
-                    <ul>
-                        <li>Description: Default display the number of items on one page. <span style="color: red;">In
-                                most cases no set required.</span></li>
-                        <li>Required: <span class="text-blue">No</span></li>
-                        <li>Type: <span class="text-blue">Number</span></li>
-                        <li>Default: <span class="text-blue">10</span></li>
-                    </ul>
-                </li>
-                <li class="mb-2">
-                    <b>pageOptions</b>
-                    <ul>
-                        <li>Description: Pages dropdown list</li>
-                        <li>Required: <span class="text-blue">No</span></li>
-                        <li>Type: <span class="text-blue">Array</span></li>
+                    </li>
+                    <li class="mb-2">
+                        <b>has-group-toggle</b>
                         <ul>
-                            <li class="mb-2">
-                                <ul>
-                                    <li>Required: <span class="text-blue">Yes</span></li>
-                                    <li>Type: <span class="text-blue">Object</span></li>
-                                    <li>
-                                        <ul>
-                                            <b>value</b>
-                                            <li>Required: <span class="text-blue">Yes</span></li>
-                                            <li>Type: <span class="text-blue">Number</span></li>
-                                        </ul>
-                                        <ul>
-                                            <b>text</b>
-                                            <li>Required: <span class="text-blue">Yes</span></li>
-                                            <li>Type: <span class="text-blue">Number | string</span></li>
-                                        </ul>
-                                    </li>
-                                    <li>Default:[
-                                        {
-                                        value: 10,
-                                        text: 10
-                                        },
-                                        {
-                                        value: 25,
-                                        text: 25
-                                        },
-                                        {
-                                        value: 50,
-                                        text: 50
-                                        }
-                                        ]</li>
-                                </ul>
-                            </li>
+                            <li>Description: Show group toggle if you'r using grouping table.</li>
+                            <li>Required: <span class="text-blue">No</span></li>
+                            <li>Type: <span class="text-blue">Boolean</span></li>
+                            <li>Default: <span class="text-blue">false</span></li>
                         </ul>
-                    </ul>
-                </li>
+                    </li>
+                    <li class="mb-2">
+                        <b>grouping-display</b>
+                        <ul>
+                            <li>Description: Customize grouping title display if you'r using grouping table.</li>
+                            <li>Required: <span class="text-blue">No</span></li>
+                            <li>Type: <span class="text-blue">Function</span></li>
+                            <li>Default: <span class="text-blue">null</span></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
             <div id="events" class="mb-5 p-2">
@@ -443,7 +473,8 @@
                         <ul>
                             <li>Description: Your search event. <span style="color: red;">It's will be auto trigger
                                     after data sort and paging.</span></li>
-                            <li>Hint: <span style="color: red;">In static-mode no set required.</span></li>
+                            <li>Required: <span class="text-danger">Yes</span></li>
+                            <li>Hint: <span style="color: red;">It's required in default-mode, and in static-mode is not.</span></li>
                             <li>Type: <span class="text-blue">(offset, limit, order, sort) => void</span></li>
                             <li>Arguments:
                                 <ul>

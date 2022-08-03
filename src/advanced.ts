@@ -10,6 +10,8 @@ import CustomizePageDropdown from './examples/CustomizePageDropdown.vue'
 import RowClicked from './examples/RowClicked.vue'
 import FixedFirstColumn from './examples/FixedFirstColumn.vue'
 import ShowControls from './examples/ShowControls.vue'
+import Grouping from './examples/Grouping.vue'
+import Grouping2 from './examples/Grouping2.vue'
 
 createApp(CustomizeDisplayData).mount('#customize-display-table')
 createApp(Filter).mount('#filter-table')
@@ -22,3 +24,5 @@ createApp(CustomizePageDropdown).mount('#customize-page-dropdown-table')
 createApp(RowClicked).mount('#row-clicked-table')
 createApp(FixedFirstColumn).mount('#fixed-first-column-table')
 createApp(ShowControls).mount('#show-controls-table')
+createApp(Grouping).mount('#grouping-table')
+createApp(Grouping2).mount('#grouping2-table')
