@@ -117,6 +117,7 @@ A simple and lightweight data table component for Vue.js 3. Features sorting, pa
 [Go to Check!!](https://vue3-lite-table.vercel.app/usage#defMode)
 
 ### release
+    ver 1.2.5 : Added table max-height prop and `#59` bugs.
     ver 1.2.4 : Added grouping features. `#53`
     ver 1.2.3 : Added option for fixed first column on horizontal scrolling.
     ver 1.2.2 : Fixed result of sorting number as string was wrong on "static-mode" `#47`

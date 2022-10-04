@@ -9,6 +9,7 @@ import CustomizeMessage from './examples/CustomizeMessage.vue'
 import CustomizePageDropdown from './examples/CustomizePageDropdown.vue'
 import RowClicked from './examples/RowClicked.vue'
 import FixedFirstColumn from './examples/FixedFirstColumn.vue'
+import FixedHeaderAndFirstColumn from './examples/FixedHeaderAndFirstColumn.vue'
 import ShowControls from './examples/ShowControls.vue'
 import Grouping from './examples/Grouping.vue'
 import Grouping2 from './examples/Grouping2.vue'
@@ -23,6 +24,7 @@ createApp(CustomizeMessage).mount('#customize-message-table')
 createApp(CustomizePageDropdown).mount('#customize-page-dropdown-table')
 createApp(RowClicked).mount('#row-clicked-table')
 createApp(FixedFirstColumn).mount('#fixed-first-column-table')
+createApp(FixedHeaderAndFirstColumn).mount('#fixed-header-and-first-column-table')
 createApp(ShowControls).mount('#show-controls-table')
 createApp(Grouping).mount('#grouping-table')
 createApp(Grouping2).mount('#grouping2-table')

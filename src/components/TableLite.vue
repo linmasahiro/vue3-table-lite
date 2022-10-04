@@ -18,6 +18,7 @@
           <table
             class="vtl-table vtl-table-hover vtl-table-bordered vtl-table-responsive vtl-table-responsive-sm"
             ref="localTable"
+            :style="'max-height: ' + maxHeight + 'px;'"
           >
             <thead class="vtl-thead">
               <tr class="vtl-thead-tr">
@@ -486,6 +487,10 @@ export default defineComponent({
       type: Function,
       default: null,
     },
+    // 設定表格高度 (Table's max height)
+    maxHeight: {
+      default: "auto",
+    }
   },
   setup(props, { emit, slots }) {
     let localTable = ref(null);
@@ -1127,6 +1132,22 @@ tr {
     flex: 0 0 33.333333%;
     max-width: 33.333333%;
   }
+}
+
+.vtl-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.vtl-table thead th:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+.vtl-table tbody th {
+  position: sticky;
+  left: 0;
+  z-index: 1;
 }
 
 .fixed-first-column {
