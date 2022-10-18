@@ -96,7 +96,7 @@
                   </tr>
                   <tr
                     v-for="(row, i) in rows"
-                    :key="i"
+                    :key="row[setting.keyColumn] ? row[setting.keyColumn] : i"
                     :name="'vtl-group-' + groupingIndex"
                     class="vtl-tbody-tr"
                     :class="
@@ -172,7 +172,7 @@
                   <tr
                     v-for="(row, i) in rows"
                     :name="'vtl-group-' + groupingIndex"
-                    :key="i"
+                    :key="row[setting.keyColumn] ? row[setting.keyColumn] : i"
                     class="vtl-tbody-tr"
                     :class="
                       typeof rowClasses === 'function' ? rowClasses(row) : rowClasses
