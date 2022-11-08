@@ -948,7 +948,7 @@ export default defineComponent({
 
 .vtl-loading-mask {
   position: absolute;
-  z-index: 1003;
+  z-index: 3;
   top: 0;
   left: 0;
   width: 100%;
