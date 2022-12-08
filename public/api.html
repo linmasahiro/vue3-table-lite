@@ -473,6 +473,15 @@
                             <li>Default: <span class="text-blue">null</span></li>
                         </ul>
                     </li>
+                    <li class="mb-2">
+                        <b>start-collapsed</b>
+                        <ul>
+                            <li>Description: Grouping rows will be collapsed after initial</li>
+                            <li>Required: <span class="text-blue">No</span></li>
+                            <li>Type: <span class="text-blue">Boolean</span></li>
+                            <li>Default: <span class="text-blue">false</span></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
             <div id="events" class="mb-5 p-2">
@@ -594,6 +603,33 @@
                                             <li>Description: Pass by row data. </li>
                                             <li>Required: <span class="text-blue">No</span></li>
                                             <li>Type: <span class="text-blue">Object</span></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="mb-2">
+                        <b>row-toggled</b>
+                        <ul>
+                            <li>Description: You can get rows data and toggle state after toggled.</li>
+                            <li>Type: <span class="text-blue">(rows, isCollapsed) => void</span></li>
+                            <li>Arguments:
+                                <ul>
+                                    <li>
+                                        <ul>
+                                            <b>rows</b>
+                                            <li>Description: Pass by grouping rows. </li>
+                                            <li>Required: <span class="text-blue">Yes</span></li>
+                                            <li>Type: <span class="text-blue">Object</span></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <ul>
+                                            <b>isCollapsed</b>
+                                            <li>Description: Pass by collapse state. </li>
+                                            <li>Required: <span class="text-blue">Yes</span></li>
+                                            <li>Type: <span class="text-blue">Boolean</span></li>
                                         </ul>
                                     </li>
                                 </ul>

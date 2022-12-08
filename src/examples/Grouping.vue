@@ -3,6 +3,7 @@
     :has-checkbox="true"
     :is-loading="table.isLoading"
     :is-re-search="table.isReSearch"
+    :start-collapsed="true"
     :grouping-key="table.groupingKey"
     :has-group-toggle="table.hasGroupToggle"
     :grouping-display="table.groupingDisplay"
@@ -16,6 +17,7 @@
     @is-finished="tableLoadingFinish"
     @return-checked-rows="updateCheckedRows"
     @row-clicked="rowClicked"
+    @row-toggled="toggled"
   ></table-lite>
 </template>
 
@@ -198,12 +200,20 @@ export default defineComponent({
       console.log("Row clicked!", row);
     };
 
+    /**
+     * Row toggled event
+     */
+    const toggled = (rows, isCollapsed) => {
+      console.log("Row toggled", rows, isCollapsed)
+    }
+
     return {
       table,
       doSearch,
       tableLoadingFinish,
       updateCheckedRows,
       rowClicked,
+      toggled,
     };
   },
 });

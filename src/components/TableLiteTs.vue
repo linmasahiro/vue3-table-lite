@@ -33,7 +33,7 @@
                   </div>
                 </th>
                 <th
-                  v-for="(col, index) in columns"
+                  v-for="(col, index) in (columns as Array<any>)"
                   class="vtl-thead-th"
                   :class="col.headerClasses"
                   :key="index"
@@ -79,8 +79,9 @@
                       <div class="flex">
                         <div v-if="hasGroupToggle" class="animation">
                           <a
+                            :ref="(el: any) => (toggleButtonRefs[groupingIndex] as any) = el"
                             class="cursor-pointer"
-                            @click="toggleGroup($event, groupingIndex)"
+                            @click="toggleGroup(groupingIndex.toString())"
                             >▼</a
                           >
                         </div>
@@ -98,6 +99,14 @@
                   <tr
                     v-for="(row, i) in rows"
                     :key="row[setting.keyColumn] ? row[setting.keyColumn] : i"
+                    :ref="
+                      (el: any) => {
+                        if (!groupingRowsRefs[groupingIndex]) {
+                          groupingRowsRefs[groupingIndex] = [];
+                        }
+                        groupingRowsRefs[groupingIndex][i] = el;
+                      }
+                    "
                     :name="'vtl-group-' + groupingIndex"
                     class="vtl-tbody-tr"
                     :class="
@@ -111,8 +120,8 @@
                           type="checkbox"
                           class="vtl-tbody-checkbox"
                           :ref="
-                            (el) => {
-                              rowCheckbox.push(el);
+                            (el: any) => {
+                              (rowCheckbox as Array<HTMLElement>).push(el);
                             }
                           "
                           :value="row[setting.keyColumn]"
@@ -121,7 +130,7 @@
                       </div>
                     </td>
                     <td
-                      v-for="(col, j) in columns"
+                      v-for="(col, j) in (columns as Array<any>)"
                       :key="j"
                       class="vtl-tbody-td"
                       :class="col.columnClasses"
@@ -154,8 +163,9 @@
                       <div class="flex">
                         <div v-if="hasGroupToggle" class="animation">
                           <a
+                            :ref="(el: any) => (toggleButtonRefs[groupingIndex] as any) = el"
                             class="cursor-pointer"
-                            @click="toggleGroup($event, groupingIndex)"
+                            @click="toggleGroup(groupingIndex.toString())"
                             >▼</a
                           >
                         </div>
@@ -172,6 +182,14 @@
                   </tr>
                   <tr
                     v-for="(row, i) in rows"
+                    :ref="
+                      (el: any) => {
+                        if (!groupingRowsRefs[groupingIndex]) {
+                          groupingRowsRefs[groupingIndex] = [];
+                        }
+                        groupingRowsRefs[groupingIndex][i] = el;
+                      }
+                    "
                     :name="'vtl-group-' + groupingIndex"
                     :key="row[setting.keyColumn] ? row[setting.keyColumn] : i"
                     class="vtl-tbody-tr"
@@ -185,18 +203,14 @@
                         <input
                           type="checkbox"
                           class="vtl-tbody-checkbox"
-                          :ref="
-                            (el) => {
-                              rowCheckbox.push(el);
-                            }
-                          "
+                          :ref="(el: any) => (rowCheckbox as Array<HTMLElement>).push(el)"
                           :value="row[setting.keyColumn]"
                           @click="checked"
                         />
                       </div>
                     </td>
                     <td
-                      v-for="(col, j) in columns"
+                      v-for="(col, j) in (columns as Array<any>)"
                       :key="j"
                       class="vtl-tbody-td"
                       :class="col.columnClasses"
@@ -230,7 +244,7 @@
             <span class="vtl-paging-count-label">{{ messages.pageSizeChangeLabel }}</span>
             <select class="vtl-paging-count-dropdown" v-model="setting.pageSize">
               <option
-                v-for="pageOption in pageOptions"
+                v-for="pageOption in (pageOptions as Array<pageOption>)"
                 :value="pageOption.value"
                 :key="pageOption.value"
               >
@@ -239,7 +253,11 @@
             </select>
             <span class="vtl-paging-page-label">{{ messages.gotoPageLabel }}</span>
             <select class="vtl-paging-page-dropdown" v-model="setting.page">
-              <option v-for="n in setting.maxPage" :key="n" :value="parseInt(n)">
+              <option
+                v-for="n in setting.maxPage"
+                :key="n"
+                :value="parseInt(n.toString())"
+              >
                 {{ n }}
               </option>
             </select>
@@ -330,6 +348,7 @@
   </div>
 </template>
 
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script lang="ts">
 import {
   defineComponent,
@@ -376,6 +395,7 @@ export default defineComponent({
     "is-finished",
     "get-now-page",
     "row-clicked",
+    "row-toggled",
   ],
   props: {
     // 是否讀取中 (is data loading)
@@ -517,7 +537,12 @@ export default defineComponent({
     // 設定表格高度 (Table's max height)
     maxHeight: {
       default: "auto",
-    }
+    },
+    // 預設群組顯示 (Grouping collapsed on start)
+    startCollapsed: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, { emit, slots }) {
     let localTable = ref<HTMLElement | null>(null);
@@ -883,6 +908,11 @@ export default defineComponent({
       emit("get-now-page", setting.page);
     };
 
+    // Toggle button elements
+    const toggleButtonRefs = ref<{ [key: string]: HTMLElement }>({});
+    // Grouping rows
+    const groupingRowsRefs = ref<{ [key: string]: Array<HTMLElement> }>({});
+
     // Data rows for grouping (Default-mode only)
     const groupingRows = computed(() => {
       let result = {} as any;
@@ -895,6 +925,18 @@ export default defineComponent({
 
       nextTick(function () {
         callIsFinished();
+        if (props.startCollapsed) {
+          for (const [groupIndex, el] of Object.entries(toggleButtonRefs.value)) {
+            if (el && el.parentElement) {
+              if (!el.parentElement.classList.contains("rotated-90")) {
+                el.parentElement.classList.toggle("rotated-90");
+              }
+              groupingRowsRefs.value[groupIndex].forEach((element) => {
+                element.classList.add("hidden");
+              });
+            }
+          }
+        }
       });
 
       return result;
@@ -903,15 +945,22 @@ export default defineComponent({
     /**
      * Toggle Group rows
      *
-     * @param {Event}  e
-     * @param {string} trId
+     * @param {String} groupIndex
      */
-    const toggleGroup = (e: Event, trId: string) => {
-      let element = e.target as HTMLElement;
-      element?.parentElement?.classList.toggle("rotated-90");
-      document.getElementsByName("vtl-group-" + trId).forEach((element) => {
-        element.classList.toggle("hidden");
-      });
+    const toggleGroup = (groupIndex: string) => {
+      let targetEl = toggleButtonRefs.value[groupIndex];
+      if (targetEl && targetEl.parentElement) {
+        targetEl.parentElement.classList.toggle("rotated-90");
+        const isClose = targetEl.parentElement.classList.contains("rotated-90");
+        groupingRowsRefs.value[groupIndex].forEach((element) => {
+          if (isClose) {
+            element.classList.add("hidden");
+          } else {
+            element.classList.remove("hidden");
+          }
+        });
+        emit("row-toggled", groupingRows.value[groupIndex], isClose);
+      }
     };
 
     /**
@@ -939,6 +988,8 @@ export default defineComponent({
         movePage,
         nextPage,
         stringFormat,
+        toggleButtonRefs,
+        groupingRowsRefs,
         groupingRows,
         toggleGroup,
       };
@@ -953,6 +1004,8 @@ export default defineComponent({
         movePage,
         nextPage,
         stringFormat,
+        toggleButtonRefs,
+        groupingRowsRefs,
         groupingRows,
         toggleGroup,
       };

@@ -28,6 +28,7 @@ A simple and lightweight data table component for Vue.js 3. Features sorting, pa
 + Custom message Support
 + V-slot Support
 + TypeScript Support
++ Grouping Support
 
 ## SampleCode
 
@@ -117,6 +118,7 @@ A simple and lightweight data table component for Vue.js 3. Features sorting, pa
 [Go to Check!!](https://vue3-lite-table.vercel.app/usage#defMode)
 
 ### release
+    ver 1.2.8 : Added grouping collapse features. `#67`
     ver 1.2.7 : Fixed `#63`.
     ver 1.2.6 : Fixed `#61`.
     ver 1.2.5 : Added table max-height prop and `#59` bugs.
