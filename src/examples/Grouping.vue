@@ -4,6 +4,7 @@
     :is-loading="table.isLoading"
     :is-re-search="table.isReSearch"
     :start-collapsed="true"
+    :is-keep-collapsed="true"
     :grouping-key="table.groupingKey"
     :has-group-toggle="table.hasGroupToggle"
     :grouping-display="table.groupingDisplay"

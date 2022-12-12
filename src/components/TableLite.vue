@@ -510,8 +510,13 @@ export default defineComponent({
     maxHeight: {
       default: "auto",
     },
-    // 預設群組顯示 (Grouping collapsed on start)
+    // 預設群組顯示時為折疊 (Grouping collapsed on start)
     startCollapsed: {
+      type: Boolean,
+      default: false,
+    },
+    // 保持刷新後折疊狀態 (Keep collapsed status after refresh)
+    isKeepCollapsed: {
       type: Boolean,
       default: false,
     },
@@ -873,6 +878,8 @@ export default defineComponent({
     const toggleButtonRefs = ref({});
     // Grouping rows
     const groupingRowsRefs = ref({});
+    // Saved toggle status
+    const groupingToggleStatus = ref({});
 
     // Data rows for grouping (Default-mode only)
     const groupingRows = computed(() => {
@@ -885,17 +892,29 @@ export default defineComponent({
       });
 
       nextTick(function () {
-        if (props.startCollapsed) {
+        if (props.startCollapsed || props.isKeepCollapsed) {
           for (const [groupIndex, el] of Object.entries(toggleButtonRefs.value)) {
             if (el) {
-              if (!el.parentElement.classList.contains("rotated-90")) {
+              let isOpen = !props.startCollapsed;
+              if (
+                props.isKeepCollapsed &&
+                groupingToggleStatus.value[groupIndex] !== undefined
+              ) {
+                isOpen = !groupingToggleStatus.value[groupIndex];
+              }
+              if (
+                (isOpen && el.parentElement.classList.contains("rotated-90")) ||
+                (!isOpen && !el.parentElement.classList.contains("rotated-90"))
+              ) {
                 el.parentElement.classList.toggle("rotated-90");
               }
-              groupingRowsRefs.value[groupIndex].forEach((element) => {
-                if (element) {
-                  element.classList.add("hidden");
-                }
-              });
+              if (!isOpen) {
+                groupingRowsRefs.value[groupIndex].forEach((element) => {
+                  if (element) {
+                    element.classList.add("hidden");
+                  }
+                });
+              }
             }
           }
         }
@@ -924,6 +943,7 @@ export default defineComponent({
             }
           }
         });
+        groupingToggleStatus.value[groupIndex] = isClose;
         emit("row-toggled", groupingRows.value[groupIndex], isClose);
       }
     };

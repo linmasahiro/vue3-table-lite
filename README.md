@@ -118,6 +118,7 @@ A simple and lightweight data table component for Vue.js 3. Features sorting, pa
 [Go to Check!!](https://vue3-lite-table.vercel.app/usage#defMode)
 
 ### release
+    ver 1.2.9 : Added keep collapsed status option.
     ver 1.2.8 : Added grouping collapse features. `#67`
     ver 1.2.7 : Fixed `#63`.
     ver 1.2.6 : Fixed `#61`.
