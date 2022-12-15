@@ -125,7 +125,7 @@
                             }
                           "
                           :value="row[setting.keyColumn]"
-                          @click="checked"
+                          @click="checked(row, $event)"
                         />
                       </div>
                     </td>
@@ -205,7 +205,7 @@
                           class="vtl-tbody-checkbox"
                           :ref="(el: any) => (rowCheckbox as Array<HTMLElement>).push(el)"
                           :value="row[setting.keyColumn]"
-                          @click="checked"
+                          @click="checked(row, $event)"
                         />
                       </div>
                     </td>
@@ -641,6 +641,9 @@ export default defineComponent({
       }),
     });
 
+    // 已選擇中的資料 (Checked rows)
+    const isChecked = ref<Array<any>>([]);
+
     // 組件內用資料 (Data rows for local)
     const localRows = computed(() => {
       // sort rows
@@ -668,12 +671,12 @@ export default defineComponent({
         });
 
         result = {} as any;
-        for (let index = setting.offset - 1; index < setting.limit; index++) {
+        for (let index = 0; index < setting.limit; index++) {
           result[rows[index][props.groupingKey]] = tmp[rows[index][props.groupingKey]];
         }
       } else {
         result = [];
-        for (let index = setting.offset - 1; index < setting.limit; index++) {
+        for (let index = 0; index < setting.limit; index++) {
           result.push(rows[index]);
         }
       }
@@ -709,21 +712,23 @@ export default defineComponent({
       watch(
         () => setting.isCheckAll,
         (state: boolean) => {
-          let isChecked: Array<string | unknown> = [];
-          rowCheckbox.value.forEach((val: HTMLInputElement, i: number) => {
+          isChecked.value = [];
+          if (state) {
+            if (props.checkedReturnType == "row") {
+              isChecked.value = props.rows;
+            } else {
+              props.rows.forEach((val: any) => {
+                isChecked.value.push(val[setting.keyColumn]);
+              })
+            }
+          }
+          rowCheckbox.value.forEach((val: HTMLInputElement) => {
             if (val) {
               val.checked = state;
-              if (val.checked) {
-                if (props.checkedReturnType == "row") {
-                  isChecked.push(localRows.value[i]);
-                } else {
-                  isChecked.push(val.value);
-                }
-              }
             }
           });
           // 回傳畫面上選上的資料 (Return the selected data on the screen)
-          emit("return-checked-rows", isChecked);
+          emit("return-checked-rows", isChecked.value);
         }
       );
     }
@@ -731,33 +736,40 @@ export default defineComponent({
     /**
      * Checkbox點擊事件 (Checkbox click event)
      */
-    const checked = (event: Event) => {
+    const checked = (row:any, event: MouseEvent): void => {
       event.stopPropagation();
-      let isChecked: Array<string | unknown> = [];
-      rowCheckbox.value.forEach((val: HTMLInputElement, i: number) => {
-        if (val && val.checked) {
-          if (props.checkedReturnType == "row") {
-            isChecked.push(localRows.value[i]);
-          } else {
-            isChecked.push(val.value);
-          }
+      if ((event.target as HTMLInputElement).checked) {
+        if (props.checkedReturnType == "row") {
+          isChecked.value.push(row);
+        } else {
+          isChecked.value.push(row[setting.keyColumn]);
         }
-      });
-      // 回傳畫面上選上的資料 (Return the selected data on the screen)
-      emit("return-checked-rows", isChecked);
+      } else {
+        const index = isChecked.value.indexOf(row);
+        if (index >= 0) {
+          isChecked.value.splice(index, 1);
+        }
+      }
+      if (isChecked.value.length == props.rows.length) {
+        setting.isCheckAll = true;
+      } else {
+        // 回傳畫面上選上的資料 (Return the selected data on the screen)
+        emit("return-checked-rows", isChecked.value);
+      }
     };
 
     /**
      * 清空畫面上所有選擇資料 (Clear all selected data on the screen)
      */
     const clearChecked = () => {
+      isChecked.value = [];
       rowCheckbox.value.forEach((val: HTMLInputElement) => {
         if (val && val.checked) {
           val.checked = false;
         }
       });
       // 回傳畫面上選上的資料 (Return the selected data on the screen)
-      emit("return-checked-rows", []);
+      emit("return-checked-rows", isChecked.value);
     };
 
     ////////////////////////////
@@ -802,6 +814,9 @@ export default defineComponent({
      */
     const changePage = (page: number, prevPage: number) => {
       setting.isCheckAll = false;
+      if (props.hasCheckbox) {
+        isChecked.value = [];
+      }
       let order = setting.order;
       let sort = setting.sort;
       let offset = (page - 1) * setting.pageSize;
@@ -1021,6 +1036,7 @@ export default defineComponent({
         localTable,
         localRows,
         setting,
+        checked,
         doSort,
         prevPage,
         movePage,
@@ -1254,11 +1270,9 @@ tr {
 }
 
 .vtl-table thead th {
-  padding: 3px;
   position: sticky;
   top: 0;
   z-index: 1;
-  background: white;
 }
 .vtl-table thead th:first-child {
   position: sticky;
