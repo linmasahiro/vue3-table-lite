@@ -113,6 +113,7 @@ export default defineComponent({
         pageSizeChangeLabel: "Row count:",
         gotoPageLabel: "Go to page:",
         noDataAvailable: "No data",
+        loading: "Loading...",
       },
     });
 

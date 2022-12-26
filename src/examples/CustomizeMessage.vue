@@ -106,7 +106,7 @@ export default defineComponent({
     };
 
     // First get data
-    doSearch(0, 10, 'id', 'asc');
+    doSearch(0, 10, "id", "asc");
 
     return {
       table,
@@ -115,4 +115,3 @@ export default defineComponent({
   },
 });
 </script>
-

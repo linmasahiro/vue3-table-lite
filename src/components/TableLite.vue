@@ -12,7 +12,9 @@
         >
           <div v-if="isLoading" class="vtl-loading-mask">
             <div class="vtl-loading-content">
-              <span style="color: white">Loading...</span>
+              <slot name="loading">
+                <span style="color: white">{{ messages.loading }}</span>
+              </slot>
             </div>
           </div>
           <table
@@ -50,8 +52,10 @@
                     :class="{
                       'vtl-sortable': col.sortable,
                       'vtl-both': col.sortable,
-                      'vtl-asc': setting.order === col.field && setting.sort === 'asc',
-                      'vtl-desc': setting.order === col.field && setting.sort === 'desc',
+                      'vtl-asc':
+                        setting.order === col.field && setting.sort === 'asc',
+                      'vtl-desc':
+                        setting.order === col.field && setting.sort === 'desc',
                     }"
                     @click="col.sortable ? doSort(col.field) : false"
                   >
@@ -64,21 +68,30 @@
               <tbody
                 v-if="isStaticMode"
                 class="vtl-tbody"
-                :set="(templateRows = groupingKey == '' ? [localRows] : localRows)"
+                :set="
+                  (templateRows = groupingKey == '' ? [localRows] : localRows)
+                "
               >
                 <template
                   v-for="(rows, groupingIndex) in templateRows"
                   :key="groupingIndex"
                 >
-                  <tr v-if="groupingKey != ''" class="vtl-tbody-tr vtl-group-tr">
+                  <tr
+                    v-if="groupingKey != ''"
+                    class="vtl-tbody-tr vtl-group-tr"
+                  >
                     <td
-                      :colspan="hasCheckbox ? columns.length + 1 : columns.length"
+                      :colspan="
+                        hasCheckbox ? columns.length + 1 : columns.length
+                      "
                       class="vtl-tbody-td vtl-group-td"
                     >
                       <div class="flex">
                         <div v-if="hasGroupToggle" class="animation">
                           <a
-                            :ref="(el) => (toggleButtonRefs[groupingIndex] = el)"
+                            :ref="
+                              (el) => (toggleButtonRefs[groupingIndex] = el)
+                            "
                             class="cursor-pointer"
                             @click="toggleGroup(groupingIndex)"
                             >▼</a
@@ -109,7 +122,9 @@
                     :name="'vtl-group-' + groupingIndex"
                     class="vtl-tbody-tr"
                     :class="
-                      typeof rowClasses === 'function' ? rowClasses(row) : rowClasses
+                      typeof rowClasses === 'function'
+                        ? rowClasses(row)
+                        : rowClasses
                     "
                     @click="$emit('row-clicked', row)"
                   >
@@ -148,21 +163,30 @@
               </tbody>
               <tbody
                 v-else
-                :set="(templateRows = groupingKey == '' ? [rows] : groupingRows)"
+                :set="
+                  (templateRows = groupingKey == '' ? [rows] : groupingRows)
+                "
               >
                 <template
                   v-for="(rows, groupingIndex) in templateRows"
                   :key="groupingIndex"
                 >
-                  <tr v-if="groupingKey != ''" class="vtl-tbody-tr vtl-group-tr">
+                  <tr
+                    v-if="groupingKey != ''"
+                    class="vtl-tbody-tr vtl-group-tr"
+                  >
                     <td
-                      :colspan="hasCheckbox ? columns.length + 1 : columns.length"
+                      :colspan="
+                        hasCheckbox ? columns.length + 1 : columns.length
+                      "
                       class="vtl-tbody-td vtl-group-td"
                     >
                       <div class="flex">
                         <div v-if="hasGroupToggle" class="animation">
                           <a
-                            :ref="(el) => (toggleButtonRefs[groupingIndex] = el)"
+                            :ref="
+                              (el) => (toggleButtonRefs[groupingIndex] = el)
+                            "
                             class="cursor-pointer"
                             @click="toggleGroup(groupingIndex)"
                             >▼</a
@@ -193,7 +217,9 @@
                     :key="row[setting.keyColumn] ? row[setting.keyColumn] : i"
                     class="vtl-tbody-tr"
                     :class="
-                      typeof rowClasses === 'function' ? rowClasses(row) : rowClasses
+                      typeof rowClasses === 'function'
+                        ? rowClasses(row)
+                        : rowClasses
                     "
                     @click="$emit('row-clicked', row)"
                   >
@@ -239,13 +265,23 @@
           <div class="vtl-paging-info col-sm-12 col-md-4">
             <div role="status" aria-live="polite">
               {{
-                stringFormat(messages.pagingInfo, setting.offset, setting.limit, total)
+                stringFormat(
+                  messages.pagingInfo,
+                  setting.offset,
+                  setting.limit,
+                  total
+                )
               }}
             </div>
           </div>
           <div class="vtl-paging-change-div col-sm-12 col-md-4">
-            <span class="vtl-paging-count-label">{{ messages.pageSizeChangeLabel }}</span>
-            <select class="vtl-paging-count-dropdown" v-model="setting.pageSize">
+            <span class="vtl-paging-count-label">{{
+              messages.pageSizeChangeLabel
+            }}</span>
+            <select
+              class="vtl-paging-count-dropdown"
+              v-model="setting.pageSize"
+            >
               <option
                 v-for="pageOption in pageOptions"
                 :value="pageOption.value"
@@ -254,9 +290,15 @@
                 {{ pageOption.text }}
               </option>
             </select>
-            <span class="vtl-paging-page-label">{{ messages.gotoPageLabel }}</span>
+            <span class="vtl-paging-page-label">{{
+              messages.gotoPageLabel
+            }}</span>
             <select class="vtl-paging-page-dropdown" v-model="setting.page">
-              <option v-for="n in setting.maxPage" :key="n" :value="parseInt(n)">
+              <option
+                v-for="n in setting.maxPage"
+                :key="n"
+                :value="parseInt(n)"
+              >
                 {{ n }}
               </option>
             </select>
@@ -265,6 +307,7 @@
             <div class="dataTables_paginate">
               <ul class="vtl-paging-pagination-ul vtl-pagination">
                 <li
+                  v-if="!setting.disableFirstPage"
                   class="vtl-paging-pagination-page-li vtl-paging-pagination-page-li-first page-item"
                   :class="{ disabled: setting.page <= 1 }"
                 >
@@ -278,7 +321,9 @@
                     <span class="sr-only">First</span>
                   </a>
                 </li>
+
                 <li
+                  v-if="!setting.disablePrevPage"
                   class="vtl-paging-pagination-page-li vtl-paging-pagination-page-li-prev page-item"
                   :class="{ disabled: setting.page <= 1 }"
                 >
@@ -292,7 +337,9 @@
                     <span class="sr-only">Prev</span>
                   </a>
                 </li>
+
                 <li
+                  v-show="!setting.disableNumberPage"
                   class="vtl-paging-pagination-page-li vtl-paging-pagination-page-li-number page-item"
                   v-for="n in setting.paging"
                   :key="n"
@@ -305,7 +352,9 @@
                     >{{ n }}</a
                   >
                 </li>
+
                 <li
+                  v-if="!setting.disableNextPage"
                   class="vtl-paging-pagination-page-li vtl-paging-pagination-page-li-next page-item"
                   :class="{ disabled: setting.page >= setting.maxPage }"
                 >
@@ -319,7 +368,9 @@
                     <span class="sr-only">Next</span>
                   </a>
                 </li>
+
                 <li
+                  v-if="!setting.disableLastPage"
                   class="vtl-paging-pagination-page-li vtl-paging-pagination-page-li-last page-item"
                   :class="{ disabled: setting.page >= setting.maxPage }"
                 >
@@ -455,6 +506,7 @@ export default defineComponent({
           pageSizeChangeLabel: "Row count:",
           gotoPageLabel: "Go to page:",
           noDataAvailable: "No data",
+          loading: "Loading...",
         };
       },
     },
@@ -519,6 +571,36 @@ export default defineComponent({
     isKeepCollapsed: {
       type: Boolean,
       default: false,
+    },
+    // Disable first page button pagination
+    disableFirstPage: {
+      type: Boolean,
+      default: true,
+    },
+    // Disable prev page button pagination
+    disablePrevPage: {
+      type: Boolean,
+      default: true,
+    },
+    // Disable number page buttons pagination
+    disableNumberPage: {
+      type: Boolean,
+      default: true,
+    },
+    // Disable next page button pagination
+    disableNextPage: {
+      type: Boolean,
+      default: true,
+    },
+    // Disable last page button pagination
+    disableLastPage: {
+      type: Boolean,
+      default: true,
+    },
+    // Paging type (Default: full_numbers)
+    pagingType: {
+      type: String,
+      default: "full_numbers",
     },
   },
   setup(props, { emit, slots }) {
@@ -603,6 +685,12 @@ export default defineComponent({
       order: props.sortable.order,
       sort: props.sortable.sort,
       pageOptions: props.pageOptions,
+      disableFirstPage: props.disableFirstPage,
+      disablePrevPage: props.disablePrevPage,
+      disableNumberPage: props.disableNumberPage,
+      disableNextPage: props.disableNextPage,
+      disableLastPage: props.disableLastPage,
+      pagingType: props.pagingType,
     });
 
     // 已選擇中的資料 (Checked rows)
@@ -634,7 +722,8 @@ export default defineComponent({
 
         result = {};
         for (let index = 0; index < setting.limit; index++) {
-          result[rows[index][props.groupingKey]] = tmp[rows[index][props.groupingKey]];
+          result[rows[index][props.groupingKey]] =
+            tmp[rows[index][props.groupingKey]];
         }
       } else {
         result = [];
@@ -642,6 +731,8 @@ export default defineComponent({
           result.push(rows[index]);
         }
       }
+
+      switchPagingType(setting.pagingType);
 
       nextTick(function () {
         // 資料完成渲染後回傳私有元件
@@ -681,7 +772,7 @@ export default defineComponent({
             } else {
               props.rows.forEach((val) => {
                 isChecked.value.push(val[setting.keyColumn]);
-              })
+              });
             }
           }
           rowCheckbox.value.forEach((val) => {
@@ -883,7 +974,8 @@ export default defineComponent({
     // Call 「is-finished」 Method
     const callIsFinished = () => {
       if (localTable.value) {
-        let localElement = localTable.value.getElementsByClassName("is-rows-el");
+        let localElement =
+          localTable.value.getElementsByClassName("is-rows-el");
         emit("is-finished", localElement);
       }
       emit("get-now-page", setting.page);
@@ -908,7 +1000,9 @@ export default defineComponent({
 
       nextTick(function () {
         if (props.startCollapsed || props.isKeepCollapsed) {
-          for (const [groupIndex, el] of Object.entries(toggleButtonRefs.value)) {
+          for (const [groupIndex, el] of Object.entries(
+            toggleButtonRefs.value
+          )) {
             if (el) {
               let isOpen = !props.startCollapsed;
               if (
@@ -962,6 +1056,69 @@ export default defineComponent({
         emit("row-toggled", groupingRows.value[groupIndex], isClose);
       }
     };
+    /**
+     *
+     * SWITCH PAGING TYPE
+     *
+     * @param {string} type
+     *
+     */
+    const switchPagingType = (type) => {
+      switch (type) {
+        case "numbers":
+          setting.disableFirstPage = true;
+          setting.disablePrevPage = true;
+          setting.disableNumberPage = false;
+          setting.disableNextPage = true;
+          setting.disableLastPage = true;
+
+          break;
+        case "simple":
+          setting.disableFirstPage = true;
+          setting.disablePrevPage = false;
+          setting.disableNumberPage = true;
+          setting.disableNextPage = false;
+          setting.disableLastPage = true;
+          break;
+        case "simple_numbers":
+          setting.disableFirstPage = true;
+          setting.disablePrevPage = false;
+          setting.disableNumberPage = false;
+          setting.disableNextPage = false;
+          setting.disableLastPage = true;
+          break;
+        case "full":
+          setting.disableFirstPage = false;
+          setting.disablePrevPage = false;
+          setting.disableNumberPage = true;
+          setting.disableNextPage = false;
+          setting.disableLastPage = false;
+          break;
+        case "full_numbers":
+          setting.disableFirstPage = false;
+          setting.disablePrevPage = false;
+          setting.disableNumberPage = false;
+          setting.disableNextPage = false;
+          setting.disableLastPage = false;
+          break;
+        case "first_last_numbers":
+          setting.disableFirstPage = false;
+          setting.disablePrevPage = true;
+          setting.disableNumberPage = false;
+          setting.disableNextPage = true;
+          setting.disableLastPage = false;
+          break;
+        default:
+          setting.disableFirstPage = false;
+          setting.disablePrevPage = false;
+          setting.disableNumberPage = false;
+          setting.disableNextPage = false;
+          setting.disableLastPage = false;
+          break;
+      }
+    };
+
+    watch(() => props.pagingType, switchPagingType);
 
     /**
      * 組件掛載後事件 (Mounted Event)

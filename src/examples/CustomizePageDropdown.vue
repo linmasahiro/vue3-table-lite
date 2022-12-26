@@ -9,7 +9,8 @@
     :page-options="table.pageOptions"
     @do-search="doSearch"
     @is-finished="table.isLoading = false"
-  ></table-lite>
+  >
+  </table-lite>
 </template>
 
 <script>
@@ -80,13 +81,13 @@ export default defineComponent({
       pageOptions: [
         {
           value: 15,
-          text: 15
+          text: 15,
         },
         {
           value: 30,
-          text: 30
-        }
-      ]
+          text: 30,
+        },
+      ],
     });
 
     /**
@@ -111,7 +112,7 @@ export default defineComponent({
     };
 
     // First get data
-    doSearch(0, table.pageOptions[0].value, 'id', 'asc');
+    doSearch(0, table.pageOptions[0].value, "id", "asc");
 
     return {
       table,
@@ -120,4 +121,3 @@ export default defineComponent({
   },
 });
 </script>
-

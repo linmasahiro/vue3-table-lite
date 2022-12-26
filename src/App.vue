@@ -48,7 +48,11 @@
     @is-finished="table3.isLoading = false"
     @return-checked-rows="updateCheckedRows"
   >
-    <template v-for="(col, i) of table3.columns" v-slot:[col.field]="data" :key="i">
+    <template
+      v-for="(col, i) of table3.columns"
+      v-slot:[col.field]="data"
+      :key="i"
+    >
       <Test>
         {{ data.value[col.field] }}
       </Test>
@@ -333,7 +337,7 @@ export default defineComponent({
           field: "email",
           width: "15%",
           sortable: true,
-        }
+        },
       ],
       rows: sampleData1(0, 10),
       totalRecordCount: 20,
