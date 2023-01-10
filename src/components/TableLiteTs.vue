@@ -1274,11 +1274,6 @@ tr {
   top: 0;
   z-index: 1;
 }
-.vtl-table thead th:first-child {
-  position: sticky;
-  left: 0;
-  z-index: 2;
-}
 .vtl-table tbody th {
   position: sticky;
   left: 0;
@@ -1289,7 +1284,11 @@ tr {
 .fixed-first-column {
   overflow-x: auto;
 }
-.fixed-first-column tr th:first-child,
+.fixed-first-column tr th:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
 .fixed-first-column tr td:first-child {
   position: sticky;
   left: 0;
