@@ -269,8 +269,7 @@
                   :class="{ disabled: setting.page <= 1 }"
                 >
                   <a
-                    class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-first page-link"
-                    href="#"
+                    class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-first page-link cursor-pointer"
                     aria-label="Previous"
                     @click.prevent="setting.page = 1"
                   >
@@ -283,8 +282,7 @@
                   :class="{ disabled: setting.page <= 1 }"
                 >
                   <a
-                    class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-prev page-link"
-                    href="#"
+                    class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-prev page-link cursor-pointer"
                     aria-label="Previous"
                     @click.prevent="prevPage"
                   >
@@ -299,8 +297,7 @@
                   :class="{ disabled: setting.page === n }"
                 >
                   <a
-                    class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-number page-link"
-                    href="#"
+                    class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-number page-link cursor-pointer"
                     @click.prevent="movePage(n)"
                     >{{ n }}</a
                   >
@@ -310,8 +307,7 @@
                   :class="{ disabled: setting.page >= setting.maxPage }"
                 >
                   <a
-                    class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-next page-link"
-                    href="#"
+                    class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-next page-link cursor-pointer"
                     aria-label="Next"
                     @click.prevent="nextPage"
                   >
@@ -324,8 +320,7 @@
                   :class="{ disabled: setting.page >= setting.maxPage }"
                 >
                   <a
-                    class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-last page-link"
-                    href="#"
+                    class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-last page-link cursor-pointer"
                     aria-label="Next"
                     @click.prevent="setting.page = setting.maxPage"
                   >
