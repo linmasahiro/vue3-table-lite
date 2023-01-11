@@ -14,28 +14,28 @@
         <div>
           <div class="flex-cen right-0 w-3 relative">
             <div
-              @click="data.value.showEdit = !data.value.showEdit"
+              @click.prevent="data.value.showEdit = !data.value.showEdit"
               :class="[data.value.showEdit ? 'hidden' : 'block right-0']"
             >
-              <a href="javascript:void(0)">...</a>
+              <a href="#">...</a>
             </div>
             <div
-              @click="data.value.showEdit = !data.value.showEdit"
+              @click.prevent="data.value.showEdit = !data.value.showEdit"
               :class="[data.value.showEdit ? 'block' : 'hidden']"
             >
-              <a href="javascript:void(0)">X</a>
+              <a href="#">X</a>
             </div>
             <div
               :class="[data.value.showEdit ? 'block' : 'hidden']"
               class="w-240 bg-white py-5 px-8 z-50 absolute md:-left-72 -left-64 flex items-center uppercase font-semibold"
             >
               <i class="fa-solid fa-pen text-green"></i>
-              <p @click="clickedRow = !clickedRow" class="ml-1 cursor-pointer">
+              <p @click.prevent="clickedRow = !clickedRow" class="ml-1 cursor-pointer">
                 View Info
               </p>
               <i class="fa-solid fa-trash-can text-green ml-4"></i>
 
-              <p @click="deleteCurrentRow(data.value)" class="ml-1 cursor-pointer">
+              <p @click.prevent="deleteCurrentRow(data.value)" class="ml-1 cursor-pointer">
                 Delete
               </p>
             </div>

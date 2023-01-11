@@ -53,7 +53,7 @@
                       'vtl-asc': setting.order === col.field && setting.sort === 'asc',
                       'vtl-desc': setting.order === col.field && setting.sort === 'desc',
                     }"
-                    @click="col.sortable ? doSort(col.field) : false"
+                    @click.prevent="col.sortable ? doSort(col.field) : false"
                   >
                     {{ col.label }}
                   </div>
@@ -80,7 +80,7 @@
                           <a
                             :ref="(el) => (toggleButtonRefs[groupingIndex] = el)"
                             class="cursor-pointer"
-                            @click="toggleGroup(groupingIndex)"
+                            @click.prevent="toggleGroup(groupingIndex)"
                             >▼</a
                           >
                         </div>
@@ -111,7 +111,7 @@
                     :class="
                       typeof rowClasses === 'function' ? rowClasses(row) : rowClasses
                     "
-                    @click="$emit('row-clicked', row)"
+                    @click.prevent="$emit('row-clicked', row)"
                   >
                     <td v-if="hasCheckbox" class="vtl-tbody-td">
                       <div>
@@ -124,7 +124,7 @@
                             }
                           "
                           :value="row[setting.keyColumn]"
-                          @click="checked(row, $event)"
+                          @click.prevent="checked(row, $event)"
                         />
                       </div>
                     </td>
@@ -164,7 +164,7 @@
                           <a
                             :ref="(el) => (toggleButtonRefs[groupingIndex] = el)"
                             class="cursor-pointer"
-                            @click="toggleGroup(groupingIndex)"
+                            @click.prevent="toggleGroup(groupingIndex)"
                             >▼</a
                           >
                         </div>
@@ -195,7 +195,7 @@
                     :class="
                       typeof rowClasses === 'function' ? rowClasses(row) : rowClasses
                     "
-                    @click="$emit('row-clicked', row)"
+                    @click.prevent="$emit('row-clicked', row)"
                   >
                     <td v-if="hasCheckbox" class="vtl-tbody-td">
                       <div>
@@ -208,7 +208,7 @@
                             }
                           "
                           :value="row[setting.keyColumn]"
-                          @click="checked(row, $event)"
+                          @click.prevent="checked(row, $event)"
                         />
                       </div>
                     </td>
@@ -270,9 +270,9 @@
                 >
                   <a
                     class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-first page-link"
-                    href="javascript:void(0)"
+                    href="#"
                     aria-label="Previous"
-                    @click="setting.page = 1"
+                    @click.prevent="setting.page = 1"
                   >
                     <span aria-hidden="true">&laquo;</span>
                     <span class="sr-only">First</span>
@@ -284,9 +284,9 @@
                 >
                   <a
                     class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-prev page-link"
-                    href="javascript:void(0)"
+                    href="#"
                     aria-label="Previous"
-                    @click="prevPage"
+                    @click.prevent="prevPage"
                   >
                     <span aria-hidden="true">&lt;</span>
                     <span class="sr-only">Prev</span>
@@ -300,8 +300,8 @@
                 >
                   <a
                     class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-number page-link"
-                    href="javascript:void(0)"
-                    @click="movePage(n)"
+                    href="#"
+                    @click.prevent="movePage(n)"
                     >{{ n }}</a
                   >
                 </li>
@@ -311,9 +311,9 @@
                 >
                   <a
                     class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-next page-link"
-                    href="javascript:void(0)"
+                    href="#"
                     aria-label="Next"
-                    @click="nextPage"
+                    @click.prevent="nextPage"
                   >
                     <span aria-hidden="true">&gt;</span>
                     <span class="sr-only">Next</span>
@@ -325,9 +325,9 @@
                 >
                   <a
                     class="vtl-paging-pagination-page-link vtl-paging-pagination-page-link-last page-link"
-                    href="javascript:void(0)"
+                    href="#"
                     aria-label="Next"
-                    @click="setting.page = setting.maxPage"
+                    @click.prevent="setting.page = setting.maxPage"
                   >
                     <span aria-hidden="true">&raquo;</span>
                     <span class="sr-only">Last</span>

@@ -1,6 +1,6 @@
 <template>
   <transition name="modal">
-    <div class="modal-mask text-left" @click="$emit('close-modal')">
+    <div class="modal-mask text-left" @click.prevent="$emit('close-modal')">
       <div class="modal-wrapper">
         <div class="modal-container">
           <div
