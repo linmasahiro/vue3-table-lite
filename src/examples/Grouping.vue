@@ -101,7 +101,7 @@ export default defineComponent({
           sortable: true,
           display: function (row) {
             return (
-              '<a href="javascript:void(0)" data-id="' +
+              '<a href="#" data-id="' +
               row.id +
               '" class="is-rows-el name-btn">' +
               row.name +
