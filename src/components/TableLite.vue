@@ -111,9 +111,11 @@
                     :class="
                       typeof rowClasses === 'function' ? rowClasses(row) : rowClasses
                     "
+                    @mouseenter="addHoverClassToTr"
+                    @mouseleave="removeHoverClassFromTr"
                     @click.prevent="$emit('row-clicked', row)"
                   >
-                    <td v-if="hasCheckbox" class="vtl-tbody-td">
+                    <td v-if="hasCheckbox" class="vtl-tbody-td vtl-checkbox-td">
                       <div>
                         <input
                           type="checkbox"
@@ -195,9 +197,11 @@
                     :class="
                       typeof rowClasses === 'function' ? rowClasses(row) : rowClasses
                     "
+                    @mouseenter="addHoverClassToTr"
+                    @mouseleave="removeHoverClassFromTr"
                     @click.prevent="$emit('row-clicked', row)"
                   >
-                    <td v-if="hasCheckbox" class="vtl-tbody-td">
+                    <td v-if="hasCheckbox" class="vtl-tbody-td vtl-checkbox-td">
                       <div>
                         <input
                           type="checkbox"
@@ -676,7 +680,7 @@ export default defineComponent({
             } else {
               props.rows.forEach((val) => {
                 isChecked.value.push(val[setting.keyColumn]);
-              })
+              });
             }
           }
           rowCheckbox.value.forEach((val) => {
@@ -959,6 +963,24 @@ export default defineComponent({
     };
 
     /**
+     * Add hover class to tr
+     * 
+     * @param {MouseEvent} mouseEvent 
+     */
+     const addHoverClassToTr = (mouseEvent) => {
+      mouseEvent.target.classList.add("hover");
+    };
+
+    /**
+     * Remove hover class from tr
+     * 
+     * @param {MouseEvent} mouseEvent 
+     */
+    const removeHoverClassFromTr = (mouseEvent) => {
+      mouseEvent.target.classList.remove("hover");
+    };
+
+    /**
      * 組件掛載後事件 (Mounted Event)
      */
     onMounted(() => {
@@ -987,6 +1009,8 @@ export default defineComponent({
         groupingRowsRefs,
         groupingRows,
         toggleGroup,
+        addHoverClassToTr,
+        removeHoverClassFromTr,
       };
     } else {
       return {
@@ -1004,6 +1028,8 @@ export default defineComponent({
         groupingRowsRefs,
         groupingRows,
         toggleGroup,
+        addHoverClassToTr,
+        removeHoverClassFromTr,
       };
     }
   },
@@ -1013,6 +1039,11 @@ export default defineComponent({
 <style scoped>
 .vtl-checkbox-th {
   width: 1%;
+  min-width: 38px;
+}
+.vtl-checkbox-td {
+  width: 1%;
+  min-width: 38px;
 }
 
 .vtl-both {
@@ -1120,7 +1151,7 @@ tr {
 
 .vtl-table-hover tbody tr:hover {
   color: #212529;
-  background-color: rgba(0, 0, 0, 0.075);
+  background-color: #ececec;
 }
 
 .vtl-table-responsive {
@@ -1246,15 +1277,63 @@ tr {
   left: 0;
 }
 
+.fixed-first-column tr th:first-child::before,
+.fixed-first-second-column tr th:nth-child(2)::before {
+  content: "";
+  position: absolute;
+  border-right: 1px solid #454d55;
+  left: 0;
+  top: 0;
+  width: 102%;
+  height: 102%;
+}
+.fixed-first-column tr .vtl-checkbox-th:first-child::before {
+  content: "";
+  position: absolute;
+  border-right: 1px solid #454d55;
+  left: 0;
+  top: 0;
+  width: 103%;
+  height: 102%;
+}
+.fixed-first-column tr td:first-child::before,
+.fixed-first-column tr td:nth-child(2)::before {
+  content: "";
+  position: absolute;
+  border-right: 1px solid #dee2e6;
+  left: 0;
+  top: 0;
+  width: 102%;
+  height: 102%;
+}
+.fixed-first-column tr .vtl-checkbox-td:first-child::before {
+  content: "";
+  position: absolute;
+  border-right: 1px solid #dee2e6;
+  left: 0;
+  top: 0;
+  width: 103%;
+  height: 102%;
+}
+
 .fixed-first-second-column tr th:nth-child(2),
 .fixed-first-second-column tr td:nth-child(2) {
   position: sticky;
-  left: 36px;
+  left: 38px;
+}
+
+.fixed-first-second-column tr th:nth-child(2) {
+  z-index: 2;
 }
 
 .fixed-first-column tr td:first-child,
 .fixed-first-second-column tr td:nth-child(2) {
   background-color: white;
+}
+
+.fixed-first-column tr.hover td:first-child,
+.fixed-first-second-column tr.hover td:nth-child(2) {
+  background-color: #ececec;
 }
 
 .flex {
