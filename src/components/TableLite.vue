@@ -113,7 +113,7 @@
                     "
                     @mouseenter="addHoverClassToTr"
                     @mouseleave="removeHoverClassFromTr"
-                    @click.prevent="$emit('row-clicked', row)"
+                    @click="$emit('row-clicked', row)"
                   >
                     <td v-if="hasCheckbox" class="vtl-tbody-td vtl-checkbox-td">
                       <div>
@@ -199,7 +199,7 @@
                     "
                     @mouseenter="addHoverClassToTr"
                     @mouseleave="removeHoverClassFromTr"
-                    @click.prevent="$emit('row-clicked', row)"
+                    @click="$emit('row-clicked', row)"
                   >
                     <td v-if="hasCheckbox" class="vtl-tbody-td vtl-checkbox-td">
                       <div>
