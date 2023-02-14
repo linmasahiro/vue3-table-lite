@@ -127,7 +127,7 @@
                             }
                           "
                           :value="row[setting.keyColumn]"
-                          @click.prevent="checked(row, $event)"
+                          @click="checked(row, $event)"
                         />
                       </div>
                     </td>
@@ -209,7 +209,7 @@
                           class="vtl-tbody-checkbox"
                           :ref="(el: any) => (rowCheckbox as Array<HTMLElement>).push(el)"
                           :value="row[setting.keyColumn]"
-                          @click.prevent="checked(row, $event)"
+                          @click="checked(row, $event)"
                         />
                       </div>
                     </td>

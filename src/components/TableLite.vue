@@ -126,7 +126,7 @@
                             }
                           "
                           :value="row[setting.keyColumn]"
-                          @click.prevent="checked(row, $event)"
+                          @click="checked(row, $event)"
                         />
                       </div>
                     </td>
@@ -212,7 +212,7 @@
                             }
                           "
                           :value="row[setting.keyColumn]"
-                          @click.prevent="checked(row, $event)"
+                          @click="checked(row, $event)"
                         />
                       </div>
                     </td>
