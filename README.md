@@ -118,6 +118,7 @@ A simple and lightweight data table component for Vue.js 3. Features sorting, pa
 [Go to Check!!](https://vue3-lite-table.vercel.app/usage#defMode)
 
 ### release
+    ver 1.3.5 : Fixed `#79`.
     ver 1.3.4 : Fixed `#78`.
     ver 1.3.3 : Fixed `#77`.
     ver 1.3.2 : Fixed `#75`.
