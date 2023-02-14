@@ -737,14 +737,14 @@ export default defineComponent({
      */
     const checked = (row: any, event: MouseEvent): void => {
       event.stopPropagation();
+      let checkboxValue = row[setting.keyColumn];
+      if (props.checkedReturnType == "row") {
+        checkboxValue = row;
+      }
       if ((event.target as HTMLInputElement).checked) {
-        if (props.checkedReturnType == "row") {
-          isChecked.value.push(row);
-        } else {
-          isChecked.value.push(row[setting.keyColumn]);
-        }
+        isChecked.value.push(checkboxValue);
       } else {
-        const index = isChecked.value.indexOf(row);
+        const index = isChecked.value.indexOf(checkboxValue);
         if (index >= 0) {
           isChecked.value.splice(index, 1);
         }
