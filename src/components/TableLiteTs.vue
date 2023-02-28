@@ -670,12 +670,12 @@ export default defineComponent({
         });
 
         result = {} as any;
-        for (let index = 0; index < setting.limit; index++) {
+        for (let index = setting.offset - 1; index < setting.limit; index++) {
           result[rows[index][props.groupingKey]] = tmp[rows[index][props.groupingKey]];
         }
       } else {
         result = [];
-        for (let index = 0; index < setting.limit; index++) {
+        for (let index = setting.offset - 1; index < setting.limit; index++) {
           result.push(rows[index]);
         }
       }
