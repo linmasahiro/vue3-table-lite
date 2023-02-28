@@ -670,12 +670,12 @@ export default defineComponent({
         });
 
         result = {} as any;
-        for (let index = 0; index < setting.limit; index++) {
+        for (let index = setting.offset - 1; index < setting.limit; index++) {
           result[rows[index][props.groupingKey]] = tmp[rows[index][props.groupingKey]];
         }
       } else {
         result = [];
-        for (let index = 0; index < setting.limit; index++) {
+        for (let index = setting.offset - 1; index < setting.limit; index++) {
           result.push(rows[index]);
         }
       }
@@ -713,10 +713,11 @@ export default defineComponent({
         (state: boolean) => {
           isChecked.value = [];
           if (state) {
+            let tmpRows = (props.isStaticMode) ? props.rows.slice((setting.offset - 1), setting.limit) : props.rows;
             if (props.checkedReturnType == "row") {
-              isChecked.value = props.rows;
+              isChecked.value = tmpRows;
             } else {
-              props.rows.forEach((val: any) => {
+              tmpRows.forEach((val: any) => {
                 isChecked.value.push(val[setting.keyColumn]);
               });
             }
@@ -1041,6 +1042,7 @@ export default defineComponent({
         setting,
         rowCheckbox,
         checked,
+        clearChecked,
         doSort,
         prevPage,
         movePage,
@@ -1060,6 +1062,7 @@ export default defineComponent({
         localRows,
         setting,
         checked,
+        clearChecked,
         doSort,
         prevPage,
         movePage,
