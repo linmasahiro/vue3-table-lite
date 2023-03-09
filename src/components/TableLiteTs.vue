@@ -696,21 +696,22 @@ export default defineComponent({
 
     // 定義Checkbox參照 (Define Checkbox reference)
     const rowCheckbox = ref([]);
-    if (props.hasCheckbox) {
-      /**
-       * 重新渲染前執行 (Execute before re-rendering)
-       */
-      onBeforeUpdate(() => {
-        // 每次更新前都把值全部清空 (Clear all values before each update)
-        rowCheckbox.value = [];
-      });
 
-      /**
-       * 監聽全勾選Checkbox (Check all checkboxes for monitoring)
-       */
-      watch(
-        () => setting.isCheckAll,
-        (state: boolean) => {
+    /**
+     * 重新渲染前執行 (Execute before re-rendering)
+     */
+    onBeforeUpdate(() => {
+      // 每次更新前都把值全部清空 (Clear all values before each update)
+      rowCheckbox.value = [];
+    });
+
+    /**
+     * 監聽全勾選Checkbox (Check all checkboxes for monitoring)
+     */
+    watch(
+      () => setting.isCheckAll,
+      (state: boolean) => {
+        if (props.hasCheckbox) {
           isChecked.value = [];
           if (state) {
             let tmpRows = (props.isStaticMode) ? props.rows.slice((setting.offset - 1), setting.limit) : props.rows;
@@ -730,8 +731,20 @@ export default defineComponent({
           // 回傳畫面上選上的資料 (Return the selected data on the screen)
           emit("return-checked-rows", isChecked.value);
         }
-      );
-    }
+      }
+    );
+
+    /**
+     * 監控有無顯示Checkbox變化 (hasCeckbox props for monitoring)
+     */
+     watch(
+      () => props.hasCheckbox,
+      (v) => {
+        if (!v) {
+          setting.isCheckAll = false;
+        }
+      }
+    );
 
     /**
      * Checkbox點擊事件 (Checkbox click event)
@@ -1033,9 +1046,7 @@ export default defineComponent({
       });
     });
 
-    if (props.hasCheckbox) {
-      // 需要 Checkbox 時 (When Checkbox is needed)
-      return {
+    return {
         slots,
         localTable,
         localRows,
@@ -1055,27 +1066,6 @@ export default defineComponent({
         addHoverClassToTr,
         removeHoverClassFromTr,
       };
-    } else {
-      return {
-        slots,
-        localTable,
-        localRows,
-        setting,
-        checked,
-        clearChecked,
-        doSort,
-        prevPage,
-        movePage,
-        nextPage,
-        stringFormat,
-        toggleButtonRefs,
-        groupingRowsRefs,
-        groupingRows,
-        toggleGroup,
-        addHoverClassToTr,
-        removeHoverClassFromTr,
-      };
-    }
   },
   watch: {
     pageSize() {
