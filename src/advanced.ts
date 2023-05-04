@@ -8,6 +8,7 @@ import CustomizeStyle2 from './examples/CustomizeStyle2.vue'
 import CustomizeMessage from './examples/CustomizeMessage.vue'
 import CustomizePageDropdown from './examples/CustomizePageDropdown.vue'
 import RowClicked from './examples/RowClicked.vue'
+import RowDoubleClicked from '@/examples/RowDoubleClicked.vue'
 import FixedFirstColumn from './examples/FixedFirstColumn.vue'
 import FixedHeaderAndFirstColumn from './examples/FixedHeaderAndFirstColumn.vue'
 import ShowControls from './examples/ShowControls.vue'
@@ -23,6 +24,7 @@ createApp(CustomizeStyle2).mount('#customize-style-table2')
 createApp(CustomizeMessage).mount('#customize-message-table')
 createApp(CustomizePageDropdown).mount('#customize-page-dropdown-table')
 createApp(RowClicked).mount('#row-clicked-table')
+createApp(RowDoubleClicked).mount('#row-dblclicked-table')
 createApp(FixedFirstColumn).mount('#fixed-first-column-table')
 createApp(FixedHeaderAndFirstColumn).mount('#fixed-header-and-first-column-table')
 createApp(ShowControls).mount('#show-controls-table')
