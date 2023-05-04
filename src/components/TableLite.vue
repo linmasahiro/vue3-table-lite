@@ -114,6 +114,7 @@
                     @mouseenter="addHoverClassToTr"
                     @mouseleave="removeHoverClassFromTr"
                     @click="$emit('row-clicked', row)"
+                    @dblclick="$emit('row-dblclicked', row)"
                   >
                     <td v-if="hasCheckbox" class="vtl-tbody-td vtl-checkbox-td">
                       <div>
@@ -200,6 +201,7 @@
                     @mouseenter="addHoverClassToTr"
                     @mouseleave="removeHoverClassFromTr"
                     @click="$emit('row-clicked', row)"
+                    @dblclick="$emit('row-dblclicked', row)"
                   >
                     <td v-if="hasCheckbox" class="vtl-tbody-td vtl-checkbox-td">
                       <div>
@@ -366,6 +368,7 @@ export default defineComponent({
     "is-finished",
     "get-now-page",
     "row-clicked",
+    "row-dblclicked",
     "row-toggled",
   ],
   props: {
