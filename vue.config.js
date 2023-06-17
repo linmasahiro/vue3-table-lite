@@ -1,5 +1,6 @@
-module.exports = {
-  productionSourceMap: false,
+const { defineConfig } = require('@vue/cli-service')
+module.exports = defineConfig({
+  transpileDependencies: true,
   css: {
     extract: false
   },
@@ -30,4 +31,4 @@ module.exports = {
       filename: 'advanced.html'
     }
   }
-};
+})
