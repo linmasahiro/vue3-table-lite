@@ -55,9 +55,8 @@
                       'vtl-desc': setting.order === col.field && setting.sort === 'desc',
                     }"
                     @click.prevent="col.sortable ? doSort(col.field) : false"
-                  >
-                    {{ col.label }}
-                  </div>
+                    v-html="col.label"
+                  ></div>
                 </th>
               </tr>
             </thead>
