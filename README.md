@@ -118,6 +118,7 @@ A simple and lightweight data table component for Vue.js 3. Features sorting, pa
 [Go to Check!!](https://vue3-lite-table.vercel.app/usage#defMode)
 
 ### release
+    ver 1.3.9 : Added Vertical highlight option. `#93`
     ver 1.3.8 : Allow HTML in header's label `#91`.
     ver 1.3.7 : Fixed `#85`.
     ver 1.3.6 : Fixed `#81`.
@@ -153,4 +154,3 @@ A simple and lightweight data table component for Vue.js 3. Features sorting, pa
     ver 1.0.6 : support static mode.
     ver 1.0.5 : fixed Safari loading-mask is not overlapping the table.
     ver 1.0.4 : support TypeScript.
-    ver 1.0.3 : fixed wrong limit value.
