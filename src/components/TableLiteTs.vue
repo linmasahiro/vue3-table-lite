@@ -134,8 +134,10 @@
                       v-for="(col, j) in (columns as Array<any>)"
                       :key="j"
                       class="vtl-tbody-td"
-                      :class="col.columnClasses"
+                      :class="['vtl-tbody-td' + j].concat(col.columnClasses)"
                       :style="col.columnStyles"
+                      @mouseover="addVerticalHighlight(j)"
+                      @mouseleave="removeVerticalHighlight(j)"
                     >
                       <div v-if="col.display" v-html="col.display(row)"></div>
                       <div v-else>
@@ -216,8 +218,10 @@
                       v-for="(col, j) in (columns as Array<any>)"
                       :key="j"
                       class="vtl-tbody-td"
-                      :class="col.columnClasses"
+                      :class="['vtl-tbody-td' + j].concat(col.columnClasses)"
                       :style="col.columnStyles"
+                      @mouseover="addVerticalHighlight(j)"
+                      @mouseleave="removeVerticalHighlight(j)"
                     >
                       <div v-if="col.display" v-html="col.display(row)"></div>
                       <div v-else>
@@ -546,6 +550,11 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    // 選擇行是否高亮（Vertical highlight switch）
+    isVerticalHighlight: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, { emit, slots }) {
     let localTable = ref<HTMLElement | null>(null);
@@ -637,6 +646,7 @@ export default defineComponent({
         });
         return ops;
       }),
+      isVerticalHighlight: props.isVerticalHighlight,
     });
 
     // 已選擇中的資料 (Checked rows)
@@ -1026,11 +1036,41 @@ export default defineComponent({
     /**
      * Remove hover class from tr
      *
-     * @param {HTMLElement} $event
+     * @param {MouseEvent} mouseEvent
      */
     const removeHoverClassFromTr = (mouseEvent: MouseEvent) => {
       if (mouseEvent.target instanceof HTMLElement) {
         mouseEvent.target.classList.remove("hover");
+      }
+    };
+
+    /**
+     * Add hover class to td
+     * 
+     * @param {Number} index 
+     */
+     const addVerticalHighlight = (index: number) => {
+      if (! setting.isVerticalHighlight) {
+        return;
+      }
+      let elements = localTable.value.querySelectorAll(".vtl-tbody-td" + index);
+      for (let i = 0; i < elements.length; i++) {
+        elements[i].classList.add("hover");
+      }
+    };
+
+    /**
+     * Remove hover class from td
+     *
+     * @param {Number} index 
+     */
+    const removeVerticalHighlight = (index: number) => {
+      if (! setting.isVerticalHighlight) {
+        return;
+      }
+      let elements = localTable.value.querySelectorAll(".vtl-tbody-td" + index);
+      for (let i = 0; i < elements.length; i++) {
+        elements[i].classList.remove("hover");
       }
     };
 
@@ -1064,6 +1104,8 @@ export default defineComponent({
         toggleGroup,
         addHoverClassToTr,
         removeHoverClassFromTr,
+        addVerticalHighlight,
+        removeVerticalHighlight
       };
   },
   watch: {
@@ -1392,5 +1434,8 @@ tr {
 }
 .ml-2 {
   margin-left: 0.5rem;
+}
+.vtl-tbody-td.hover {
+  background-color: #ececec;
 }
 </style>
