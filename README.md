@@ -17,7 +17,7 @@ A simple and lightweight data table component for Vue.js 3. Features sorting, pa
 
 [Document](https://vue3-lite-table.vercel.app/)
 
-[Online Demo](https://vue3-lite-table.vercel.app/simple-examples)
+[Online Demo](https://vue3-lite-table.vercel.app/simple-examples.html)
 
 ## Support
 
@@ -115,7 +115,7 @@ A simple and lightweight data table component for Vue.js 3. Features sorting, pa
     };
 
 ## More...
-[Go to Check!!](https://vue3-lite-table.vercel.app/usage#defMode)
+[Go to Check!!](https://vue3-lite-table.vercel.app/usage/default-mode.html)
 
 ### release
     ver 1.3.9 : Added Vertical highlight option. `#93`
