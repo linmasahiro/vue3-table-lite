@@ -849,6 +849,7 @@ export default defineComponent({
      */
     const changePage = (page: number, prevPage: number) => {
       setting.isCheckAll = false;
+      setting.isIndeterminate = false;
       if (props.hasCheckbox) {
         isChecked.value = [];
       }
@@ -890,6 +891,7 @@ export default defineComponent({
         // 強制返回第一頁,並自動觸發 changePage()
         setting.page = 1;
         setting.isCheckAll = false;
+        setting.isIndeterminate = false;
       }
     };
     // 監聽組件內顯示筆數切換 (Monitor display number switch from component)
