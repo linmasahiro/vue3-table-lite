@@ -118,6 +118,7 @@ A simple and lightweight data table component for Vue.js 3. Features sorting, pa
 [Go to Check!!](https://vue3-lite-table.vercel.app/usage/default-mode.html)
 
 ### release
+    ver 1.4.0 : Added checkbox indeterminate state.
     ver 1.3.9 : Added Vertical highlight option. `#93`
     ver 1.3.8 : Allow HTML in header's label `#91`.
     ver 1.3.7 : Fixed `#85`.

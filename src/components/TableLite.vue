@@ -27,6 +27,7 @@
                     <input
                       type="checkbox"
                       class="vtl-thead-checkbox"
+                      :indeterminate="setting.isIndeterminate"
                       v-model="setting.isCheckAll"
                     />
                   </div>
@@ -555,6 +556,8 @@ export default defineComponent({
       isSlotMode: props.isSlotMode,
       // 是否全選 (Whether to select all)
       isCheckAll: false,
+      // 是否讓全選框呈現半選狀態 (checkbox indeterminate state)
+      isIndeterminate: false,
       // 是否隱藏換頁資訊 (Hide paging)
       isHidePaging: props.isHidePaging,
       // KEY欄位名稱 (KEY field name)
@@ -684,6 +687,7 @@ export default defineComponent({
       () => setting.isCheckAll,
       (state) => {
         if (props.hasCheckbox) {
+          setting.isIndeterminate = false;
           isChecked.value = [];
           if (state) {
             let tmpRows = (props.isStaticMode) ? props.rows.slice((setting.offset - 1), setting.limit) : props.rows;
@@ -723,6 +727,7 @@ export default defineComponent({
      */
     const checked = (row, event) => {
       event.stopPropagation();
+      setting.isIndeterminate = false;
       let checkboxValue = row[setting.keyColumn];
       if (props.checkedReturnType == "row") {
         checkboxValue = row;
@@ -736,8 +741,14 @@ export default defineComponent({
         }
       }
       if (isChecked.value.length == props.rows.length) {
+        if (setting.isCheckAll) {
+          emit("return-checked-rows", isChecked.value);
+        }
         setting.isCheckAll = true;
       } else {
+        if (isChecked.value.length > 0) {
+          setting.isIndeterminate = true;
+        }
         // 回傳畫面上選上的資料 (Return the selected data on the screen)
         emit("return-checked-rows", isChecked.value);
       }
@@ -894,7 +905,8 @@ export default defineComponent({
             callIsFinished();
           }
         });
-      }
+      },
+      { deep: true }
     );
 
     const stringFormat = (template, ...args) => {
