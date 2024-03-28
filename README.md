@@ -33,12 +33,12 @@ A simple and lightweight data table component for Vue.js 3. Features sorting, pa
 ## SampleCode
 
 ### import
-    import TableLite from "vue3-table-lite";
-    import TableLite from "vue3-table-lite/ts"; // TypeScript
+    import VueTableLite from "vue3-table-lite";
+    import VueTableLite from "vue3-table-lite/ts"; // TypeScript
 
 ## QuickStart
 ### component
-    <table-lite
+    <VueTableLite
     :is-loading="table.isLoading"
     :columns="table.columns"
     :rows="table.rows"
@@ -48,7 +48,7 @@ A simple and lightweight data table component for Vue.js 3. Features sorting, pa
     @do-search="doSearch"
     @is-finished="table.isLoading = false"
     />
-  ></table-lite>
+  >
 
 ### data
     const table = reactive({
