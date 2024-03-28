@@ -393,14 +393,20 @@ interface column {
 
 export default defineComponent({
   name: "my-table",
-  emits: [
-    "return-checked-rows",
-    "do-search",
-    "is-finished",
-    "get-now-page",
-    "row-clicked",
-    "row-toggled",
-  ],
+  emits: {
+    // eslint-disable-next-line
+    "return-checked-rows": (_rows: any[]) => true,
+    // eslint-disable-next-line
+    "do-search": (_offset: number, _limit: number, _order: string, _sort: string) => true,
+    // eslint-disable-next-line
+    "is-finished": (_elements: HTMLCollectionOf<Element>) => true,
+    // eslint-disable-next-line
+    "get-now-page": (_pageNo: number) => true,
+    // eslint-disable-next-line
+    "row-clicked": (_row: any) => true,
+    // eslint-disable-next-line
+    "row-toggled": (_rows: any[], _isCollapsed: boolean) => true,
+  },
   props: {
     // 是否讀取中 (is data loading)
     isLoading: {
