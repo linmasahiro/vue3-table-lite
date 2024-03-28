@@ -1,5 +1,5 @@
-<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <template>
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
   <div class="vtl vtl-card">
     <div class="vtl-card-title" v-if="title">{{ title }}</div>
     <div class="vtl-card-body">
@@ -349,9 +349,8 @@
       </div>
     </div>
   </div>
-</template>
-
 <!-- eslint-disable @typescript-eslint/no-explicit-any -->
+</template>
 <script lang="ts">
 import {
   defineComponent,
