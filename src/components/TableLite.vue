@@ -51,8 +51,8 @@
                     :class="{
                       'vtl-sortable': col.sortable,
                       'vtl-both': col.sortable,
-                      'vtl-asc': setting.order === col.field && setting.sort === 'asc',
-                      'vtl-desc': setting.order === col.field && setting.sort === 'desc',
+                      'vtl-asc': col.sortable && setting.order === col.field && setting.sort === 'asc',
+                      'vtl-desc': col.sortable && setting.order === col.field && setting.sort === 'desc',
                     }"
                     @click.prevent="col.sortable ? doSort(col.field) : false"
                     v-html="col.label"

@@ -1,4 +1,20 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="A simple and lightweight data table component for Vue.js 3. Features sorting, paging, row check, dynamic data rendering, supported TypeScript, and more."><meta name="keywords" content="vue vue3 table"><meta property="og:type" content="website"><meta property="og:site_name" content="vue3-table-lite"><title>vue3-table-lite</title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"><link rel="stylesheet" href="./app.css"><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script><script>$(document).ready(function () {
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="description"
+    content="A simple and lightweight data table component for Vue.js 3. Features sorting, paging, row check, dynamic data rendering, supported TypeScript, and more." />
+  <meta name="keywords" content="vue vue3 table" />
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="vue3-table-lite">
+  <title>vue3-table-lite</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    $(document).ready(function () {
       $('#hamburger-btn').click(function () {
         if ($('#sidebar').css('display') == 'none') {
           $('#sidebar').show();
@@ -6,7 +22,80 @@
           $('#sidebar').hide();
         }
       });
-    })</script><link href="./js/chunk-common.96556f76.js" rel="preload" as="script"><link href="./js/chunk-vendors.5b888e82.js" rel="preload" as="script"><link href="./js/usage.9a74d9a2.js" rel="preload" as="script"></head><body><div class="fixed-header w-100 text-center"><div id="hamburger-btn" class="btn hamburger-btn float-left"></div><h1>vue3-table-lite</h1></div><div class="row mt-5"><div id="sidebar" class="col-12 col-md-3 sidebar"><div class="p-5"><div class="mb-5"><h5 class="mb-5" style="color: #7e99b6;">v1.4.0</h5><p><a href="https://github.com/linmasahiro/vue3-table-lite" class="menu-link">Github</a></p><p><iframe src="https://ghbtns.com/github-btn.html?user=linmasahiro&repo=vue3-table-lite&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe></p></div><div class="mb-5"><div class="menu-title">QuickStart</div><a href="./index.html#install" class="menu-link">Install</a> <a href="./index.html#include" class="menu-link">Include</a> <a href="./index.html#ts" class="menu-link">TypeScript</a></div><div class="mb-5"><div class="menu-title">Usage</div><a href="#default" class="menu-link">Default Mode</a> <a href="#v-slot" class="menu-link">V-slot Mode</a> <a href="#static" class="menu-link">Static Mode</a></div><div class="mb-5"><div class="menu-title">API Reference</div><a href="./api.html#props" class="menu-link">Props</a> <a href="./api.html#events" class="menu-link">Events</a> <a href="./api.html#slots" class="menu-link">Slots</a></div><div class="mb-5"><div class="menu-title">Simple example</div><a href="./simple.html#default" class="menu-link">Default Mode</a> <a href="./simple.html#v-slot" class="menu-link">V-slot Mode</a> <a href="./simple.html#static" class="menu-link">Static Mode</a></div><div class="mb-5"><div class="menu-title">Advanced example</div><a href="./advanced.html#customize-display-data" class="menu-link">Customize display data</a> <a href="./advanced.html#filter" class="menu-link">Filter</a> <a href="./advanced.html#filter2" class="menu-link">Asynchronous filter</a> <a href="./advanced.html#filter3" class="menu-link">Filter in table</a> <a href="./advanced.html#customize-style" class="menu-link">Customize style</a> <a href="./advanced.html#customize-style2" class="menu-link">Customize style2</a> <a href="./advanced.html#customize-message" class="menu-link">Customize message</a> <a href="./advanced.html#customize-page-dropdown" class="menu-link">Customize Page's dropdown</a> <a href="./advanced.html#row-clicked" class="menu-link">Catch Row clicked</a> <a href="./advanced.html#fixed-first-column" class="menu-link">Fixed first column (horizontal scrolling)</a> <a href="./advanced.html#fixed-header-and-first-column" class="menu-link">Fixed header and first column (vertically scrolling and horizontal scrolling)</a> <a href="./advanced.html#show-controls" class="menu-link">Show controls</a> <a href="./advanced.html#grouping" class="menu-link">Grouping(with toggle)</a> <a href="./advanced.html#grouping2" class="menu-link">Grouping</a></div></div></div><div class="col-12 col-md-9 p-5 markdown-body"><h1 class="border-bottom">Mode</h1><h5 class="mb-5">vue3-table-lite is supported 3 rendering mode.</h5><div id="default" class="mb-5 p-2"><h3 class="border-bottom">Default Mode</h3><p>If you are always use API to get rows data. choose this mode.</p><div class="mb-3"><h5>Template:</h5><p><pre>
+    })
+  </script>
+  <link rel="stylesheet" crossorigin href="/assets/app-DeqrpFid.css">
+</head>
+
+<body>
+  <div class="fixed-header w-100 text-center">
+    <div id="hamburger-btn" class="btn hamburger-btn float-left"></div>
+    <h1>vue3-table-lite</h1>
+  </div>
+  <div class="row mt-5">
+    <div id="sidebar" class="col-12 col-md-3 sidebar">
+      <div class="p-5">
+        <div class="mb-5">
+          <h5 class="mb-5" style="color: #7e99b6;">v1.4.0</h5>
+          <p><a href="https://github.com/linmasahiro/vue3-table-lite" class="menu-link">Github</a></p>
+          <p>
+            <iframe src="https://ghbtns.com/github-btn.html?user=linmasahiro&repo=vue3-table-lite&type=watch&count=true"
+              allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+          </p>
+        </div>
+        <div class="mb-5">
+          <div class="menu-title">QuickStart</div>
+          <a href="./index.html#install" class="menu-link">Install</a>
+          <a href="./index.html#include" class="menu-link">Include</a>
+          <a href="./index.html#ts" class="menu-link">TypeScript</a>
+        </div>
+        <div class="mb-5">
+          <div class="menu-title">Usage</div>
+          <a href="#default" class="menu-link">Default Mode</a>
+          <a href="#v-slot" class="menu-link">V-slot Mode</a>
+          <a href="#static" class="menu-link">Static Mode</a>
+        </div>
+        <div class="mb-5">
+          <div class="menu-title">API Reference</div>
+          <a href="./api.html#props" class="menu-link">Props</a>
+          <a href="./api.html#events" class="menu-link">Events</a>
+          <a href="./api.html#slots" class="menu-link">Slots</a>
+        </div>
+        <div class="mb-5">
+          <div class="menu-title">Simple example</div>
+          <a href="./simple.html#default" class="menu-link">Default Mode</a>
+          <a href="./simple.html#v-slot" class="menu-link">V-slot Mode</a>
+          <a href="./simple.html#static" class="menu-link">Static Mode</a>
+        </div>
+        <div class="mb-5">
+          <div class="menu-title">Advanced example</div>
+          <a href="./advanced.html#customize-display-data" class="menu-link">Customize display data</a>
+          <a href="./advanced.html#filter" class="menu-link">Filter</a>
+          <a href="./advanced.html#filter2" class="menu-link">Asynchronous filter</a>
+          <a href="./advanced.html#filter3" class="menu-link">Filter in table</a>
+          <a href="./advanced.html#customize-style" class="menu-link">Customize style</a>
+          <a href="./advanced.html#customize-style2" class="menu-link">Customize style2</a>
+          <a href="./advanced.html#customize-message" class="menu-link">Customize message</a>
+          <a href="./advanced.html#customize-page-dropdown" class="menu-link">Customize Page's dropdown</a>
+          <a href="./advanced.html#row-clicked" class="menu-link">Catch Row clicked</a>
+          <a href="./advanced.html#fixed-first-column" class="menu-link">Fixed first column (horizontal scrolling)</a>
+          <a href="./advanced.html#fixed-header-and-first-column" class="menu-link">Fixed header and first column (vertically scrolling and horizontal scrolling)</a>
+          <a href="./advanced.html#show-controls" class="menu-link">Show controls</a>
+          <a href="./advanced.html#grouping" class="menu-link">Grouping(with toggle)</a>
+          <a href="./advanced.html#grouping2" class="menu-link">Grouping</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-9 p-5 markdown-body">
+      <h1 class="border-bottom">Mode</h1>
+      <h5 class="mb-5">vue3-table-lite is supported 3 rendering mode.</h5>
+      <div id="default" class="mb-5 p-2">
+        <h3 class="border-bottom">Default Mode</h3>
+        <p>If you are always use API to get rows data. choose this mode.</p>
+        <div class="mb-3">
+          <h5>Template:</h5>
+          <p>
+            <pre>
 &lt;table-lite
   :is-loading="table.isLoading"
   :columns="table.columns"
@@ -16,7 +105,13 @@
   @do-search="doSearch"
   @is-finished="tableLoadingFinish"
 /&gt;&lt;/table-lite&gt;
-                    </pre></p></div><div class="mb-3"><h5>Code(composition API):</h5><p><pre>
+                    </pre>
+          </p>
+        </div>
+        <div class="mb-3">
+          <h5>Code(composition API):</h5>
+          <p>
+            <pre>
   export default defineComponent({
     name: "App",
     components: { TableLite },
@@ -103,7 +198,18 @@
         tableLoadingFinish,
       };
   },
-                    </pre></p></div></div><div id="v-slot" class="mb-5 p-2"><h3 class="border-bottom">V-slot Mode</h3><p>If you are use API to get rows data and <b class="text-danger">need use vue components on rendering</b>. choose this mode.</p><div class="mb-3"><h5>Template:</h5><p><pre>
+                    </pre>
+          </p>
+        </div>
+      </div>
+      <div id="v-slot" class="mb-5 p-2">
+        <h3 class="border-bottom">V-slot Mode</h3>
+        <p>If you are use API to get rows data and <b class="text-danger">need use vue components on
+            rendering</b>. choose this mode.</p>
+        <div class="mb-3">
+          <h5>Template:</h5>
+          <p>
+            <pre>
     &lt;table-lite
       :is-slot-mode="true"
       :is-loading="table.isLoading"
@@ -118,7 +224,13 @@
         {{ data.value.name }}
       &lt;/template&gt;
     &lt;/table-lite&gt;
-                        </pre></p></div><div class="mb-3"><h5>Code(composition API):</h5><p><pre>
+                        </pre>
+          </p>
+        </div>
+        <div class="mb-3">
+          <h5>Code(composition API):</h5>
+          <p>
+            <pre>
   export default defineComponent({
     name: "App",
     components: { TableLite },
@@ -205,7 +317,17 @@
         tableLoadingFinish,
       };
   },
-                    </pre></p></div></div><div id="static" class="mb-5 p-2"><h3 class="border-bottom">Static Mode</h3><p>If you are <b class="text-danger">not use API</b> to get rows data. choose this mode.</p><div class="mb-3"><h5>Template:</h5><p><pre>
+                    </pre>
+          </p>
+        </div>
+      </div>
+      <div id="static" class="mb-5 p-2">
+        <h3 class="border-bottom">Static Mode</h3>
+        <p>If you are <b class="text-danger">not use API</b> to get rows data. choose this mode.</p>
+        <div class="mb-3">
+          <h5>Template:</h5>
+          <p>
+            <pre>
     &lt;table-lite
       :is-static-mode="true"
       :is-loading="table.isLoading"
@@ -215,7 +337,13 @@
       :sortable="table.sortable"
       @is-finished="table.isLoading = false"
     &gt;&lt;/table-lite&gt;
-                        </pre></p></div><div class="mb-3"><h5>Code(composition API):</h5><p><pre>
+                        </pre>
+          </p>
+        </div>
+        <div class="mb-3">
+          <h5>Code(composition API):</h5>
+          <p>
+            <pre>
   export default defineComponent({
     name: "App",
     components: { TableLite },
@@ -264,4 +392,16 @@
         table,
       };
   },
-                    </pre></p></div></div></div></div><div class="fixed-footer w-100 text-center"><p class="muted credit">Copyright © 2021 <a href="https://github.com/linmasahiro" target="_blank">Lin</a> All Rights Reserved.</p></div><script src="./js/chunk-vendors.5b888e82.js"></script><script src="./js/chunk-common.96556f76.js"></script><script src="./js/usage.9a74d9a2.js"></script></body></html>
+                    </pre>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fixed-footer w-100 text-center">
+    <p class="muted credit">Copyright © 2021 <a href="https://github.com/linmasahiro" target="_blank">Lin</a> All
+      Rights Reserved.</p>
+  </div>
+</body>
+
+</html>

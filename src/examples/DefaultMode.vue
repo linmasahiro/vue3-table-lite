@@ -54,14 +54,14 @@ export default defineComponent({
           label: "ID",
           field: "id",
           width: "3%",
-          sortable: true,
+          sortable: false,
           isKey: true,
         },
         {
           label: "Name",
           field: "name",
           width: "10%",
-          sortable: true,
+          sortable: false,
         },
         {
           label: "Email",
