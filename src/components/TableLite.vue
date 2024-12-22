@@ -143,7 +143,7 @@
                       <div v-if="col.display" v-html="col.display(row)"></div>
                       <div v-else>
                         <div v-if="setting.isSlotMode && slots[col.field]">
-                          <slot :name="col.field" :value="row"></slot>
+                          <slot :name="col.field" :index="i" :value="row"></slot>
                         </div>
                         <span v-else>{{ row[col.field] }}</span>
                       </div>
@@ -156,7 +156,7 @@
                 :set="(templateRows = groupingKey == '' ? [rows] : groupingRows)"
               >
                 <template
-                  v-for="(rows, groupingIndex) in templateRows"
+                  v-for="(rows, groupingIndex,index) in templateRows"
                   :key="groupingIndex"
                 >
                   <tr v-if="groupingKey != ''" class="vtl-tbody-tr vtl-group-tr">
@@ -231,7 +231,7 @@
                       <div v-if="col.display" v-html="col.display(row)"></div>
                       <div v-else>
                         <div v-if="setting.isSlotMode && slots[col.field]">
-                          <slot :name="col.field" :value="row"></slot>
+                          <slot :name="col.field" :index="index" :childIndex="i" :value="row"></slot>
                         </div>
                         <span v-else>{{ row[col.field] }}</span>
                       </div>
