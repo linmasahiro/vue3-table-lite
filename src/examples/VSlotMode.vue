@@ -1,7 +1,14 @@
 <template>
-  <table-lite :is-slot-mode="true" :is-loading="table.isLoading" :columns="table.columns" :rows="table.rows"
-    :total="table.totalRecordCount" :sortable="table.sortable" @do-search="doSearch"
-    @is-finished="table.isLoading = false">
+  <table-lite
+    :is-slot-mode="true"
+    :is-loading="table.isLoading"
+    :columns="table.columns"
+    :rows="table.rows"
+    :total="table.totalRecordCount"
+    :sortable="table.sortable"
+    @do-search="doSearch"
+    @is-finished="table.isLoading = false"
+  >
     <template v-slot:name="data">
       <Test>
         {{ data.childIndex }}  <!-- // show the index of table  -->
@@ -11,10 +18,12 @@
     </template>
   </table-lite>
 </template>
+
 <script>
 import { defineComponent, reactive } from "vue";
 import TableLite from "../components/TableLite.vue";
 import Test from "../components/Test.vue";
+
 // Fake Data for 'asc' sortable
 const sampleData1 = (offst, limit) => {
   offst = offst + 1;
@@ -28,6 +37,7 @@ const sampleData1 = (offst, limit) => {
   }
   return data;
 };
+
 // Fake Data for 'desc' sortable
 const sampleData2 = (offst, limit) => {
   let data = [];
@@ -40,6 +50,7 @@ const sampleData2 = (offst, limit) => {
   }
   return data;
 };
+
 export default defineComponent({
   name: "App",
   components: { TableLite, Test },
@@ -75,6 +86,7 @@ export default defineComponent({
         sort: "asc",
       },
     });
+
     /**
      * Search Event
      */
@@ -95,8 +107,10 @@ export default defineComponent({
         table.sortable.sort = sort;
       }, 600);
     };
+
     // First get data
     doSearch(0, 10, "id", "asc");
+
     return {
       table,
       doSearch,
