@@ -36,7 +36,7 @@
         <div id="sidebar" class="col-12 col-md-3 sidebar">
             <div class="p-5">
                 <div class="mb-5">
-                    <h5 class="mb-5" style="color: #7e99b6;">v1.4.0</h5>
+                    <h5 class="mb-5" style="color: #7e99b6;">v1.4.2</h5>
                     <p><a href="https://github.com/linmasahiro/vue3-table-lite" class="menu-link">Github</a></p>
                     <p>
                         <iframe
@@ -660,6 +660,19 @@
                 <h3 class="border-bottom">Slots</h3>
                 <p>This is option. But, If you enabled V-slot mode, You should be to write it.</p>
                 <ul>
+                    <li class="mb-2">
+                        <b>Header</b>
+                        <ul>
+                            <li>Description: Show header's scope(Slot name: vtl-header-slot)</li>
+                            <li>
+                                <pre>
+&lt;template v-slot:vtl-header-slot="data"&gt;
+  &lt;YourComponent&gt;{{ data.value }}&lt;/YourComponent&gt;
+&lt;/template&gt;
+                                </pre>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="mb-2">
                         <b>Field's name</b>
                         <ul>

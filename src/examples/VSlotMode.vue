@@ -9,6 +9,11 @@
     @do-search="doSearch"
     @is-finished="table.isLoading = false"
   >
+  <template v-slot:vtl-header-slot="data">
+    <Test>
+      {{ data.value }}
+    </Test>
+  </template>
     <template v-slot:name="data">
       <Test>
         {{ data.childIndex }}  <!-- // show the index of table  -->

@@ -55,8 +55,11 @@
                       'vtl-desc': col.sortable && setting.order === col.field && setting.sort === 'desc',
                     }"
                     @click.prevent="col.sortable ? doSort(col.field) : false"
-                    v-html="col.label"
                   >
+                    <div v-if="setting.isSlotMode && slots['vtl-header-slot']">
+                      <slot :name="'vtl-header-slot'" :index="index" :value="col.label"></slot>
+                    </div>
+                    <div v-else v-html="col.label"></div>
                   </div>
                 </th>
               </tr>
