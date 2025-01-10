@@ -56,8 +56,8 @@
                     }"
                     @click.prevent="col.sortable ? doSort(col.field) : false"
                   >
-                    <div v-if="setting.isSlotMode && slots['vtl-header-slot']">
-                      <slot :name="'vtl-header-slot'" :index="index" :value="col.label"></slot>
+                    <div v-if="setting.isSlotMode && slots['vtl-header-' + col.field]">
+                      <slot :name="'vtl-header-' + col.field" :index="index" :value="col.label"></slot>
                     </div>
                     <div v-else v-html="col.label"></div>
                   </div>

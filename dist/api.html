@@ -663,10 +663,17 @@
                     <li class="mb-2">
                         <b>Header</b>
                         <ul>
-                            <li>Description: Show header's scope(Slot name: vtl-header-slot)</li>
+                            <li>Description: Show header's scope</li>
                             <li>
+                                <h5>Slot name is 'vtl-header-' + column's field name</h5>
                                 <pre>
-&lt;template v-slot:vtl-header-slot="data"&gt;
+&lt;template v-slot:vtl-header-id="data"&gt;
+  &lt;YourComponent&gt;{{ data.value }}&lt;/YourComponent&gt;
+&lt;/template&gt;
+&lt;template v-slot:vtl-header-name="data"&gt;
+  &lt;YourComponent&gt;{{ data.value }}&lt;/YourComponent&gt;
+&lt;/template&gt;
+&lt;template v-slot:vtl-header-email="data"&gt;
   &lt;YourComponent&gt;{{ data.value }}&lt;/YourComponent&gt;
 &lt;/template&gt;
                                 </pre>
