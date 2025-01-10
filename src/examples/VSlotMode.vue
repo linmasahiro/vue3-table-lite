@@ -11,6 +11,8 @@
   >
     <template v-slot:name="data">
       <Test>
+        {{ data.childIndex }}  <!-- // show the index of table  -->
+        <!-- {{ data?.index }} // only working in grouping  -->
         {{ data.value.name }}
       </Test>
     </template>
