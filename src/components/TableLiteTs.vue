@@ -11,7 +11,6 @@
               'fixed-first-second-column': isFixedFirstColumn && hasCheckbox,
             }"
           >
-          {{skeletonScreen}} type scirpt
           <div v-if="isLoading">
               <template v-if="skeletonScreen">
                 <div ref="skeletonElementRef" class="skeleton-container">

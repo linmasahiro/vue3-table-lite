@@ -12,7 +12,6 @@
               <span style="color: white">Loading...</span>
             </div>
           </div> -->
-          {{skeletonScreen}} javas script 
           <div v-if="isLoading">
             <template v-if="skeletonScreen">
               <div ref="skeletonElementRef" class="skeleton-container">
