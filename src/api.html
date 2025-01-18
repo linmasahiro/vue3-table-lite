@@ -36,7 +36,7 @@
         <div id="sidebar" class="col-12 col-md-3 sidebar">
             <div class="p-5">
                 <div class="mb-5">
-                    <h5 class="mb-5" style="color: #7e99b6;">v1.4.0</h5>
+                    <h5 class="mb-5" style="color: #7e99b6;">v1.4.2</h5>
                     <p><a href="https://github.com/linmasahiro/vue3-table-lite" class="menu-link">Github</a></p>
                     <p>
                         <iframe
@@ -147,6 +147,26 @@
                             <li>Required: <span class="text-blue">No</span></li>
                             <li>Type: <span class="text-blue">Boolean</span></li>
                             <li>Default: <span class="text-blue">false</span></li>
+                        </ul>
+                    </li>
+                    <li class="mb-2">
+                        <b>skeleton-screen</b>
+                        <ul>
+                            <li>Description: Show skeleton loading screen</li>
+                            <li>Required: <span class="text-blue">No</span></li>
+                            <li>Type: <span class="text-blue">Boolean</span></li>
+                            <li>Default: <span class="text-blue">false</span></li>
+                            <ul>
+                                <li class="mb-2">
+                                    <ul>
+                                        <b>skeleton-rows</b>
+                                        <li>Description: Show the number of rows during the loading screen</li>
+                                        <li>Required: <span class="text-blue">No</span></li>
+                                        <li>Type: <span class="text-blue">Number</span></li>
+                                        <li>Default: <span class="text-blue">5</span></li>
+                                    </ul>
+                                </li>
+                            </ul>
                         </ul>
                     </li>
                     <li class="mb-2">
@@ -660,6 +680,26 @@
                 <h3 class="border-bottom">Slots</h3>
                 <p>This is option. But, If you enabled V-slot mode, You should be to write it.</p>
                 <ul>
+                    <li class="mb-2">
+                        <b>Header</b>
+                        <ul>
+                            <li>Description: Show header's scope</li>
+                            <li>
+                                <h5>Slot name is 'vtl-header-' + column's field name</h5>
+                                <pre>
+&lt;template v-slot:vtl-header-id="data"&gt;
+  &lt;YourComponent&gt;{{ data.value }}&lt;/YourComponent&gt;
+&lt;/template&gt;
+&lt;template v-slot:vtl-header-name="data"&gt;
+  &lt;YourComponent&gt;{{ data.value }}&lt;/YourComponent&gt;
+&lt;/template&gt;
+&lt;template v-slot:vtl-header-email="data"&gt;
+  &lt;YourComponent&gt;{{ data.value }}&lt;/YourComponent&gt;
+&lt;/template&gt;
+                                </pre>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="mb-2">
                         <b>Field's name</b>
                         <ul>
