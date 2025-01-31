@@ -50,7 +50,8 @@
                 </div>
               </div>
             </div>
-            <table v-show="!isLoading"
+            <table
+              v-show="!isLoading"
               class="vtl-table vtl-table-hover vtl-table-bordered vtl-table-responsive vtl-table-responsive-sm"
               ref="localTable"
               :style="'max-height: ' + maxHeight + 'px;'"

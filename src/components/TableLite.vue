@@ -62,19 +62,30 @@
                       v-model="setting.isCheckAll" />
                   </div>
                 </th>
-                <th v-for="(col, index) in columns" class="vtl-thead-th" :class="col.headerClasses" :key="index" :style="Object.assign(
-                  {
-                    width: col.width ? col.width : 'auto',
-                  },
-                  col.headerStyles
-                )
-                  ">
-                  <div class="vtl-thead-column" :class="{
-                    'vtl-sortable': col.sortable,
-                    'vtl-both': col.sortable,
-                    'vtl-asc': col.sortable && setting.order === col.field && setting.sort === 'asc',
-                    'vtl-desc': col.sortable && setting.order === col.field && setting.sort === 'desc',
-                  }" @click.prevent="col.sortable ? doSort(col.field) : false">
+                <th
+                  v-for="(col, index) in columns"
+                  class="vtl-thead-th"
+                  :class="col.headerClasses"
+                  :key="index"
+                  :style="
+                    Object.assign(
+                      {
+                        width: col.width ? col.width : 'auto',
+                      },
+                      col.headerStyles
+                    )
+                  "
+                >
+                  <div
+                    class="vtl-thead-column"
+                    :class="{
+                      'vtl-sortable': col.sortable,
+                      'vtl-both': col.sortable,
+                      'vtl-asc': col.sortable && setting.order === col.field && setting.sort === 'asc',
+                      'vtl-desc': col.sortable && setting.order === col.field && setting.sort === 'desc',
+                    }"
+                    @click.prevent="col.sortable ? doSort(col.field) : false"
+                  >
                     <div v-if="setting.isSlotMode && slots['vtl-header-' + col.field]">
                       <slot :name="'vtl-header-' + col.field" :index="index" :value="col.label"></slot>
                     </div>
