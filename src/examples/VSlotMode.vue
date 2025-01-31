@@ -2,6 +2,8 @@
   <table-lite
     :is-slot-mode="true"
     :is-loading="table.isLoading"
+    :skeleton-screen="true"
+    :skeleton-rows="10"
     :columns="table.columns"
     :rows="table.rows"
     :total="table.totalRecordCount"
