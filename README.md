@@ -118,6 +118,7 @@ A simple and lightweight data table component for Vue.js 3. Features sorting, pa
 [Go to Check!!](https://vue3-lite-table.vercel.app/usage/default-mode.html)
 
 ### release
+    ver 1.4.3 : Added skeletonScreen option. `#121`
     ver 1.4.2 : Added Header's slot. `#120`
     ver 1.4.1 : Fixed `#118`.
     ver 1.4.0 : Added checkbox indeterminate state.

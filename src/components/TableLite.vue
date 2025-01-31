@@ -7,11 +7,6 @@
           'fixed-first-column': isFixedFirstColumn,
           'fixed-first-second-column': isFixedFirstColumn && hasCheckbox,
         }">
-          <!-- <div v-if="isLoading" class="vtl-loading-mask">
-            <div class="vtl-loading-content">
-              <span style="color: white">Loading...</span>
-            </div>
-          </div> -->
           <div v-if="isLoading">
             <template v-if="skeletonScreen">
               <div ref="skeletonElementRef" class="skeleton-container">
@@ -47,11 +42,13 @@
             </template>
             <div v-else class="vtl-loading-mask">
               <div class="vtl-loading-content">
-                <span style="color: white">Loading...</span>
+                <div class="overlay">
+                  <div class="spinner-border"></div>
+                </div>
               </div>
             </div>
           </div>
-          <table v-show="!isLoading"
+          <table v-show="!skeletonScreen || !isLoading"
             class="vtl-table vtl-table-hover vtl-table-bordered vtl-table-responsive vtl-table-responsive-sm"
             ref="localTable" :style="'max-height: ' + maxHeight + 'px;'">
             <thead class="vtl-thead">
@@ -62,30 +59,19 @@
                       v-model="setting.isCheckAll" />
                   </div>
                 </th>
-                <th
-                  v-for="(col, index) in columns"
-                  class="vtl-thead-th"
-                  :class="col.headerClasses"
-                  :key="index"
-                  :style="
-                    Object.assign(
-                      {
-                        width: col.width ? col.width : 'auto',
-                      },
-                      col.headerStyles
-                    )
-                  "
-                >
-                  <div
-                    class="vtl-thead-column"
-                    :class="{
-                      'vtl-sortable': col.sortable,
-                      'vtl-both': col.sortable,
-                      'vtl-asc': col.sortable && setting.order === col.field && setting.sort === 'asc',
-                      'vtl-desc': col.sortable && setting.order === col.field && setting.sort === 'desc',
-                    }"
-                    @click.prevent="col.sortable ? doSort(col.field) : false"
-                  >
+                <th v-for="(col, index) in columns" class="vtl-thead-th" :class="col.headerClasses" :key="index" :style="Object.assign(
+                  {
+                    width: col.width ? col.width : 'auto',
+                  },
+                  col.headerStyles
+                )
+                  ">
+                  <div class="vtl-thead-column" :class="{
+                    'vtl-sortable': col.sortable,
+                    'vtl-both': col.sortable,
+                    'vtl-asc': col.sortable && setting.order === col.field && setting.sort === 'asc',
+                    'vtl-desc': col.sortable && setting.order === col.field && setting.sort === 'desc',
+                  }" @click.prevent="col.sortable ? doSort(col.field) : false">
                     <div v-if="setting.isSlotMode && slots['vtl-header-' + col.field]">
                       <slot :name="'vtl-header-' + col.field" :index="index" :value="col.label"></slot>
                     </div>
@@ -195,7 +181,7 @@
           </table>
         </div>
       </div>
-      <div class="vtl-paging vtl-row" v-if="!isLoading && rows.length > 0">
+      <div class="vtl-paging vtl-row" v-if="(!skeletonScreen || !isLoading) && rows.length > 0">
         <template v-if="!setting.isHidePaging">
           <div class="vtl-paging-info col-sm-12 col-md-4">
             <div role="status" aria-live="polite">
@@ -952,15 +938,15 @@ export default defineComponent({
     });
     const skeletonElementRef = ref(null);
     const randomWidthRight = (index) => {
-  // Ensure tableWidth is dynamically fetched from the ref
-  const tableWidths = skeletonElementRef.value?.clientWidth || 1100; // Fallback to 1100px if the element is not yet mounted
-  const tableWidth = tableWidths < 500 ? 1200 : tableWidths;
-  const columnWidth = tableWidth / props.columns?.length; // Calculate width per column
-  const randomWidth = Math.floor(columnWidth * 0.6 + ((index * 31) % (columnWidth * 0.4))); // 50% to 95% of column width
-  return {
-    width: `${randomWidth}px`,
-  };
-};
+      // Ensure tableWidth is dynamically fetched from the ref
+      const tableWidths = skeletonElementRef.value?.clientWidth || 1100; // Fallback to 1100px if the element is not yet mounted
+      const tableWidth = tableWidths < 500 ? 1200 : tableWidths;
+      const columnWidth = tableWidth / props.columns?.length; // Calculate width per column
+      const randomWidth = Math.floor(columnWidth * 0.6 + ((index * 31) % (columnWidth * 0.4))); // 50% to 95% of column width
+      return {
+        width: `${randomWidth}px`,
+      };
+    };
     return {
       // skeleton start
       skeletonElementRef,
@@ -995,46 +981,53 @@ export default defineComponent({
   width: 1%;
   min-width: 38px;
 }
+
 .vtl-checkbox-td {
   width: 1%;
   min-width: 38px;
 }
+
 .vtl-both {
   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAQAAADYWf5HAAAAkElEQVQoz7X QMQ5AQBCF4dWQSJxC5wwax1Cq1e7BAdxD5SL+Tq/QCM1oNiJidwox0355mXnG/DrEtIQ6azioNZQxI0ykPhTQIwhCR+BmBYtlK7kLJYwWCcJA9M4qdrZrd8pPjZWPtOqdRQy320YSV17OatFC4euts6z39GYMKRPCTKY9UnPQ6P+GtMRfGtPnBCiqhAeJPmkqAAAAAElFTkSuQmCC");
 }
+
 .vtl-sortable {
   cursor: pointer;
   background-position: right;
   background-repeat: no-repeat;
   padding-right: 30px !important;
 }
+
 .vtl-asc {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAZ0lEQVQ4y2NgGLKgquEuFxBPAGI2ahhWCsS/gDibUoO0gPgxEP8H4ttArEyuQYxAPBdqEAxPBImTY5gjEL9DM+wTENuQahAvEO9DMwiGdwAxOymGJQLxTyD+jgWDxCMZRsEoGAVoAADeemwtPcZI2wAAAABJRU5ErkJggg==);
 }
+
 .vtl-desc {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAZUlEQVQ4y2NgGAWjYBSggaqGu5FA/BOIv2PBIPFEUgxjB+IdQPwfC94HxLykus4GiD+hGfQOiB3J8SojEE9EM2wuSJzcsFMG4ttQgx4DsRalkZENxL+AuJQaMcsGxBOAmGvopk8AVz1sLZgg0bsAAAAASUVORK5CYII=);
 }
+
 .vtl-loading-mask {
-  /* position: absolute;
+  position: absolute;
   z-index: 3;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%; */
-  height: 400px;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  /* flex-flow: column; */
+  flex-flow: column;
   align-items: center;
   justify-content: center;
   transition: opacity 0.3s ease;
 }
+
 .vtl-loading-content {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .vtl-card {
   position: relative;
   display: -ms-flexbox;
@@ -1046,6 +1039,7 @@ export default defineComponent({
   background-color: #fff;
   background-clip: border-box;
 }
+
 select {
   width: auto;
   border: 1px solid #cccccc;
@@ -1054,24 +1048,29 @@ select {
   padding: 0;
   margin-bottom: 0;
 }
+
 .vtl-table {
   width: 100%;
   margin-bottom: 1rem;
   color: #212529;
   border-collapse: collapse;
 }
+
 th {
   text-align: inherit;
 }
+
 tr {
   display: table-row;
   vertical-align: inherit;
   border-color: inherit;
 }
+
 .vtl-table-bordered thead td,
 .vtl-table-bordered thead th {
   border-bottom-width: 2px;
 }
+
 .vtl-table thead th {
   vertical-align: bottom;
   color: #fff;
@@ -1079,10 +1078,12 @@ tr {
   border-color: #454d55;
   border-bottom: 2px solid #dee2e6;
 }
+
 .vtl-table-bordered td,
 .vtl-table-bordered th {
   border: 1px solid #dee2e6;
 }
+
 .vtl-table td,
 .vtl-table th {
   padding: 0.75rem;
@@ -1090,25 +1091,30 @@ tr {
   border-top: 1px solid #dee2e6;
   vertical-align: middle;
 }
+
 .vtl-table-hover tbody tr:hover {
   color: #212529;
   background-color: #ececec;
 }
+
 .vtl-table-responsive {
   display: block;
   width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
+
 .vtl-table-responsive>.vtl-table-bordered {
   border: 0;
 }
+
 .vtl-row {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
+
 .vtl-pagination {
   margin: 2px 0;
   white-space: nowrap;
@@ -1119,6 +1125,7 @@ tr {
   list-style: none;
   border-radius: 0.25rem;
 }
+
 .page-item.disabled .page-link {
   color: #6c757d;
   pointer-events: none;
@@ -1126,11 +1133,13 @@ tr {
   background-color: #fff;
   border-color: #dee2e6;
 }
+
 .page-item:first-child .page-link {
   margin-left: 0;
   border-top-left-radius: 0.25rem;
   border-bottom-left-radius: 0.25rem;
 }
+
 .page-link {
   position: relative;
   display: block;
@@ -1141,6 +1150,7 @@ tr {
   background-color: #fff;
   border: 1px solid #dee2e6;
 }
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -1152,19 +1162,23 @@ tr {
   white-space: nowrap;
   border: 0;
 }
+
 *,
 ::after,
 ::before {
   box-sizing: border-box;
 }
+
 .col-sm-12 {
   -ms-flex: 0 0 100%;
   flex: 0 0 100%;
   max-width: 100%;
 }
+
 .text-center {
   text-align: center;
 }
+
 @media (min-width: 576px) {
   .vtl-table-responsive-sm {
     display: block;
@@ -1172,37 +1186,45 @@ tr {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
+
   .vtl-table-responsive-sm>.table-bordered {
     border: 0;
   }
+
   .col-md-4 {
     -ms-flex: 0 0 33.333333%;
     flex: 0 0 33.333333%;
     max-width: 33.333333%;
   }
 }
+
 .vtl-table thead th {
   position: sticky;
   top: 0;
   z-index: 1;
 }
+
 .vtl-table tbody th {
   position: sticky;
   left: 0;
   z-index: 1;
 }
+
 .fixed-first-column {
   overflow-x: auto;
 }
+
 .fixed-first-column tr th:first-child {
   position: sticky;
   left: 0;
   z-index: 2;
 }
+
 .fixed-first-column tr td:first-child {
   position: sticky;
   left: 0;
 }
+
 .fixed-first-column tr th:first-child::before,
 .fixed-first-second-column tr th:nth-child(2)::before {
   content: "";
@@ -1213,6 +1235,7 @@ tr {
   width: 102%;
   height: 102%;
 }
+
 .fixed-first-column tr .vtl-checkbox-th:first-child::before {
   content: "";
   position: absolute;
@@ -1222,6 +1245,7 @@ tr {
   width: 103%;
   height: 102%;
 }
+
 .fixed-first-column tr td:first-child::before,
 .fixed-first-column tr td:nth-child(2)::before {
   content: "";
@@ -1232,6 +1256,7 @@ tr {
   width: 102%;
   height: 102%;
 }
+
 .fixed-first-column tr .vtl-checkbox-td:first-child::before {
   content: "";
   position: absolute;
@@ -1241,70 +1266,120 @@ tr {
   width: 103%;
   height: 102%;
 }
+
 .fixed-first-second-column tr th:nth-child(2),
 .fixed-first-second-column tr td:nth-child(2) {
   position: sticky;
   left: 38px;
 }
+
 .fixed-first-second-column tr th:nth-child(2) {
   z-index: 2;
 }
+
 .fixed-first-column tr td:first-child,
 .fixed-first-second-column tr td:nth-child(2) {
   background-color: white;
 }
+
 .fixed-first-column tr.hover td:first-child,
 .fixed-first-second-column tr.hover td:nth-child(2) {
   background-color: #ececec;
 }
+
 .flex {
   display: flex;
 }
+
 .animation {
   transform: rotate(0deg);
   transition: transform 0.3s;
 }
+
 .cursor-pointer {
   cursor: pointer;
 }
+
 .rotated-90 {
   transform: rotate(-90deg);
 }
+
 .hidden {
   display: none;
 }
+
 .ml-2 {
   margin-left: 0.5rem;
 }
+
 .vtl-tbody-td.hover {
   background-color: #ececec;
 }
+
+.spinner-border {
+  display: inline-block;
+  border: 0.25em solid currentcolor;
+  border-right-color: transparent;
+  color: #ffffffbf;
+  width: 4rem;
+  height: 4rem;
+  vertical-align: -0.125em;
+  border-radius: 50%;
+  animation: .75s linear infinite spinner-border;
+  -webkit-animation: .75s linear infinite spinner-border;
+}
+
+@keyframes spinner-border {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spinner-border {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
 /* skeleton loading  start from here  */
 .flex-item {
   display: flex;
   gap: 5px;
 }
+
 .skeleton-container {
   border: 1px solid #f3f4f6;
   /* border-radius: 10px; */
   /* overflow: hidden; */
   width: 100%;
 }
+
 /* Skeleton sections */
 .skeleton-section {
   display: grid;
   /* overflow-x: auto; */
   overflow: hidden;
 }
+
 .skeleton-header {
   grid-template-columns: repeat(auto-fit, minmax(3rem, 1fr));
   background-color: rgb(243, 246, 248);
   padding-top: 4px;
   padding-bottom: 4px;
 }
+
 .skeleton-body {
   grid-template-columns: repeat(auto-fit, minmax(3rem, 1fr));
 }
+
 .skeleton-footer {
   margin-top: 10px;
   margin-bottom: 5px;
@@ -1313,6 +1388,7 @@ tr {
   display: flex;
   justify-content: space-between;
 }
+
 .skeleton-footer .item {
   background-color: rgb(229 231 235);
   border-radius: 5px;
@@ -1320,6 +1396,7 @@ tr {
   min-width: 30px;
   animation: skeleton-pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
+
 /* Skeleton items */
 .skeleton-item {
   height: 2.5rem;
@@ -1332,24 +1409,30 @@ tr {
   border-bottom: 1px solid rgb(243 244 246);
   animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
+
 .skeleton-body:last-child .skeleton-item {
   border-bottom: 0;
 }
+
 .skeleton-item .item {
   background-color: rgb(229 231 235);
   border-radius: 5px;
   height: 100%;
 }
+
 /* Skeleton animation */
 @keyframes skeleton-pulse {
+
   0%,
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }
 }
+
 /* Responsive breakpoints */
 @media (max-width: 1024px) {
   .skeleton-section {
@@ -1357,15 +1440,18 @@ tr {
     grid-template-columns: repeat(8, minmax(12rem, 1fr));
   }
 }
+
 @media (max-width: 640px) {
   .skeleton-section {
     grid-template-columns: repeat(8, minmax(12rem, 1fr));
   }
 }
+
 @media (max-width: 480px) {
   .skeleton-section {
     grid-template-columns: repeat(8, minmax(12rem, 1fr));
   }
 }
+
 /* skeleton loading ending here  */
 </style>
